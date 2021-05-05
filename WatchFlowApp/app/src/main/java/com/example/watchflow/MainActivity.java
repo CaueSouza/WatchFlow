@@ -17,7 +17,6 @@ import com.example.watchflow.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    //test
     MainActivityViewModel viewModel;
     ActivityMainBinding binding;
 
