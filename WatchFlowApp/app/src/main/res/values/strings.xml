@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">WatchFlow</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_main">WatchFlow</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Próximo</string>
+    <string name="previous">Anterior</string>
+
+    <string name="register">REGISTRAR</string>
+    <string name="login_email_hint">Email</string>
+    <string name="login_password_hint">Senha</string>
+    <string name="login_signup_hint">Não possui conta? Contate o administrador</string>
+    <string name="login">Entrar</string>
+    <string name="login_title">Login</string>
+    <string name="registrar">Registrar</string>
+</resources>
