@@ -1,8 +1,14 @@
 package com.example.watchflow;
 
-import androidx.lifecycle.ViewModel;
+import android.app.Application;
 
-public class MainActivityViewModel extends ViewModel {
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+
+public class MainActivityViewModel extends AndroidViewModel {
 
 
+    public MainActivityViewModel(@NonNull Application application) {
+        super(application);
+    }
 }

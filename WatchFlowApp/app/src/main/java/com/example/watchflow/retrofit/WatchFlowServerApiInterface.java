@@ -1,5 +1,9 @@
-package com.example.watchflow;
+package com.example.watchflow.retrofit;
 
+import androidx.lifecycle.LiveData;
+
+import com.example.watchflow.CameraInformations;
+import com.example.watchflow.Constants;
 import com.google.gson.JsonObject;
 
 import java.util.Map;
@@ -9,12 +13,13 @@ import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
-public interface JsonPlaceHolderAPI {
+public interface WatchFlowServerApiInterface {
 
-//    @POST(Constants.CREATE_USER)
-//    Call<JsonObject> postCreateUser(@Body JsonObject body);
+    @GET(Constants.ALL_RUNNING_CAMERAS)
+    Call<JsonObject> getAllCamerasIps();
 //
 //    @FormUrlEncoded
 //    @POST(Constants.LOGIN_USER)
