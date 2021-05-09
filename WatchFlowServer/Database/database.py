@@ -132,12 +132,10 @@ def getCamerasDatabaseAsJSON(onlyIps=False):
 
     else:
         for row in queryResult:
-            if row[4] is not None:
-                json_dict = {'ip': row[1],
-                             'latitude': row[2],
-                             'longitude': row[3],
-                             'snapshot': row[4]}
-                json_list.append(json_dict)
+            json_dict = {'ip': row[1],
+                         'latitude': row[2],
+                         'longitude': row[3]}
+            json_list.append(json_dict)
 
     return json_output
 

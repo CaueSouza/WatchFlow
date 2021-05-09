@@ -1,6 +1,7 @@
 import flask
 from flask import request
 from Database import database
+import socket
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -8,12 +9,12 @@ app.config["DEBUG"] = True
 
 @app.route('/allRunningCameras', methods=['GET'])
 def getAllRunningCameras():
-    return {'response': database.getCamerasDatabaseAsJSON()}
+    return database.getCamerasDatabaseAsJSON()
 
 
 @app.route('/allCamerasIps', methods=['GET'])
 def getAllCamerasIps():
-    return {'response': database.getCamerasDatabaseAsJSON(onlyIps=True)}
+    return database.getCamerasDatabaseAsJSON(onlyIps=True)
 
 
 @app.route('/userLogin', methods=['POST'])
@@ -29,9 +30,9 @@ def userLogin():
             latitude=data['latitude'],
             longitude=data['longitude'])
 
-        return {'response': message}, 200 if success else 400
+        return message, 200 if success else 400
     else:
-        return {'response': 'Missing params'}, 400
+        return 'Missing params', 400
 
 
 @app.route('/userLogout', methods=['POST'])
@@ -45,9 +46,9 @@ def userLogout():
             requesterUserId=data['requesterUserId'],
             requesterPwd=data['requesterPwd'])
 
-        return {'response': message}, 200 if success else 400
+        return message, 200 if success else 400
     else:
-        return {'response': 'Missing params'}, 400
+        return 'Missing params', 400
 
 
 @app.route('/userRegister', methods=['POST'])
@@ -65,10 +66,10 @@ def userRegister():
             newUserPwd=data['newUserPwd'],
             userType=data['type'] if ('type' in data) else 0)
 
-        return {'response': message}, 200 if success else 400
+        return message, 200 if success else 400
 
     else:
-        return {'response': 'Missing params'}, 400
+        return 'Missing params', 400
 
 
 @app.route('/deleteUser', methods=['DELETE'])
@@ -83,10 +84,10 @@ def deleteUser():
             requesterPwd=data['requesterPwd'],
             oldUserId=data['oldUserId'])
 
-        return {'response': message}, 200 if success else 400
+        return message, 200 if success else 400
 
     else:
-        return {'response': 'Missing params'}, 400
+        return 'Missing params', 400
 
 
 @app.route('/cameraRegister', methods=['POST'])
@@ -104,9 +105,9 @@ def cameraRegister():
             latitude=data['latitude'],
             longitude=data['longitude'])
 
-        return {'response': message}, 200 if success else 400
+        return message, 200 if success else 400
     else:
-        return {'response': 'Missing params'}, 400
+        return 'Missing params', 400
 
 
 @app.route('/deleteCamera', methods=['DELETE'])
@@ -121,10 +122,10 @@ def deleteCamera():
             requesterPwd=data['requesterPwd'],
             cameraIp=data['cameraIp'])
 
-        return {'response': message}, 200 if success else 400
+        return message, 200 if success else 400
 
     else:
-        return {'response': 'Missing params'}, 400
+        return 'Missing params', 400
 
 
 @app.route('/updateCamera', methods=['POST'])
@@ -140,10 +141,10 @@ def updateCamera():
             cameraIp=data['cameraIp'],
             snapshot=data['snapshot'])
 
-        return {'response': message}, 200 if success else 400
+        return message, 200 if success else 400
 
     else:
-        return {'response': 'Missing params'}, 400
+        return 'Missing params', 400
 
 
 @app.route('/usersPositions', methods=['POST'])
@@ -157,11 +158,15 @@ def usersPositions():
             requesterUserId=data['requesterUserId'],
             requesterPwd=data['requesterPwd'])
 
-        return {'response': jsonOutput}, 200 if success else 400
+        return jsonOutput, 200 if success else 400
 
     else:
-        return {'response': 'Missing params'}, 400
+        return 'Missing params', 400
 
 
 if __name__ == '__main__':
-    app.run()
+    hostname = socket.gethostname()
+    local_ip = socket.gethostbyname(hostname)
+
+    app.run(host=local_ip, port=5000)
+    # app.run()
