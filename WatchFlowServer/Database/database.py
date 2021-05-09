@@ -110,34 +110,33 @@ def resetDatabase():
     conn.commit()
     cursor.close()
 
-    data = convertToBinaryData('testimg.jpg')
-    updateCamera('Joe', 'senha1', '127.0.0.1',
-                 encodeBinaryData(data))
-    updateCamera('Joe', 'senha1', '127.0.0.2',
-                 encodeBinaryData(data))
 
+def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
 
-def getCamerasDatabaseAsJSON(onlyIps=False):
-    json_list = []
-    json_output = {'cameras': json_list}
+    if validateUser(requesterUserId, requesterPwd):
 
-    query = "SELECT * FROM cameras"
+        json_list = []
+        json_output = {'cameras': json_list}
 
-    queryResult = executeFetchallQuery(query)
+        query = "SELECT * FROM cameras"
 
-    if onlyIps:
-        for row in queryResult:
-            json_dict = {'ip': row[1]}
-            json_list.append(json_dict)
+        queryResult = executeFetchallQuery(query)
 
+        if onlyIps:
+            for row in queryResult:
+                json_dict = {'ip': row[1]}
+                json_list.append(json_dict)
+
+        else:
+            for row in queryResult:
+                json_dict = {'ip': row[1],
+                             'latitude': row[2],
+                             'longitude': row[3]}
+                json_list.append(json_dict)
+
+        return (True, json_output)
     else:
-        for row in queryResult:
-            json_dict = {'ip': row[1],
-                         'latitude': row[2],
-                         'longitude': row[3]}
-            json_list.append(json_dict)
-
-    return json_output
+        return (False, 'Incorrect credentials')
 
 
 def validateUserName(userName, pwd):
@@ -208,7 +207,7 @@ def createUser(requesterUserId, requesterPwd, newUserName, newUserPwd,
         return (False, 'Incorrect credentials')
 
 
-def deleteUser(requesterUserId, requesterPwd, oldUserId):
+def deleteUser(requesterUserId, requesterPwd, oldUserName):
 
     if validateUser(requesterUserId, requesterPwd, shouldValidateAdmin=True):
         query = """
@@ -218,7 +217,7 @@ def deleteUser(requesterUserId, requesterPwd, oldUserId):
                     userName=?
         """
 
-        data = (oldUserId,)
+        data = (oldUserName,)
 
         executeQuery(query, data)
 
@@ -249,7 +248,7 @@ def userLogin(userName, pwd, latitude, longitude):
 
         executeQuery(query, data)
 
-        return (True, {'UserId': userId})
+        return (True, {'userId': userId})
     else:
         return (False, 'Login failed')
 

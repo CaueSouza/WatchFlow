@@ -9,17 +9,40 @@ app.config["DEBUG"] = True
 
 @app.route('/allRunningCameras', methods=['GET'])
 def getAllRunningCameras():
-    return database.getCamerasDatabaseAsJSON()
+    data = request.get_json()
+
+    neededKeys = {'requesterUserId', 'requesterPwd'}
+
+    if neededKeys <= data.keys():
+        success, message = database.getCamerasDatabaseAsJSON(
+            requesterUserId=data['requesterUserId'],
+            requesterPwd=data['requesterPwd'])
+
+        return message, 200 if success else 400
+    else:
+        return 'Missing params', 400
 
 
 @app.route('/allCamerasIps', methods=['GET'])
 def getAllCamerasIps():
-    return database.getCamerasDatabaseAsJSON(onlyIps=True)
+    data = request.get_json()
+
+    neededKeys = {'requesterUserId', 'requesterPwd'}
+
+    if neededKeys <= data.keys():
+        success, message = database.getCamerasDatabaseAsJSON(
+            requesterUserId=data['requesterUserId'],
+            requesterPwd=data['requesterPwd'],
+            onlyIps=True)
+
+        return message, 200 if success else 400
+    else:
+        return 'Missing params', 400
 
 
 @app.route('/userLogin', methods=['POST'])
 def userLogin():
-    data = request.args.to_dict()  # a multidict containing POST data
+    data = request.get_json()
 
     neededKeys = {'userName', 'pwd', 'latitude', 'longitude'}
 
@@ -37,7 +60,7 @@ def userLogin():
 
 @app.route('/userLogout', methods=['POST'])
 def userLogout():
-    data = request.args.to_dict()  # a multidict containing POST data
+    data = request.get_json()
 
     neededKeys = {'requesterUserId', 'requesterPwd'}
 
@@ -51,9 +74,9 @@ def userLogout():
         return 'Missing params', 400
 
 
-@app.route('/userRegister', methods=['POST'])
-def userRegister():
-    data = request.args.to_dict()  # a multidict containing POST data
+@app.route('/registerUser', methods=['POST'])
+def registerUser():
+    data = request.get_json()
 
     neededKeys = {'requesterUserId',
                   'requesterPwd', 'newUserName', 'newUserPwd'}
@@ -74,7 +97,7 @@ def userRegister():
 
 @app.route('/deleteUser', methods=['DELETE'])
 def deleteUser():
-    data = request.args.to_dict()  # a multidict containing POST data
+    data = request.get_json()
 
     neededKeys = {'requesterUserId', 'requesterPwd', 'oldUserId'}
 
@@ -82,7 +105,7 @@ def deleteUser():
         success, message = database.deleteUser(
             requesterUserId=data['requesterUserId'],
             requesterPwd=data['requesterPwd'],
-            oldUserId=data['oldUserId'])
+            oldUserName=data['oldUserName'])
 
         return message, 200 if success else 400
 
@@ -90,9 +113,9 @@ def deleteUser():
         return 'Missing params', 400
 
 
-@app.route('/cameraRegister', methods=['POST'])
-def cameraRegister():
-    data = request.args.to_dict()  # a multidict containing POST data
+@app.route('/registerCamera', methods=['POST'])
+def registerCamera():
+    data = request.get_json()
 
     neededKeys = {'requesterUserId', 'requesterPwd',
                   'cameraIp', 'latitude', 'longitude'}
@@ -112,7 +135,7 @@ def cameraRegister():
 
 @app.route('/deleteCamera', methods=['DELETE'])
 def deleteCamera():
-    data = request.args.to_dict()  # a multidict containing POST data
+    data = request.get_json()
 
     neededKeys = {'requesterUserId', 'requesterPwd', 'cameraIp'}
 
@@ -130,7 +153,7 @@ def deleteCamera():
 
 @app.route('/updateCamera', methods=['POST'])
 def updateCamera():
-    data = request.args.to_dict()  # a multidict containing POST data
+    data = request.get_json()
 
     neededKeys = {'requesterUserId', 'requesterPwd', 'cameraIp', 'snapshot'}
 
@@ -149,7 +172,7 @@ def updateCamera():
 
 @app.route('/usersPositions', methods=['POST'])
 def usersPositions():
-    data = request.args.to_dict()
+    data = request.get_json()
 
     neededKeys = {'requesterUserId', 'requesterPwd'}
 
