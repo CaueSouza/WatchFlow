@@ -31,6 +31,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.watchflow.Constants.CAMERAS;
+import static com.example.watchflow.Constants.IP;
+import static com.example.watchflow.Constants.LATITUDE;
+import static com.example.watchflow.Constants.LOCATIONS;
+import static com.example.watchflow.Constants.LONGITUDE;
+import static com.example.watchflow.Constants.MESSAGE;
+import static com.example.watchflow.Constants.USERNAME;
+
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = MapFragment.class.getSimpleName();
@@ -81,10 +89,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void requestMapsInformation() {
-
         viewModel.getAllCameras().observe(this, this::updateMapsCamerasMarkers);
-
+        viewModel.getAllUsers().observe(this, this::updateMapsUsersMarkers);
         viewModel.allRunningCameras(allRunningCamerasCallback);
+        viewModel.allLoggedUsers(allLoggedUsersCallback);
     }
 
     public void updateMapsCamerasMarkers(List<CameraInformations> cameras) {
@@ -96,9 +104,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Toast.makeText(getContext(), "Updated all camera markers", Toast.LENGTH_SHORT).show();
     }
 
+    public void updateMapsUsersMarkers(List<UserInformations> users) {
+        for (UserInformations user : users) {
+            LatLng location = new LatLng(user.getLatitude(), user.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(location).title(user.getUserName()));
+        }
+
+        Toast.makeText(getContext(), "Updated all users markers", Toast.LENGTH_SHORT).show();
+    }
+
     //All Callbacks
     Callback<JsonObject> allRunningCamerasCallback = new Callback<JsonObject>() {
-
         @Override
         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
@@ -107,18 +123,52 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             }
 
             List<CameraInformations> allCameraInformations = new ArrayList<>();
-            JsonArray jsonArray = (JsonArray) (response.body().get("cameras"));
+            JsonObject responseData = (JsonObject) (response.body().get(MESSAGE));
+            JsonArray camerasArray = (JsonArray) responseData.get(CAMERAS);
 
-            for (JsonElement cameraJson : jsonArray) {
+            for (JsonElement cameraJson : camerasArray) {
                 JsonObject object = cameraJson.getAsJsonObject();
                 allCameraInformations.add(
                         new CameraInformations(
-                                object.get("ip").getAsString(),
-                                object.get("latitude").getAsDouble(),
-                                object.get("longitude").getAsDouble()));
+                                object.get(IP).getAsString(),
+                                object.get(LATITUDE).getAsDouble(),
+                                object.get(LONGITUDE).getAsDouble()));
             }
 
             viewModel.setAllCameras(allCameraInformations);
+
+            Log.d(TAG, "onResponse: " + response);
+        }
+
+        @Override
+        public void onFailure(Call<JsonObject> call, Throwable t) {
+            Log.e(TAG, "onFailure: " + t);
+        }
+    };
+
+    Callback<JsonObject> allLoggedUsersCallback = new Callback<JsonObject>() {
+
+        @Override
+        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            if (!response.isSuccessful()) {
+                Toast.makeText(getContext(), "Nao foi possivel receber as cameras", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            List<UserInformations> allUsersInformations = new ArrayList<>();
+            JsonObject responseData = (JsonObject) (response.body().get(MESSAGE));
+            JsonArray usersArray = (JsonArray) responseData.get(LOCATIONS);
+
+            for (JsonElement userJson : usersArray) {
+                JsonObject object = userJson.getAsJsonObject();
+                allUsersInformations.add(
+                        new UserInformations(
+                                object.get(USERNAME).getAsString(),
+                                object.get(LATITUDE).getAsDouble(),
+                                object.get(LONGITUDE).getAsDouble()));
+            }
+
+            viewModel.setAllUsers(allUsersInformations);
 
             Log.d(TAG, "onResponse: " + response);
         }

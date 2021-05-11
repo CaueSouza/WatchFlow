@@ -1,6 +1,8 @@
 package com.example.watchflow;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,13 +21,18 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.watchflow.Constants.PASSWORD;
+import static com.example.watchflow.Constants.PASSWORD_KEY;
 import static com.example.watchflow.Constants.USER_ID;
+import static com.example.watchflow.Constants.USER_ID_KEY;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     MainActivityViewModel viewModel;
     ActivityMainBinding binding;
+    private SharedPreferences mPreferences;
+    private SharedPreferences.Editor mEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         binding.setViewModel(viewModel);
+
+        mPreferences = getSharedPreferences("com.example.watchflow", Context.MODE_PRIVATE);
+        mEditor = mPreferences.edit();
 
         try {
             if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -62,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
 
-                        UserId.getInstance().setUserId(response.body().get(USER_ID).getAsString());
+                        mEditor.putString(USER_ID_KEY, response.body().get(USER_ID).getAsString());
+                        mEditor.putString(PASSWORD_KEY, response.body().get(PASSWORD).getAsString());
+                        mEditor.apply();
 
                         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                         startActivity(intent);

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Constants {
+    //Keys
+    public static final String USER_ID_KEY = "userid";
+    public static final String PASSWORD_KEY = "password";
+
     //ENDPOINTS
     public static final String BASE_URL = "http://192.168.0.13:5000";
     public static final String ALL_RUNNING_CAMERAS_ENDPOINT = "/allRunningCameras";
@@ -19,6 +23,7 @@ public class Constants {
     //REQUEST FIELDS
     public static final String USERNAME = "userName";
     public static final String PASSWORD = "pwd";
+    public static final String IP = "ip";
     public static final String LATITUDE = "latitude";
     public static final String LONGITUDE = "longitude";
     public static final String REQUESTER_USER_ID = "requesterUserId";
@@ -29,6 +34,9 @@ public class Constants {
     public static final String CAMERA_IP = "cameraIp";
     public static final String OLD_USERNAME = "oldUserName";
     public static final String USER_ID = "userId";
+    public static final String CAMERAS = "cameras";
+    public static final String MESSAGE = "message";
+    public static final String LOCATIONS = "locations";
 
     public static final List<String> LOGIN_USER_FIELDS = new ArrayList<String>() {{
         add(USERNAME);
@@ -38,6 +46,11 @@ public class Constants {
     }};
 
     public static final List<String> ALL_RUNNING_CAMERAS_FIELDS = new ArrayList<String>() {{
+        add(REQUESTER_USER_ID);
+        add(REQUESTER_PWD);
+    }};
+
+    public static final List<String> USERS_POSITIONS_FIELDS = new ArrayList<String>() {{
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);
     }};
