@@ -12,11 +12,11 @@ def allRunningCameras():
     dataJson = request.get_json()
     dataArgs = request.args.to_dict()
 
-    if dataJson is None and dataArgs is None:
+    if dataJson is None and not bool(dataArgs):
         return 'Missing params', 400
 
     else:
-        if dataArgs is None:
+        if not bool(dataArgs):
             data = dataJson
         else:
             data = dataArgs
@@ -38,11 +38,11 @@ def allCamerasIps():
     dataJson = request.get_json()
     dataArgs = request.args.to_dict()
 
-    if dataJson is None and dataArgs is None:
+    if dataJson is None and not bool(dataArgs):
         return 'Missing params', 400
 
     else:
-        if dataArgs is None:
+        if not bool(dataArgs):
             data = dataJson
         else:
             data = dataArgs
@@ -65,11 +65,11 @@ def userLogin():
     dataJson = request.get_json()
     dataArgs = request.args.to_dict()
 
-    if dataJson is None and dataArgs is None:
+    if dataJson is None and not bool(dataArgs):
         return 'Missing params', 400
 
     else:
-        if dataArgs is None:
+        if not bool(dataArgs):
             data = dataJson
         else:
             data = dataArgs
@@ -93,11 +93,11 @@ def userLogout():
     dataJson = request.get_json()
     dataArgs = request.args.to_dict()
 
-    if dataJson is None and dataArgs is None:
+    if dataJson is None and not bool(dataArgs):
         return 'Missing params', 400
 
     else:
-        if dataArgs is None:
+        if not bool(dataArgs):
             data = dataJson
         else:
             data = dataArgs
@@ -119,11 +119,11 @@ def registerUser():
     dataJson = request.get_json()
     dataArgs = request.args.to_dict()
 
-    if dataJson is None and dataArgs is None:
+    if dataJson is None and not bool(dataArgs):
         return 'Missing params', 400
 
     else:
-        if dataArgs is None:
+        if not bool(dataArgs):
             data = dataJson
         else:
             data = dataArgs
@@ -150,11 +150,11 @@ def deleteUser():
     dataJson = request.get_json()
     dataArgs = request.args.to_dict()
 
-    if dataJson is None and dataArgs is None:
+    if dataJson is None and not bool(dataArgs):
         return 'Missing params', 400
 
     else:
-        if dataArgs is None:
+        if not bool(dataArgs):
             data = dataJson
         else:
             data = dataArgs
@@ -178,11 +178,11 @@ def registerCamera():
     dataJson = request.get_json()
     dataArgs = request.args.to_dict()
 
-    if dataJson is None and dataArgs is None:
+    if dataJson is None and not bool(dataArgs):
         return 'Missing params', 400
 
     else:
-        if dataArgs is None:
+        if not bool(dataArgs):
             data = dataJson
         else:
             data = dataArgs
@@ -208,11 +208,11 @@ def deleteCamera():
     dataJson = request.get_json()
     dataArgs = request.args.to_dict()
 
-    if dataJson is None and dataArgs is None:
+    if dataJson is None and not bool(dataArgs):
         return 'Missing params', 400
 
     else:
-        if dataArgs is None:
+        if not bool(dataArgs):
             data = dataJson
         else:
             data = dataArgs
@@ -236,11 +236,11 @@ def updateCamera():
     dataJson = request.get_json()
     dataArgs = request.args.to_dict()
 
-    if dataJson is None and dataArgs is None:
+    if dataJson is None and not bool(dataArgs):
         return 'Missing params', 400
 
     else:
-        if dataArgs is None:
+        if not bool(dataArgs):
             data = dataJson
         else:
             data = dataArgs
@@ -266,11 +266,11 @@ def usersPositions():
     dataJson = request.get_json()
     dataArgs = request.args.to_dict()
 
-    if dataJson is None and dataArgs is None:
+    if dataJson is None and not bool(dataArgs):
         return 'Missing params', 400
 
     else:
-        if dataArgs is None:
+        if not bool(dataArgs):
             data = dataJson
         else:
             data = dataArgs
