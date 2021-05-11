@@ -134,9 +134,9 @@ def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
                              'longitude': row[3]}
                 json_list.append(json_dict)
 
-        return (True, json_output)
+        return (True, {'message': json_output})
     else:
-        return (False, 'Incorrect credentials')
+        return (False, {'message': 'Incorrect credentials'})
 
 
 def validateUserName(userName, pwd):
@@ -202,9 +202,9 @@ def createUser(requesterUserId, requesterPwd, newUserName, newUserPwd,
 
         executeQuery(query, data)
 
-        return (True, 'User registered')
+        return (True, {'message': 'User registered'})
     else:
-        return (False, 'Incorrect credentials')
+        return (False, {'message': 'Incorrect credentials'})
 
 
 def deleteUser(requesterUserId, requesterPwd, oldUserName):
@@ -221,10 +221,10 @@ def deleteUser(requesterUserId, requesterPwd, oldUserName):
 
         executeQuery(query, data)
 
-        return (True, 'User deleted')
+        return (True, {'message': 'User deleted'})
     else:
 
-        return (False, 'Incorrect credentials')
+        return (False, {'message': 'Incorrect credentials'})
 
 
 def userLogin(userName, pwd, latitude, longitude):
@@ -248,9 +248,9 @@ def userLogin(userName, pwd, latitude, longitude):
 
         executeQuery(query, data)
 
-        return (True, {'userId': userId})
+        return (True, {'userId': userId, 'pwd': pwd})
     else:
-        return (False, 'Login failed')
+        return (False, {'message': 'Login failed'})
 
 
 def userLogout(requesterUserId, requesterPwd):
@@ -268,9 +268,9 @@ def userLogout(requesterUserId, requesterPwd):
 
         executeQuery(query, data)
 
-        return (True, 'Logout successfull')
+        return (True, {'message': 'Logout successfull'})
     else:
-        return (False, 'Logout failed')
+        return (False, {'message': 'Logout failed'})
 
 
 def createCamera(requesterUserId, requesterPwd, cameraIp, latitude, longitude):
@@ -288,9 +288,9 @@ def createCamera(requesterUserId, requesterPwd, cameraIp, latitude, longitude):
 
         executeQuery(query, data)
 
-        return (True, 'Camera registered')
+        return (True, {'message': 'Camera registered'})
     else:
-        return (False, 'Invalid user')
+        return (False, {'message': 'Invalid user'})
 
 
 def deleteCamera(requesterUserId, requesterPwd, cameraIp):
@@ -302,9 +302,9 @@ def deleteCamera(requesterUserId, requesterPwd, cameraIp):
 
         executeQuery(query, data)
 
-        return (True, 'Camera deleted')
+        return (True, {'message': 'Camera deleted'})
     else:
-        return (False, 'Incorrect credentials')
+        return (False, {'message': 'Incorrect credentials'})
 
 
 def updateCamera(requesterUserId, requesterPwd, cameraIp, snapshot):
@@ -322,9 +322,9 @@ def updateCamera(requesterUserId, requesterPwd, cameraIp, snapshot):
 
         executeQuery(query, data)
 
-        return (True, 'Camera updated')
+        return (True, {'message': 'Camera updated'})
     else:
-        return (False, 'Incorrect credentials')
+        return (False, {'message': 'Incorrect credentials'})
 
 
 def getAllLoggedUsersPositions(requesterUserId, requesterPwd):
@@ -335,6 +335,7 @@ def getAllLoggedUsersPositions(requesterUserId, requesterPwd):
 
         query = """
                 SELECT
+                    userName,
                     latitude,
                     longitude
                 FROM
@@ -348,10 +349,11 @@ def getAllLoggedUsersPositions(requesterUserId, requesterPwd):
         queryResult = executeFetchallQuery(query, data)
 
         for row in queryResult:
-            json_dict = {'latitude': row[0],
-                         'longitude': row[1]}
+            json_dict = {'userName': row[0],
+                         'latitude': row[1],
+                         'longitude': row[2]}
             json_list.append(json_dict)
 
-        return (True, json_output)
+        return (True, {'message': json_output})
     else:
-        return (False, {'Message': 'Failed'})
+        return (False, {'message': 'Failed'})
