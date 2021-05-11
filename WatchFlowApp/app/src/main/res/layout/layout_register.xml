@@ -54,7 +54,7 @@
 
                 <EditText
                     style="@style/modifiedEditText"
-                    android:hint="@string/login_email_hint"
+                    android:hint="@string/login_username_hint"
                     android:inputType="textEmailAddress"
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>

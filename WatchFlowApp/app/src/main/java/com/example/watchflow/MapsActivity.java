@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.watchflow.databinding.ActivityMapsBinding;
 
-public class MapsActivity extends FragmentActivity{
+public class MapsActivity extends FragmentActivity {
 
     MapsViewModel viewModel;
     ActivityMapsBinding binding;
@@ -17,11 +17,10 @@ public class MapsActivity extends FragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_maps);
-        setContentView(binding.getRoot());
+        binding.setLifecycleOwner(this);
 
         viewModel = new ViewModelProvider(this).get(MapsViewModel.class);
-
-        viewModel.createGpsTracker(this);
+        binding.setViewModel(viewModel);
 
         MapFragment mapFragment = new MapFragment();
 

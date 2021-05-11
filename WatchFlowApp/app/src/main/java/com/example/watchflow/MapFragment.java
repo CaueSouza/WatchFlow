@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -25,18 +24,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-
-import static com.example.watchflow.Constants.BASE_URL;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -77,7 +70,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap = googleMap;
 
         // Add a marker in current location and move the camera
-        LatLng location = new LatLng(viewModel.currentLatitude, viewModel.currentLongitude);
+        LatLng location = new LatLng(viewModel.gpsTracker.getLatitude(), viewModel.gpsTracker.getLongitude());
         mMap.addMarker(new MarkerOptions().position(location).title("Your position"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
 
@@ -91,40 +84,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         viewModel.getAllCameras().observe(this, this::updateMapsCamerasMarkers);
 
-        viewModel.getAllRunningCameras(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (!response.isSuccessful()) {
-                    Toast.makeText(getContext(), "Nao foi possivel receber as cameras", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                List<CameraInformations> allCameraInformations = new ArrayList<>();
-                JsonArray jsonArray = (JsonArray) (response.body().get("cameras"));
-
-                for (JsonElement cameraJson: jsonArray) {
-                    JsonObject object = cameraJson.getAsJsonObject();
-                    allCameraInformations.add(
-                            new CameraInformations(
-                                    object.get("ip").getAsString(),
-                                    object.get("latitude").getAsDouble(),
-                                    object.get("longitude").getAsDouble()));
-                }
-
-                viewModel.setAllCameras(allCameraInformations);
-
-                Log.d(TAG, "onResponse: " + response);
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.e(TAG, "onFailure: " + t);
-            }
-        });
+        viewModel.allRunningCameras(allRunningCamerasCallback);
     }
 
-    public void updateMapsCamerasMarkers(List<CameraInformations> cameras){
-        for (CameraInformations camera : cameras){
+    public void updateMapsCamerasMarkers(List<CameraInformations> cameras) {
+        for (CameraInformations camera : cameras) {
             LatLng location = new LatLng(camera.getLatitude(), camera.getLongitude());
             mMap.addMarker(new MarkerOptions().position(location).title(camera.getIp()));
         }
@@ -132,11 +96,38 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Toast.makeText(getContext(), "Updated all camera markers", Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        stopRepeatingTask();
-    }
+    //All Callbacks
+    Callback<JsonObject> allRunningCamerasCallback = new Callback<JsonObject>() {
+
+        @Override
+        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            if (!response.isSuccessful()) {
+                Toast.makeText(getContext(), "Nao foi possivel receber as cameras", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            List<CameraInformations> allCameraInformations = new ArrayList<>();
+            JsonArray jsonArray = (JsonArray) (response.body().get("cameras"));
+
+            for (JsonElement cameraJson : jsonArray) {
+                JsonObject object = cameraJson.getAsJsonObject();
+                allCameraInformations.add(
+                        new CameraInformations(
+                                object.get("ip").getAsString(),
+                                object.get("latitude").getAsDouble(),
+                                object.get("longitude").getAsDouble()));
+            }
+
+            viewModel.setAllCameras(allCameraInformations);
+
+            Log.d(TAG, "onResponse: " + response);
+        }
+
+        @Override
+        public void onFailure(Call<JsonObject> call, Throwable t) {
+            Log.e(TAG, "onFailure: " + t);
+        }
+    };
 
     Runnable mRequestRepeater = new Runnable() {
         @Override
@@ -157,5 +148,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     void stopRepeatingTask() {
         mHandler.removeCallbacks(mRequestRepeater);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopRepeatingTask();
     }
 }

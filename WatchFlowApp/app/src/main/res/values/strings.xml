@@ -9,7 +9,7 @@
     <string name="previous">Anterior</string>
 
     <string name="register">REGISTRAR</string>
-    <string name="login_email_hint">Email</string>
+    <string name="login_username_hint">Usuário</string>
     <string name="login_password_hint">Senha</string>
     <string name="login_signup_hint">Não possui conta? Contate o administrador</string>
     <string name="login">Entrar</string>

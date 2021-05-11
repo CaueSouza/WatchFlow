@@ -1,7 +1,5 @@
 package com.example.watchflow.retrofit;
 
-import com.example.watchflow.retrofit.WatchFlowServerApiInterface;
-
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -15,10 +13,11 @@ public class WatchFlowService {
 
     private static WatchFlowServerApiInterface instance = null;
 
-    private WatchFlowService(){    }
+    private WatchFlowService() {
+    }
 
-    public static synchronized WatchFlowServerApiInterface getInstance(){
-        if (instance != null){
+    public static synchronized WatchFlowServerApiInterface getInstance() {
+        if (instance != null) {
             return instance;
         }
 
