@@ -61,7 +61,6 @@ public class MapsViewModel extends AndroidViewModel {
         return allCameras;
     }
 
-
     public void setAllUsers(List<UserInformations> allUsers) {
         this.allUsers.setValue(allUsers);
     }

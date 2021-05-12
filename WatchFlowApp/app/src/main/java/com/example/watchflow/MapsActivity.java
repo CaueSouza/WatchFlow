@@ -1,6 +1,8 @@
 package com.example.watchflow;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentActivity;
@@ -20,7 +22,6 @@ public class MapsActivity extends FragmentActivity {
         binding.setLifecycleOwner(this);
 
         viewModel = new ViewModelProvider(this).get(MapsViewModel.class);
-        binding.setViewModel(viewModel);
 
         MapFragment mapFragment = new MapFragment();
 
@@ -28,5 +29,18 @@ public class MapsActivity extends FragmentActivity {
                 .beginTransaction()
                 .replace(R.id.maps_layout, mapFragment)
                 .commit();
+
+        FabsFragment fabsFragment = new FabsFragment();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.maps_layout, fabsFragment)
+                .commit();
+
+        initBindings();
+    }
+
+    public void initBindings(){
+
     }
 }

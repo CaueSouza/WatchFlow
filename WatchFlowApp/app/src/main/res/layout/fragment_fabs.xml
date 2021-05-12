@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fabs_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".MainActivity"
+        tools:ignore="HardcodedText">
+
+        <!--This will be the parent Floating Action Button-->
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/main_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="64dp"
+            android:backgroundTint="@android:color/black"
+            android:textColor="@android:color/white"
+            app:icon="@drawable/ic_gear_option"
+            app:iconTint="@android:color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!--Floating action button for reload-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/reload_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@android:color/black"
+            android:contentDescription="@string/app_name"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/main_fab"
+            app:layout_constraintEnd_toEndOf="@+id/main_fab"
+            app:srcCompat="@drawable/ic_reload"
+            app:tint="@android:color/white" />
+
+        <!--Action name text for the reload button-->
+        <TextView
+            android:id="@+id/reload_action_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Recarregar"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/reload_fab"
+            app:layout_constraintEnd_toStartOf="@+id/reload_fab"
+            app:layout_constraintTop_toTopOf="@+id/reload_fab" />
+
+        <!--Floating action button for add user-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_user_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@android:color/black"
+            android:contentDescription="@string/app_name"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/reload_fab"
+            app:layout_constraintEnd_toEndOf="@+id/reload_fab"
+            app:layout_constraintStart_toStartOf="@+id/reload_fab"
+            app:srcCompat="@drawable/ic_add_user"
+            app:tint="@android:color/white" />
+
+        <!--Action name text for the add user button-->
+        <TextView
+            android:id="@+id/add_user_action_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Criar Usuario"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/add_user_fab"
+            app:layout_constraintEnd_toStartOf="@+id/add_user_fab"
+            app:layout_constraintTop_toTopOf="@+id/add_user_fab" />
+
+        <!--Floating action button for remove user-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/remove_user_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@android:color/black"
+            android:contentDescription="@string/app_name"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/add_user_fab"
+            app:layout_constraintEnd_toEndOf="@+id/add_user_fab"
+            app:layout_constraintStart_toStartOf="@+id/add_user_fab"
+            app:srcCompat="@drawable/ic_remove_user"
+            app:tint="@android:color/white" />
+
+        <!--Action name text for the remove user button-->
+        <TextView
+            android:id="@+id/remove_user_action_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Remover Usuario"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/remove_user_fab"
+            app:layout_constraintEnd_toStartOf="@+id/remove_user_fab"
+            app:layout_constraintTop_toTopOf="@+id/remove_user_fab" />
+
+        <!--Floating action button for add cam user-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_cam_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@android:color/black"
+            android:contentDescription="@string/app_name"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/remove_user_fab"
+            app:layout_constraintEnd_toEndOf="@+id/remove_user_fab"
+            app:layout_constraintStart_toStartOf="@+id/remove_user_fab"
+            app:srcCompat="@drawable/ic_add_camera"
+            app:tint="@android:color/white" />
+
+        <!--Action name text for the remove user button-->
+        <TextView
+            android:id="@+id/add_cam_action_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Registrar Câmera"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/add_cam_fab"
+            app:layout_constraintEnd_toStartOf="@+id/add_cam_fab"
+            app:layout_constraintTop_toTopOf="@+id/add_cam_fab" />
+
+        <!--Floating action button for logout user-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/logout_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@android:color/black"
+            android:contentDescription="@string/app_name"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/add_cam_fab"
+            app:layout_constraintEnd_toEndOf="@+id/add_cam_fab"
+            app:layout_constraintStart_toStartOf="@+id/add_cam_fab"
+            app:srcCompat="@drawable/ic_logout"
+            app:tint="@android:color/white" />
+
+        <!--Action name text for the logout button-->
+        <TextView
+            android:id="@+id/logout_action_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Logout"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/logout_fab"
+            app:layout_constraintEnd_toStartOf="@+id/logout_fab"
+            app:layout_constraintTop_toTopOf="@+id/logout_fab" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
