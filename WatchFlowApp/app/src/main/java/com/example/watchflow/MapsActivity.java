@@ -1,8 +1,6 @@
 package com.example.watchflow;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentActivity;
@@ -40,7 +38,7 @@ public class MapsActivity extends FragmentActivity {
         initBindings();
     }
 
-    public void initBindings(){
+    public void initBindings() {
 
     }
 }
