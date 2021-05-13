@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Constants {
+    public static final Integer AUTO_REFRESH_SECONDS = 20;
     //Keys
     public static final String USER_ID_KEY = "userid";
     public static final String PASSWORD_KEY = "password";
@@ -51,6 +52,11 @@ public class Constants {
     }};
 
     public static final List<String> USERS_POSITIONS_FIELDS = new ArrayList<String>() {{
+        add(REQUESTER_USER_ID);
+        add(REQUESTER_PWD);
+    }};
+
+    public static final List<String> USER_LOGOUT_FIELDS = new ArrayList<String>() {{
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);
     }};

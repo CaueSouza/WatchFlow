@@ -1,5 +1,6 @@
 package com.example.watchflow;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -31,6 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.watchflow.Constants.AUTO_REFRESH_SECONDS;
 import static com.example.watchflow.Constants.CAMERAS;
 import static com.example.watchflow.Constants.IP;
 import static com.example.watchflow.Constants.LATITUDE;
@@ -43,7 +45,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = MapFragment.class.getSimpleName();
     MapsViewModel viewModel;
-    private int mInterval = 10000; // 10 seconds by default, can be changed later - 5 min = 300000
+    private int mInterval = AUTO_REFRESH_SECONDS * 1000; // Seconds * 1000
     private Handler mHandler;
     private GoogleMap mMap;
     private int value = 0;
@@ -77,25 +79,37 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in current location and move the camera
-        LatLng location = new LatLng(viewModel.gpsTracker.getLatitude(), viewModel.gpsTracker.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(location).title("Your position"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-
         mHandler = new Handler(Looper.myLooper());
         startRepeatingTask();
+
+        initBindings();
 
         requestMapsInformation();
     }
 
-    public void requestMapsInformation() {
+    private void initBindings() {
         viewModel.getAllCameras().observe(this, this::updateMapsCamerasMarkers);
         viewModel.getAllUsers().observe(this, this::updateMapsUsersMarkers);
+
+        viewModel.getLogoutEvent().observe(this, v->logoutUser());
+        viewModel.getRefreshEvent().observe(this, v -> requestMapsInformation());
+    }
+
+    private void requestMapsInformation() {
+        mMap.clear();
+
+        setUserPosition();
         viewModel.allRunningCameras(allRunningCamerasCallback);
         viewModel.allLoggedUsers(allLoggedUsersCallback);
     }
 
-    public void updateMapsCamerasMarkers(List<CameraInformations> cameras) {
+    private void setUserPosition(){
+        LatLng location = new LatLng(viewModel.gpsTracker.getLatitude(), viewModel.gpsTracker.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(location).title("Sua posição"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
+    }
+
+    private void updateMapsCamerasMarkers(List<CameraInformations> cameras) {
         for (CameraInformations camera : cameras) {
             LatLng location = new LatLng(camera.getLatitude(), camera.getLongitude());
             mMap.addMarker(new MarkerOptions().position(location).title(camera.getIp()));
@@ -104,13 +118,17 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         Toast.makeText(getContext(), "Updated all camera markers", Toast.LENGTH_SHORT).show();
     }
 
-    public void updateMapsUsersMarkers(List<UserInformations> users) {
+    private void updateMapsUsersMarkers(List<UserInformations> users) {
         for (UserInformations user : users) {
             LatLng location = new LatLng(user.getLatitude(), user.getLongitude());
             mMap.addMarker(new MarkerOptions().position(location).title(user.getUserName()));
         }
 
         Toast.makeText(getContext(), "Updated all users markers", Toast.LENGTH_SHORT).show();
+    }
+
+    private void logoutUser(){
+        viewModel.logoutUser(logoutUserCallback);
     }
 
     //All Callbacks
@@ -179,13 +197,35 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
     };
 
+    Callback<JsonObject> logoutUserCallback = new Callback<JsonObject>() {
+
+        @Override
+        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            if (!response.isSuccessful()) {
+                Toast.makeText(getContext(), "Nao foi possivel efetur o logout", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Toast.makeText(getContext(), "Logout feito com sucesso", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
+            Log.d(TAG, "onResponse: " + response);
+        }
+
+        @Override
+        public void onFailure(Call<JsonObject> call, Throwable t) {
+            Log.e(TAG, "onFailure: " + t);
+        }
+    };
+
     Runnable mRequestRepeater = new Runnable() {
         @Override
         public void run() {
             try {
-                Toast.makeText(getContext(), "Teste " + value, Toast.LENGTH_LONG).show();
-                value++;
-                //updateStatus(); //this function can change value of mInterval.
+                viewModel.getRefreshEvent().call();
             } finally {
                 mHandler.postDelayed(mRequestRepeater, mInterval);
             }

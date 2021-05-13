@@ -22,6 +22,8 @@ import static com.example.watchflow.Constants.PASSWORD_KEY;
 import static com.example.watchflow.Constants.USERS_POSITIONS_ENDPOINT;
 import static com.example.watchflow.Constants.USERS_POSITIONS_FIELDS;
 import static com.example.watchflow.Constants.USER_ID_KEY;
+import static com.example.watchflow.Constants.USER_LOGOUT_ENDPOINT;
+import static com.example.watchflow.Constants.USER_LOGOUT_FIELDS;
 
 public class MapsViewModel extends AndroidViewModel {
 
@@ -32,6 +34,11 @@ public class MapsViewModel extends AndroidViewModel {
     private final MutableLiveData<List<UserInformations>> allUsers = new MutableLiveData<>();
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
+    private final SingleLiveEvent<Void> refreshEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Void> addUserEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Void> removeUserEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Void> addCamEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Void> logoutEvent = new SingleLiveEvent<>();
 
     public MapsViewModel(@NonNull Application application) {
         super(application);
@@ -53,6 +60,12 @@ public class MapsViewModel extends AndroidViewModel {
         serverRepository.createPost(objectCallback, USERS_POSITIONS_ENDPOINT, USERS_POSITIONS_FIELDS, userId, pwd);
     }
 
+    public void logoutUser(Callback<JsonObject> objectCallback){
+        String userId = mPreferences.getString(USER_ID_KEY, "");
+        String pwd = mPreferences.getString(PASSWORD_KEY, "");
+        serverRepository.createPost(objectCallback, USER_LOGOUT_ENDPOINT, USER_LOGOUT_FIELDS, userId, pwd);
+    }
+
     public void setAllCameras(List<CameraInformations> allCameras) {
         this.allCameras.setValue(allCameras);
     }
@@ -67,5 +80,25 @@ public class MapsViewModel extends AndroidViewModel {
 
     public LiveData<List<UserInformations>> getAllUsers() {
         return allUsers;
+    }
+
+    SingleLiveEvent<Void> getRefreshEvent() {
+        return refreshEvent;
+    }
+
+    SingleLiveEvent<Void> getAddUserEvent() {
+        return addUserEvent;
+    }
+
+    SingleLiveEvent<Void> getRemoveUserEvent() {
+        return removeUserEvent;
+    }
+
+    SingleLiveEvent<Void> getAddCamEvent() {
+        return addCamEvent;
+    }
+
+    SingleLiveEvent<Void> getLogoutEvent() {
+        return logoutEvent;
     }
 }
