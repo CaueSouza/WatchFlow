@@ -1,5 +1,7 @@
 package com.example.watchflow.retrofit;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -28,7 +30,7 @@ public class ServerRepository {
     public static final String TAG = ServerRepository.class.getSimpleName();
 
     private static ServerRepository instance = null;
-    private WatchFlowServerApiInterface watchFlowServerApiInterface;
+    private final WatchFlowServerApiInterface watchFlowServerApiInterface;
 
     private ServerRepository() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -48,39 +50,64 @@ public class ServerRepository {
         return instance;
     }
 
-    public void createPost(Callback<JsonObject> objectCallback, String postRequest, List<String> fields, Object... data) {
-        if (fields.size() != data.length) {
+    private boolean checkFieldAndData(@Nullable List<String> fields, @Nullable List<Object> data) {
+        return fields == null && data == null || fields != null && data != null && fields.size() == data.size();
+    }
+
+    public void createPost(Callback<JsonObject> objectCallback, String postRequest, List<String> fields, List<Object> data, boolean sendAsParams) {
+        if (sendAsParams) {
+            createPost(objectCallback, postRequest, fields, data, null, null);
+        } else {
+            createPost(objectCallback, postRequest, null, null, fields, data);
+        }
+    }
+
+    public void createPost(Callback<JsonObject> objectCallback, String postRequest,
+                           @Nullable List<String> param_fields, @Nullable List<Object> param_data,
+                           @Nullable List<String> body_fields, @Nullable List<Object> body_data) {
+
+        if (!(checkFieldAndData(param_fields, param_data) && checkFieldAndData(body_fields, body_data))) {
             return;
         }
 
         Call<JsonObject> call = null;
-        String jsonData = formatJson(fields, data);
-        JsonObject requestJson = JsonParser.parseString(jsonData).getAsJsonObject();
+        JsonObject paramsJson = new JsonObject();
+        JsonObject bodyJson = new JsonObject();
+
+        if (param_fields != null) {
+            String paramsData = formatJson(param_fields, param_data);
+            paramsJson = JsonParser.parseString(paramsData).getAsJsonObject();
+        }
+
+        if (body_fields != null) {
+            String bodyData = formatJson(body_fields, body_data);
+            bodyJson = JsonParser.parseString(bodyData).getAsJsonObject();
+        }
 
         switch (postRequest) {
             case ALL_RUNNING_CAMERAS_ENDPOINT:
-                call = watchFlowServerApiInterface.getAllCamerasIps(requestJson);
+                call = watchFlowServerApiInterface.getAllCamerasIps(paramsJson, bodyJson);
                 break;
             case USER_LOGIN_ENDPOINT:
-                call = watchFlowServerApiInterface.userLogin(requestJson);
+                call = watchFlowServerApiInterface.userLogin(paramsJson, bodyJson);
                 break;
             case USER_LOGOUT_ENDPOINT:
-                call = watchFlowServerApiInterface.userLogout(requestJson);
+                call = watchFlowServerApiInterface.userLogout(paramsJson, bodyJson);
                 break;
             case REGISTER_USER_ENDPOINT:
-                call = watchFlowServerApiInterface.registerUser(requestJson);
+                call = watchFlowServerApiInterface.registerUser(paramsJson, bodyJson);
                 break;
             case DELETE_USER_ENDPOINT:
-                call = watchFlowServerApiInterface.deleteUser(requestJson);
+                call = watchFlowServerApiInterface.deleteUser(paramsJson, bodyJson);
                 break;
             case REGISTER_CAMERA_ENDPOINT:
-                call = watchFlowServerApiInterface.registerCamera(requestJson);
+                call = watchFlowServerApiInterface.registerCamera(paramsJson, bodyJson);
                 break;
             case DELETE_CAMERA_ENDPOINT:
-                call = watchFlowServerApiInterface.deleteCamera(requestJson);
+                call = watchFlowServerApiInterface.deleteCamera(paramsJson, bodyJson);
                 break;
             case USERS_POSITIONS_ENDPOINT:
-                call = watchFlowServerApiInterface.usersPositions(requestJson);
+                call = watchFlowServerApiInterface.usersPositions(paramsJson, bodyJson);
                 break;
         }
 
@@ -89,14 +116,16 @@ public class ServerRepository {
         }
     }
 
-    private String formatJson(List<String> fields, Object... data) {
+    private String formatJson(List<String> fields, List<Object> data) {
         final JSONObject root = new JSONObject();
         ListIterator<String> fieldsIterator = fields.listIterator();
+        ListIterator<Object> dataIterator = data.listIterator();
 
         try {
-            for (Object fieldData : data) {
-                root.put(fieldsIterator.next(), fieldData);
+            while (fieldsIterator.hasNext()) {
+                root.put(fieldsIterator.next(), dataIterator.next());
             }
+
             return root.toString();
         } catch (JSONException e) {
             e.printStackTrace();
