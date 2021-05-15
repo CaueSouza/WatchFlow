@@ -5,49 +5,49 @@
     <item
         android:id="@+id/refresh_item"
         android:icon="@drawable/ic_reload"
-        android:title="Criar Usuário"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/refresh_txt"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/users_item"
-        android:title="Usuários"
+        android:title="@string/users_txt"
         app:showAsAction="never">
 
         <menu>
 
             <item
                 android:id="@+id/add_user_item"
-                android:title="Criar Usuário"
+                android:title="@string/register_user_txt"
                 app:showAsAction="never" />
 
             <item
                 android:id="@+id/remove_user_item"
-                android:title="Remover Usuário"
+                android:title="@string/remove_users_txt"
                 app:showAsAction="never" />
         </menu>
     </item>
 
     <item
         android:id="@+id/cams_item"
-        android:title="Cameras"
+        android:title="@string/cameras_txt"
         app:showAsAction="never">
 
         <menu>
 
             <item
                 android:id="@+id/add_cam_item"
-                android:title="Registrar Câmera"
-                app:showAsAction="never"/>
+                android:title="@string/register_cameras_txt"
+                app:showAsAction="never" />
 
             <item
                 android:id="@+id/remove_cam_item"
-                android:title="Remover Câmera"
-                app:showAsAction="never"/>
+                android:title="@string/remove_cameras_txt"
+                app:showAsAction="never" />
         </menu>
     </item>
 
     <item
         android:id="@+id/logout_item"
-        android:title="Logout"
-        app:showAsAction="never"/>
+        android:title="@string/logout_txt"
+        app:showAsAction="never" />
 </menu>

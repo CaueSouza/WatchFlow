@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,21 +49,39 @@ public class MapsActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        UserIdPwd userIdPwd = UserIdPwd.getInstance();
+
         switch (item.getItemId()) {
             case R.id.refresh_item:
                 viewModel.getRefreshEvent().call();
                 return true;
             case R.id.add_user_item:
-                viewModel.getAddUserEvent().call();
+                if (userIdPwd.getAdm()) {
+                    viewModel.getAddUserEvent().call();
+                } else {
+                    Toast.makeText(this, R.string.only_adm_message_txt, Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.remove_user_item:
-                viewModel.getRemoveUserEvent().call();
+                if (userIdPwd.getAdm()) {
+                    viewModel.getRemoveUserEvent().call();
+                } else {
+                    Toast.makeText(this, R.string.only_adm_message_txt, Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.add_cam_item:
-                viewModel.getAddCamEvent().call();
+                if (userIdPwd.getAdm()) {
+                    viewModel.getAddCamEvent().call();
+                } else {
+                    Toast.makeText(this, R.string.only_adm_message_txt, Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.remove_cam_item:
-                viewModel.getRemoveCamEvent().call();
+                if (userIdPwd.getAdm()) {
+                    viewModel.getRemoveCamEvent().call();
+                } else {
+                    Toast.makeText(this, R.string.only_adm_message_txt, Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.logout_item:
                 viewModel.getLogoutEvent().call();

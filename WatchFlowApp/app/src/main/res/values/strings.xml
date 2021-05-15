@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">WatchFlow</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_main">WatchFlow</string>
@@ -25,5 +25,13 @@
     <string name="all_logged_users_fail_message">Não foi possível receber os usuários</string>
     <string name="logout_fail_message">Não foi possível efetuar o logout</string>
     <string name="logout_success_message">Logout feito com sucesso</string>
-
+    <string name="refresh_txt">Recarregar</string>
+    <string name="users_txt">Usuários</string>
+    <string name="register_user_txt">Registrar usuário</string>
+    <string name="remove_users_txt">Remover usuário</string>
+    <string name="cameras_txt">Câmeras</string>
+    <string name="register_cameras_txt">Registrar câmera</string>
+    <string name="remove_cameras_txt">Remover câmera</string>
+    <string name="logout_txt">Logout</string>
+    <string name="only_adm_message_txt">Somente Administrador</string>
 </resources>

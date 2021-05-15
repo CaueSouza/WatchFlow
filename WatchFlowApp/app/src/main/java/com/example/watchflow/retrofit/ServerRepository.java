@@ -54,8 +54,8 @@ public class ServerRepository {
         return fields == null && data == null || fields != null && data != null && fields.size() == data.size();
     }
 
-    public void createPost(Callback<JsonObject> objectCallback, String postRequest, List<String> fields, List<Object> data, boolean sendAsParams) {
-        if (sendAsParams) {
+    public void createPost(Callback<JsonObject> objectCallback, String postRequest, List<String> fields, List<Object> data, boolean sendAsHeader) {
+        if (sendAsHeader) {
             createPost(objectCallback, postRequest, fields, data, null, null);
         } else {
             createPost(objectCallback, postRequest, null, null, fields, data);
@@ -63,20 +63,20 @@ public class ServerRepository {
     }
 
     public void createPost(Callback<JsonObject> objectCallback, String postRequest,
-                           @Nullable List<String> param_fields, @Nullable List<Object> param_data,
+                           @Nullable List<String> header_fields, @Nullable List<Object> header_data,
                            @Nullable List<String> body_fields, @Nullable List<Object> body_data) {
 
-        if (!(checkFieldAndData(param_fields, param_data) && checkFieldAndData(body_fields, body_data))) {
+        if (!(checkFieldAndData(header_fields, header_data) && checkFieldAndData(body_fields, body_data))) {
             return;
         }
 
         Call<JsonObject> call = null;
-        JsonObject paramsJson = new JsonObject();
+        JsonObject headersJson = new JsonObject();
         JsonObject bodyJson = new JsonObject();
 
-        if (param_fields != null) {
-            String paramsData = formatJson(param_fields, param_data);
-            paramsJson = JsonParser.parseString(paramsData).getAsJsonObject();
+        if (header_fields != null) {
+            String headersData = formatJson(header_fields, header_data);
+            headersJson = JsonParser.parseString(headersData).getAsJsonObject();
         }
 
         if (body_fields != null) {
@@ -86,28 +86,28 @@ public class ServerRepository {
 
         switch (postRequest) {
             case ALL_RUNNING_CAMERAS_ENDPOINT:
-                call = watchFlowServerApiInterface.getAllCamerasIps(paramsJson, bodyJson);
+                call = watchFlowServerApiInterface.getAllCamerasIps(headersJson, bodyJson);
                 break;
             case USER_LOGIN_ENDPOINT:
-                call = watchFlowServerApiInterface.userLogin(paramsJson, bodyJson);
+                call = watchFlowServerApiInterface.userLogin(headersJson, bodyJson);
                 break;
             case USER_LOGOUT_ENDPOINT:
-                call = watchFlowServerApiInterface.userLogout(paramsJson, bodyJson);
+                call = watchFlowServerApiInterface.userLogout(headersJson, bodyJson);
                 break;
             case REGISTER_USER_ENDPOINT:
-                call = watchFlowServerApiInterface.registerUser(paramsJson, bodyJson);
+                call = watchFlowServerApiInterface.registerUser(headersJson, bodyJson);
                 break;
             case DELETE_USER_ENDPOINT:
-                call = watchFlowServerApiInterface.deleteUser(paramsJson, bodyJson);
+                call = watchFlowServerApiInterface.deleteUser(headersJson, bodyJson);
                 break;
             case REGISTER_CAMERA_ENDPOINT:
-                call = watchFlowServerApiInterface.registerCamera(paramsJson, bodyJson);
+                call = watchFlowServerApiInterface.registerCamera(headersJson, bodyJson);
                 break;
             case DELETE_CAMERA_ENDPOINT:
-                call = watchFlowServerApiInterface.deleteCamera(paramsJson, bodyJson);
+                call = watchFlowServerApiInterface.deleteCamera(headersJson, bodyJson);
                 break;
             case USERS_POSITIONS_ENDPOINT:
-                call = watchFlowServerApiInterface.usersPositions(paramsJson, bodyJson);
+                call = watchFlowServerApiInterface.usersPositions(headersJson, bodyJson);
                 break;
         }
 

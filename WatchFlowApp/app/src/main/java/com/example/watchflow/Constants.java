@@ -7,6 +7,9 @@ public class Constants {
     public static final Integer AUTO_REFRESH_SECONDS = 20;
     public static final String APP_PACKAGE = "com.example.watchflow";
     public static final String EMPTY_STRING = "";
+    public static final String USER_TYPE = "userType";
+    public static final Integer ADM_TYPE = 1;
+    public static final String AUTHORIZATION = "authentication";
     //ENDPOINTS
     public static final String BASE_URL = "http://192.168.0.13:5000";
     public static final String ALL_RUNNING_CAMERAS_ENDPOINT = "/allRunningCameras";

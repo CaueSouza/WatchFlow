@@ -5,10 +5,12 @@ public class UserIdPwd {
 
     private String userId;
     private String password;
+    private Boolean isAdm;
 
     private UserIdPwd() {
         userId = "";
         password = "";
+        isAdm = false;
     }
 
     public static synchronized UserIdPwd getInstance() {
@@ -32,5 +34,13 @@ public class UserIdPwd {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public Boolean getAdm() {
+        return isAdm;
+    }
+
+    public void setAdm(Boolean adm) {
+        isAdm = adm;
     }
 }
