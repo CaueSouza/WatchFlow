@@ -24,9 +24,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.watchflow.BuildConfig.APPLICATION_ID;
 import static com.example.watchflow.Constants.ALL_RUNNING_CAMERAS_ENDPOINT;
 import static com.example.watchflow.Constants.ALL_RUNNING_CAMERAS_FIELDS;
+import static com.example.watchflow.Constants.APP_PACKAGE;
 import static com.example.watchflow.Constants.CAMERAS;
 import static com.example.watchflow.Constants.IP;
 import static com.example.watchflow.Constants.LATITUDE;
@@ -62,7 +62,7 @@ public class MapsViewModel extends AndroidViewModel {
         super(application);
         this.application = application;
 
-        mPreferences = application.getSharedPreferences(APPLICATION_ID, Context.MODE_PRIVATE);
+        mPreferences = application.getSharedPreferences(APP_PACKAGE, Context.MODE_PRIVATE);
         mEditor = mPreferences.edit();
         gpsTracker = new GpsTracker(application.getApplicationContext());
     }
@@ -79,7 +79,7 @@ public class MapsViewModel extends AndroidViewModel {
         serverRepository.createPost(allLoggedUsersCallback, USERS_POSITIONS_ENDPOINT, USERS_POSITIONS_FIELDS, userId, pwd);
     }
 
-    public void logoutUser(){
+    public void logoutUser() {
         String userId = mPreferences.getString(USER_ID_KEY, "");
         String pwd = mPreferences.getString(PASSWORD_KEY, "");
         serverRepository.createPost(logoutUserCallback, USER_LOGOUT_ENDPOINT, USER_LOGOUT_FIELDS, userId, pwd);

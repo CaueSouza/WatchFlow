@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
@@ -68,13 +67,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         initBindings();
 
         requestMapsInformation();
+        moveToUserPosition();
     }
 
     private void initBindings() {
         viewModel.getAllCameras().observe(this, this::updateMapsCamerasMarkers);
         viewModel.getAllUsers().observe(this, this::updateMapsUsersMarkers);
 
-        viewModel.getLogoutEvent().observe(this, v-> viewModel.logoutUser());
+        viewModel.getLogoutEvent().observe(this, v -> viewModel.logoutUser());
         viewModel.getRefreshEvent().observe(this, v -> requestMapsInformation());
     }
 
@@ -86,9 +86,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         viewModel.updateAllLoggedUsers();
     }
 
-    private void setUserPosition(){
+    private void setUserPosition() {
         LatLng location = new LatLng(viewModel.gpsTracker.getLatitude(), viewModel.gpsTracker.getLongitude());
         mMap.addMarker(new MarkerOptions().position(location).title(getString(R.string.your_position)));
+    }
+
+    private void moveToUserPosition() {
+        LatLng location = new LatLng(viewModel.gpsTracker.getLatitude(), viewModel.gpsTracker.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
     }
 
