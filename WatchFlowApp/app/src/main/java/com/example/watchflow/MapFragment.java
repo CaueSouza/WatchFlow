@@ -1,10 +1,8 @@
 package com.example.watchflow;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,25 +19,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import static com.example.watchflow.Constants.AUTO_REFRESH_SECONDS;
-import static com.example.watchflow.Constants.CAMERAS;
-import static com.example.watchflow.Constants.IP;
-import static com.example.watchflow.Constants.LATITUDE;
-import static com.example.watchflow.Constants.LOCATIONS;
-import static com.example.watchflow.Constants.LONGITUDE;
-import static com.example.watchflow.Constants.MESSAGE;
-import static com.example.watchflow.Constants.USERNAME;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -91,7 +74,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         viewModel.getAllCameras().observe(this, this::updateMapsCamerasMarkers);
         viewModel.getAllUsers().observe(this, this::updateMapsUsersMarkers);
 
-        viewModel.getLogoutEvent().observe(this, v->logoutUser());
+        viewModel.getLogoutEvent().observe(this, v-> viewModel.logoutUser());
         viewModel.getRefreshEvent().observe(this, v -> requestMapsInformation());
     }
 
@@ -99,13 +82,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap.clear();
 
         setUserPosition();
-        viewModel.allRunningCameras(allRunningCamerasCallback);
-        viewModel.allLoggedUsers(allLoggedUsersCallback);
+        viewModel.updateAllRunningCameras();
+        viewModel.updateAllLoggedUsers();
     }
 
     private void setUserPosition(){
         LatLng location = new LatLng(viewModel.gpsTracker.getLatitude(), viewModel.gpsTracker.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(location).title("Sua posição"));
+        mMap.addMarker(new MarkerOptions().position(location).title(getString(R.string.your_position)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
     }
 
@@ -114,8 +97,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             LatLng location = new LatLng(camera.getLatitude(), camera.getLongitude());
             mMap.addMarker(new MarkerOptions().position(location).title(camera.getIp()));
         }
-
-        Toast.makeText(getContext(), "Updated all camera markers", Toast.LENGTH_SHORT).show();
     }
 
     private void updateMapsUsersMarkers(List<UserInformations> users) {
@@ -123,103 +104,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             LatLng location = new LatLng(user.getLatitude(), user.getLongitude());
             mMap.addMarker(new MarkerOptions().position(location).title(user.getUserName()));
         }
-
-        Toast.makeText(getContext(), "Updated all users markers", Toast.LENGTH_SHORT).show();
     }
-
-    private void logoutUser(){
-        viewModel.logoutUser(logoutUserCallback);
-    }
-
-    //All Callbacks
-    Callback<JsonObject> allRunningCamerasCallback = new Callback<JsonObject>() {
-        @Override
-        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-            if (!response.isSuccessful()) {
-                Toast.makeText(getContext(), "Nao foi possivel receber as cameras", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            List<CameraInformations> allCameraInformations = new ArrayList<>();
-            JsonObject responseData = (JsonObject) (response.body().get(MESSAGE));
-            JsonArray camerasArray = (JsonArray) responseData.get(CAMERAS);
-
-            for (JsonElement cameraJson : camerasArray) {
-                JsonObject object = cameraJson.getAsJsonObject();
-                allCameraInformations.add(
-                        new CameraInformations(
-                                object.get(IP).getAsString(),
-                                object.get(LATITUDE).getAsDouble(),
-                                object.get(LONGITUDE).getAsDouble()));
-            }
-
-            viewModel.setAllCameras(allCameraInformations);
-
-            Log.d(TAG, "onResponse: " + response);
-        }
-
-        @Override
-        public void onFailure(Call<JsonObject> call, Throwable t) {
-            Log.e(TAG, "onFailure: " + t);
-        }
-    };
-
-    Callback<JsonObject> allLoggedUsersCallback = new Callback<JsonObject>() {
-
-        @Override
-        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-            if (!response.isSuccessful()) {
-                Toast.makeText(getContext(), "Nao foi possivel receber as cameras", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            List<UserInformations> allUsersInformations = new ArrayList<>();
-            JsonObject responseData = (JsonObject) (response.body().get(MESSAGE));
-            JsonArray usersArray = (JsonArray) responseData.get(LOCATIONS);
-
-            for (JsonElement userJson : usersArray) {
-                JsonObject object = userJson.getAsJsonObject();
-                allUsersInformations.add(
-                        new UserInformations(
-                                object.get(USERNAME).getAsString(),
-                                object.get(LATITUDE).getAsDouble(),
-                                object.get(LONGITUDE).getAsDouble()));
-            }
-
-            viewModel.setAllUsers(allUsersInformations);
-
-            Log.d(TAG, "onResponse: " + response);
-        }
-
-        @Override
-        public void onFailure(Call<JsonObject> call, Throwable t) {
-            Log.e(TAG, "onFailure: " + t);
-        }
-    };
-
-    Callback<JsonObject> logoutUserCallback = new Callback<JsonObject>() {
-
-        @Override
-        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-            if (!response.isSuccessful()) {
-                Toast.makeText(getContext(), "Nao foi possivel efetur o logout", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            Toast.makeText(getContext(), "Logout feito com sucesso", Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-
-            Log.d(TAG, "onResponse: " + response);
-        }
-
-        @Override
-        public void onFailure(Call<JsonObject> call, Throwable t) {
-            Log.e(TAG, "onFailure: " + t);
-        }
-    };
 
     Runnable mRequestRepeater = new Runnable() {
         @Override
