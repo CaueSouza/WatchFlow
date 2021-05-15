@@ -1,5 +1,8 @@
 package com.example.watchflow;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +19,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -99,15 +103,30 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private void updateMapsCamerasMarkers(List<CameraInformations> cameras) {
         for (CameraInformations camera : cameras) {
             LatLng location = new LatLng(camera.getLatitude(), camera.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(location).title(camera.getIp()));
+            mMap.addMarker(new MarkerOptions().position(location)
+                    .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.ic_camera_pin)))
+                    .title(camera.getIp()));
         }
     }
 
     private void updateMapsUsersMarkers(List<UserInformations> users) {
         for (UserInformations user : users) {
             LatLng location = new LatLng(user.getLatitude(), user.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(location).title(user.getUserName()));
+            mMap.addMarker(new MarkerOptions().position(location)
+                    .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.ic_car_pin)))
+                    .title(user.getUserName()));
         }
+    }
+
+    private Bitmap getBitmap(int drawableRes) {
+        Drawable drawable = getResources().getDrawable(drawableRes);
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+
+        return bitmap;
     }
 
     Runnable mRequestRepeater = new Runnable() {
