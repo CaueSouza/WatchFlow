@@ -248,7 +248,10 @@ def userLogin(userName, pwd, latitude, longitude):
 
         executeQuery(query, data)
 
-        return (True, {'userId': userId, 'pwd': pwd})
+        isAdm = validateUser(userId, pwd, True)
+
+        return (True, {'userId': userId, 'pwd': pwd,
+                       'userType': 1 if isAdm else 0})
     else:
         return (False, {'message': 'Login failed'})
 
