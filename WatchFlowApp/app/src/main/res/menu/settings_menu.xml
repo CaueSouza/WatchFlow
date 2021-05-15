@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/refresh_item"
+        android:icon="@drawable/ic_reload"
+        android:title="Criar Usuário"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/users_item"
+        android:title="Usuários"
+        app:showAsAction="never">
+
+        <menu>
+
+            <item
+                android:id="@+id/add_user_item"
+                android:title="Criar Usuário"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/remove_user_item"
+                android:title="Remover Usuário"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/cams_item"
+        android:title="Cameras"
+        app:showAsAction="never">
+
+        <menu>
+
+            <item
+                android:id="@+id/add_cam_item"
+                android:title="Registrar Câmera"
+                app:showAsAction="never"/>
+
+            <item
+                android:id="@+id/remove_cam_item"
+                android:title="Remover Câmera"
+                app:showAsAction="never"/>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/logout_item"
+        android:title="Logout"
+        app:showAsAction="never"/>
+</menu>
