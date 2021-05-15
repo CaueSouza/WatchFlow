@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Constants {
     public static final Integer AUTO_REFRESH_SECONDS = 20;
+    public static final String APP_PACKAGE = "com.example.watchflow";
     //Keys
     public static final String USER_ID_KEY = "userid";
     public static final String PASSWORD_KEY = "password";

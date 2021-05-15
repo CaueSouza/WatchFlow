@@ -88,7 +88,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private void setUserPosition(){
         LatLng location = new LatLng(viewModel.gpsTracker.getLatitude(), viewModel.gpsTracker.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(location).title("Sua posição"));
+        mMap.addMarker(new MarkerOptions().position(location).title(getString(R.string.your_position)));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
     }
 

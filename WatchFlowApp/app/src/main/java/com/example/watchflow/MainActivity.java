@@ -21,6 +21,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.watchflow.BuildConfig.APPLICATION_ID;
 import static com.example.watchflow.Constants.PASSWORD;
 import static com.example.watchflow.Constants.PASSWORD_KEY;
 import static com.example.watchflow.Constants.USER_ID;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
         binding.setViewModel(viewModel);
 
-        mPreferences = getSharedPreferences("com.example.watchflow", Context.MODE_PRIVATE);
+        mPreferences = getSharedPreferences(APPLICATION_ID, Context.MODE_PRIVATE);
         mEditor = mPreferences.edit();
 
         try {
@@ -62,13 +63,13 @@ public class MainActivity extends AppCompatActivity {
 
             if (viewModel.getUserName().getValue() == null || viewModel.getUserName().getValue().isEmpty() ||
                     viewModel.getPassword().getValue() == null || viewModel.getPassword().getValue().isEmpty()) {
-                Toast.makeText(this, "Preencha corretamente", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.missing_fields_login, Toast.LENGTH_SHORT).show();
             } else {
                 viewModel.loginUser(new Callback<JsonObject>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                         if (!response.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(), "Nao foi possivel efetuar o login", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), R.string.fail_message_login, Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -85,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<JsonObject> call, Throwable t) {
                         Log.e(TAG, "onFailure: " + t);
-                        Toast.makeText(getApplicationContext(), "Usuario Invalido", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), R.string.invalid_user_message, Toast.LENGTH_SHORT).show();
                     }
                 });
             }

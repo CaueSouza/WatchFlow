@@ -8,11 +8,22 @@
     <string name="next">Próximo</string>
     <string name="previous">Anterior</string>
 
-    <string name="register">REGISTRAR</string>
+    <string name="register">Registrar</string>
     <string name="login_username_hint">Usuário</string>
     <string name="login_password_hint">Senha</string>
     <string name="login_signup_hint">Não possui conta? Contate o administrador</string>
     <string name="login">Entrar</string>
     <string name="login_title">Login</string>
     <string name="registrar">Registrar</string>
+    <string name="your_position">Sua posição</string>
+
+<!--    APP MESSAGES-->
+    <string name="missing_fields_login">Preencha corretamente</string>
+    <string name="fail_message_login">Não foi possível efetuar o login</string>
+    <string name="invalid_user_message">Usuário Inválido</string>
+    <string name="all_running_cams_fail_message">Não foi possível receber as câmeras</string>
+    <string name="all_logged_users_fail_message">Não foi possível receber os usuários</string>
+    <string name="logout_fail_message">Não foi possível efetuar o logout</string>
+    <string name="logout_success_message">Logout feito com sucesso</string>
+
 </resources>

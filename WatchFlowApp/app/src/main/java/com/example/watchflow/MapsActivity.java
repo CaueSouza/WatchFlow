@@ -78,4 +78,10 @@ public class MapsActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
+    @Override
+    public void onBackPressed() {
+        viewModel.logoutUser();
+        super.onBackPressed();
+    }
 }

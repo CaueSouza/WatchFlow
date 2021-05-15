@@ -24,6 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.watchflow.BuildConfig.APPLICATION_ID;
 import static com.example.watchflow.Constants.ALL_RUNNING_CAMERAS_ENDPOINT;
 import static com.example.watchflow.Constants.ALL_RUNNING_CAMERAS_FIELDS;
 import static com.example.watchflow.Constants.CAMERAS;
@@ -61,7 +62,7 @@ public class MapsViewModel extends AndroidViewModel {
         super(application);
         this.application = application;
 
-        mPreferences = application.getSharedPreferences("com.example.watchflow", Context.MODE_PRIVATE);
+        mPreferences = application.getSharedPreferences(APPLICATION_ID, Context.MODE_PRIVATE);
         mEditor = mPreferences.edit();
         gpsTracker = new GpsTracker(application.getApplicationContext());
     }
@@ -128,7 +129,7 @@ public class MapsViewModel extends AndroidViewModel {
         @Override
         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
-                Toast.makeText(application.getApplicationContext(), "Nao foi possivel receber as cameras", Toast.LENGTH_SHORT).show();
+                Toast.makeText(application.getApplicationContext(), R.string.all_running_cams_fail_message, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -161,7 +162,7 @@ public class MapsViewModel extends AndroidViewModel {
         @Override
         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
-                Toast.makeText(application.getApplicationContext(), "Nao foi possivel receber as cameras", Toast.LENGTH_SHORT).show();
+                Toast.makeText(application.getApplicationContext(), R.string.all_logged_users_fail_message, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -194,11 +195,11 @@ public class MapsViewModel extends AndroidViewModel {
         @Override
         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
-                Toast.makeText(application.getApplicationContext(), "Nao foi possivel efetur o logout", Toast.LENGTH_SHORT).show();
+                Toast.makeText(application.getApplicationContext(), R.string.logout_fail_message, Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            Toast.makeText(application.getApplicationContext(), "Logout feito com sucesso", Toast.LENGTH_SHORT).show();
+            Toast.makeText(application.getApplicationContext(), R.string.logout_success_message, Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(application.getApplicationContext(), MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
