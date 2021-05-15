@@ -1,9 +1,7 @@
 package com.example.watchflow;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -14,16 +12,17 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.watchflow.retrofit.ServerRepository;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.watchflow.Constants.APP_PACKAGE;
-import static com.example.watchflow.Constants.LOGIN_USER_FIELDS;
+import static com.example.watchflow.Constants.LOGIN_USER_BODY_FIELDS;
+import static com.example.watchflow.Constants.LOGIN_USER_PARAMS_FIELDS;
 import static com.example.watchflow.Constants.PASSWORD;
-import static com.example.watchflow.Constants.PASSWORD_KEY;
 import static com.example.watchflow.Constants.USER_ID;
-import static com.example.watchflow.Constants.USER_ID_KEY;
 import static com.example.watchflow.Constants.USER_LOGIN_ENDPOINT;
 
 public class MainActivityViewModel extends AndroidViewModel {
@@ -33,23 +32,25 @@ public class MainActivityViewModel extends AndroidViewModel {
     private final MutableLiveData<String> userName = new MutableLiveData<>();
     private final MutableLiveData<String> password = new MutableLiveData<>();
     private final Application application;
-    private SharedPreferences mPreferences;
-    private SharedPreferences.Editor mEditor;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
-
-        mPreferences = application.getSharedPreferences(APP_PACKAGE, Context.MODE_PRIVATE);
-        mEditor = mPreferences.edit();
-
         gpsTracker = new GpsTracker(application.getApplicationContext());
     }
 
     public void loginUser() {
-        serverRepository.createPost(loginUserCallback,
-                USER_LOGIN_ENDPOINT, LOGIN_USER_FIELDS,
-                userName.getValue(), password.getValue(), gpsTracker.getLatitude(), gpsTracker.getLongitude());
+        List<Object> params_data = new ArrayList<>();
+        params_data.add(userName.getValue());
+        params_data.add(password.getValue());
+
+        List<Object> body_data = new ArrayList<>();
+        body_data.add(gpsTracker.getLatitude());
+        body_data.add(gpsTracker.getLongitude());
+
+        serverRepository.createPost(loginUserCallback, USER_LOGIN_ENDPOINT,
+                LOGIN_USER_PARAMS_FIELDS, params_data,
+                LOGIN_USER_BODY_FIELDS, body_data);
     }
 
     public MutableLiveData<String> getUserName() {
@@ -69,9 +70,8 @@ public class MainActivityViewModel extends AndroidViewModel {
                 return;
             }
 
-            mEditor.putString(USER_ID_KEY, response.body().get(USER_ID).getAsString());
-            mEditor.putString(PASSWORD_KEY, response.body().get(PASSWORD).getAsString());
-            mEditor.apply();
+            UserIdPwd.getInstance().setUserId(response.body().get(USER_ID).getAsString());
+            UserIdPwd.getInstance().setPassword(response.body().get(PASSWORD).getAsString());
 
             Intent intent = new Intent(application.getApplicationContext(), MapsActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -1,9 +1,7 @@
 package com.example.watchflow;
 
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,21 +23,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.example.watchflow.Constants.ALL_RUNNING_CAMERAS_ENDPOINT;
-import static com.example.watchflow.Constants.ALL_RUNNING_CAMERAS_FIELDS;
-import static com.example.watchflow.Constants.APP_PACKAGE;
+import static com.example.watchflow.Constants.ALL_RUNNING_CAMERAS_PARAMS_FIELDS;
 import static com.example.watchflow.Constants.CAMERAS;
 import static com.example.watchflow.Constants.IP;
 import static com.example.watchflow.Constants.LATITUDE;
 import static com.example.watchflow.Constants.LOCATIONS;
 import static com.example.watchflow.Constants.LONGITUDE;
 import static com.example.watchflow.Constants.MESSAGE;
-import static com.example.watchflow.Constants.PASSWORD_KEY;
 import static com.example.watchflow.Constants.USERNAME;
 import static com.example.watchflow.Constants.USERS_POSITIONS_ENDPOINT;
-import static com.example.watchflow.Constants.USERS_POSITIONS_FIELDS;
-import static com.example.watchflow.Constants.USER_ID_KEY;
+import static com.example.watchflow.Constants.USERS_POSITIONS_PARAMS_FIELDS;
 import static com.example.watchflow.Constants.USER_LOGOUT_ENDPOINT;
-import static com.example.watchflow.Constants.USER_LOGOUT_FIELDS;
+import static com.example.watchflow.Constants.USER_LOGOUT_PARAMS_FIELDS;
 
 public class MapsViewModel extends AndroidViewModel {
 
@@ -48,8 +43,6 @@ public class MapsViewModel extends AndroidViewModel {
     private final ServerRepository serverRepository = ServerRepository.getInstance();
     private final MutableLiveData<List<CameraInformations>> allCameras = new MutableLiveData<>();
     private final MutableLiveData<List<UserInformations>> allUsers = new MutableLiveData<>();
-    private SharedPreferences mPreferences;
-    private SharedPreferences.Editor mEditor;
     private final SingleLiveEvent<Void> refreshEvent = new SingleLiveEvent<>();
     private final SingleLiveEvent<Void> addUserEvent = new SingleLiveEvent<>();
     private final SingleLiveEvent<Void> removeUserEvent = new SingleLiveEvent<>();
@@ -61,28 +54,29 @@ public class MapsViewModel extends AndroidViewModel {
     public MapsViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
-
-        mPreferences = application.getSharedPreferences(APP_PACKAGE, Context.MODE_PRIVATE);
-        mEditor = mPreferences.edit();
         gpsTracker = new GpsTracker(application.getApplicationContext());
     }
 
+    private List<Object> getUserIdPwdList() {
+        List<Object> data = new ArrayList<>();
+        data.add(UserIdPwd.getInstance().getUserId());
+        data.add(UserIdPwd.getInstance().getPassword());
+        return data;
+    }
+
     public void updateAllRunningCameras() {
-        String userId = mPreferences.getString(USER_ID_KEY, "");
-        String pwd = mPreferences.getString(PASSWORD_KEY, "");
-        serverRepository.createPost(allRunningCamerasCallback, ALL_RUNNING_CAMERAS_ENDPOINT, ALL_RUNNING_CAMERAS_FIELDS, userId, pwd);
+        serverRepository.createPost(allRunningCamerasCallback, ALL_RUNNING_CAMERAS_ENDPOINT,
+                ALL_RUNNING_CAMERAS_PARAMS_FIELDS, getUserIdPwdList(), true);
     }
 
     public void updateAllLoggedUsers() {
-        String userId = mPreferences.getString(USER_ID_KEY, "");
-        String pwd = mPreferences.getString(PASSWORD_KEY, "");
-        serverRepository.createPost(allLoggedUsersCallback, USERS_POSITIONS_ENDPOINT, USERS_POSITIONS_FIELDS, userId, pwd);
+        serverRepository.createPost(allLoggedUsersCallback, USERS_POSITIONS_ENDPOINT,
+                USERS_POSITIONS_PARAMS_FIELDS, getUserIdPwdList(), true);
     }
 
     public void logoutUser() {
-        String userId = mPreferences.getString(USER_ID_KEY, "");
-        String pwd = mPreferences.getString(PASSWORD_KEY, "");
-        serverRepository.createPost(logoutUserCallback, USER_LOGOUT_ENDPOINT, USER_LOGOUT_FIELDS, userId, pwd);
+        serverRepository.createPost(logoutUserCallback, USER_LOGOUT_ENDPOINT,
+                USER_LOGOUT_PARAMS_FIELDS, getUserIdPwdList(), true);
     }
 
     public void setAllCameras(List<CameraInformations> allCameras) {

@@ -6,10 +6,7 @@ import java.util.List;
 public class Constants {
     public static final Integer AUTO_REFRESH_SECONDS = 20;
     public static final String APP_PACKAGE = "com.example.watchflow";
-    //Keys
-    public static final String USER_ID_KEY = "userid";
-    public static final String PASSWORD_KEY = "password";
-
+    public static final String EMPTY_STRING = "";
     //ENDPOINTS
     public static final String BASE_URL = "http://192.168.0.13:5000";
     public static final String ALL_RUNNING_CAMERAS_ENDPOINT = "/allRunningCameras";
@@ -40,24 +37,27 @@ public class Constants {
     public static final String MESSAGE = "message";
     public static final String LOCATIONS = "locations";
 
-    public static final List<String> LOGIN_USER_FIELDS = new ArrayList<String>() {{
+    public static final List<String> LOGIN_USER_PARAMS_FIELDS = new ArrayList<String>() {{
         add(USERNAME);
         add(PASSWORD);
+    }};
+
+    public static final List<String> LOGIN_USER_BODY_FIELDS = new ArrayList<String>() {{
         add(LATITUDE);
         add(LONGITUDE);
     }};
 
-    public static final List<String> ALL_RUNNING_CAMERAS_FIELDS = new ArrayList<String>() {{
+    public static final List<String> ALL_RUNNING_CAMERAS_PARAMS_FIELDS = new ArrayList<String>() {{
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);
     }};
 
-    public static final List<String> USERS_POSITIONS_FIELDS = new ArrayList<String>() {{
+    public static final List<String> USERS_POSITIONS_PARAMS_FIELDS = new ArrayList<String>() {{
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);
     }};
 
-    public static final List<String> USER_LOGOUT_FIELDS = new ArrayList<String>() {{
+    public static final List<String> USER_LOGOUT_PARAMS_FIELDS = new ArrayList<String>() {{
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);
     }};
