@@ -7,7 +7,7 @@ app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
 
-@app.route('/allRunningCameras', methods=['POST'])
+@app.route('/allRunningCameras', methods=['GET'])
 def allRunningCameras():
     if 'Authentication' not in request.headers:
         return 'Missing headers', 400
@@ -26,31 +26,50 @@ def allRunningCameras():
         return 'Missing data', 400
 
 
-@app.route('/allCamerasIps', methods=['POST'])
-def allCamerasIps():
-    dataJson = request.get_json()
-    dataArgs = request.args.to_dict()
+@app.route('/usersPositions', methods=['GET'])
+def usersPositions():
+    if 'Authentication' not in request.headers:
+        return 'Missing headers', 400
 
-    if dataJson is None and not bool(dataArgs):
-        return 'Missing params', 400
+    headers = eval(request.headers.get("Authentication"))
+
+    neededKeys = {'requesterUserId', 'requesterPwd'}
+
+    if neededKeys <= headers.keys():
+        success, jsonOutput = database.getAllLoggedUsersPositions(
+            requesterUserId=headers['requesterUserId'],
+            requesterPwd=headers['requesterPwd'])
+
+        return jsonOutput, 200 if success else 400
 
     else:
-        if not bool(dataArgs):
-            data = dataJson
-        else:
-            data = dataArgs
+        return 'Missing data', 400
 
-        neededKeys = {'requesterUserId', 'requesterPwd'}
+# @app.route('/allCamerasIps', methods=['POST'])
+# def allCamerasIps():
+#     dataJson = request.get_json()
+#     dataArgs = request.args.to_dict()
 
-        if neededKeys <= data.keys():
-            success, message = database.getCamerasDatabaseAsJSON(
-                requesterUserId=data['requesterUserId'],
-                requesterPwd=data['requesterPwd'],
-                onlyIps=True)
+#     if dataJson is None and not bool(dataArgs):
+#         return 'Missing params', 400
 
-            return message, 200 if success else 400
-        else:
-            return 'Missing params', 400
+#     else:
+#         if not bool(dataArgs):
+#             data = dataJson
+#         else:
+#             data = dataArgs
+
+#         neededKeys = {'requesterUserId', 'requesterPwd'}
+
+#         if neededKeys <= data.keys():
+#             success, message = database.getCamerasDatabaseAsJSON(
+#                 requesterUserId=data['requesterUserId'],
+#                 requesterPwd=data['requesterPwd'],
+#                 onlyIps=True)
+
+#             return message, 200 if success else 400
+#         else:
+#             return 'Missing params', 400
 
 
 @app.route('/userLogin', methods=['POST'])
@@ -98,61 +117,48 @@ def userLogout():
 
 @app.route('/registerUser', methods=['POST'])
 def registerUser():
-    dataJson = request.get_json()
-    dataArgs = request.args.to_dict()
+    if 'Authentication' not in request.headers or request.get_json() is None:
+        return 'Missing headers', 400
 
-    if dataJson is None and not bool(dataArgs):
-        return 'Missing params', 400
+    headers = eval(request.headers.get("Authentication"))
+    body = request.get_json()
+
+    neededHeadersKeys = {'requesterUserId', 'requesterPwd'}
+    neededBodyKeys = {'newUserName', 'newUserPwd'}
+
+    if neededHeadersKeys <= headers.keys() and neededBodyKeys <= body.keys():
+        success, message = database.createUser(
+            requesterUserId=headers['requesterUserId'],
+            requesterPwd=headers['requesterPwd'],
+            newUserName=body['newUserName'],
+            newUserPwd=body['newUserPwd'],
+            userType=body['type'] if ('type' in body) else 0)
+
+        return message, 200 if success else 400
 
     else:
-        if not bool(dataArgs):
-            data = dataJson
-        else:
-            data = dataArgs
-
-        neededKeys = {'requesterUserId',
-                      'requesterPwd', 'newUserName', 'newUserPwd'}
-
-        if neededKeys <= data.keys():
-            success, message = database.createUser(
-                requesterUserId=data['requesterUserId'],
-                requesterPwd=data['requesterPwd'],
-                newUserName=data['newUserName'],
-                newUserPwd=data['newUserPwd'],
-                userType=data['type'] if ('type' in data) else 0)
-
-            return message, 200 if success else 400
-
-        else:
-            return 'Missing params', 400
+        return 'Missing data', 400
 
 
 @app.route('/deleteUser', methods=['DELETE'])
 def deleteUser():
-    dataJson = request.get_json()
-    dataArgs = request.args.to_dict()
+    if 'Authentication' not in request.headers:
+        return 'Missing headers', 400
 
-    if dataJson is None and not bool(dataArgs):
-        return 'Missing params', 400
+    headers = eval(request.headers.get("Authentication"))
+
+    neededHeadersKeys = {'requesterUserId', 'requesterPwd', 'oldUserName'}
+
+    if neededHeadersKeys <= headers.keys():
+        success, message = database.deleteUser(
+            requesterUserId=headers['requesterUserId'],
+            requesterPwd=headers['requesterPwd'],
+            oldUserName=headers['oldUserName'])
+
+        return message, 200 if success else 400
 
     else:
-        if not bool(dataArgs):
-            data = dataJson
-        else:
-            data = dataArgs
-
-        neededKeys = {'requesterUserId', 'requesterPwd', 'oldUserId'}
-
-        if neededKeys <= data.keys():
-            success, message = database.deleteUser(
-                requesterUserId=data['requesterUserId'],
-                requesterPwd=data['requesterPwd'],
-                oldUserName=data['oldUserName'])
-
-            return message, 200 if success else 400
-
-        else:
-            return 'Missing params', 400
+        return 'Missing params', 400
 
 
 @app.route('/registerCamera', methods=['POST'])
@@ -241,26 +247,6 @@ def updateCamera():
 
         else:
             return 'Missing params', 400
-
-
-@app.route('/usersPositions', methods=['POST'])
-def usersPositions():
-    if 'Authentication' not in request.headers:
-        return 'Missing headers', 400
-
-    headers = eval(request.headers.get("Authentication"))
-
-    neededKeys = {'requesterUserId', 'requesterPwd'}
-
-    if neededKeys <= headers.keys():
-        success, jsonOutput = database.getAllLoggedUsersPositions(
-            requesterUserId=headers['requesterUserId'],
-            requesterPwd=headers['requesterPwd'])
-
-        return jsonOutput, 200 if success else 400
-
-    else:
-        return 'Missing data', 400
 
 
 if __name__ == '__main__':

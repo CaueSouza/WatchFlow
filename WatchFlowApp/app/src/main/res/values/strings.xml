@@ -1,7 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">WatchFlow</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_maps">Maps</string>
     <string name="title_activity_main">WatchFlow</string>
+    <string name="title_activity_operations">Operações</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -9,13 +10,15 @@
     <string name="previous">Anterior</string>
 
     <string name="register">Registrar</string>
+    <string name="remove">Remover</string>
     <string name="login_username_hint">Usuário</string>
     <string name="login_password_hint">Senha</string>
     <string name="login_signup_hint">Não possui conta? Contate o administrador</string>
     <string name="login">Entrar</string>
     <string name="login_title">Login</string>
-    <string name="registrar">Registrar</string>
     <string name="your_position">Sua posição</string>
+
+    <string name="server_error_message">Erro com o servidor</string>
 
 <!--    APP MESSAGES-->
     <string name="missing_fields_login">Preencha corretamente</string>
@@ -34,4 +37,13 @@
     <string name="remove_cameras_txt">Remover câmera</string>
     <string name="logout_txt">Logout</string>
     <string name="only_adm_message_txt">Somente Administrador</string>
+
+<!--    REGISTER USER-->
+    <string name="register_admin_question_txt">Usuário administrador?</string>
+    <string name="register_user_success_message">Usuário registrado com sucesso</string>
+    <string name="register_user_fail_message">Erro ao registrar usuário</string>
+
+<!--    DELETE USER-->
+    <string name="delete_user_success_message">Usuário removido com sucesso</string>
+    <string name="delete_user_fail_message">Erro ao remover usuário</string>
 </resources>

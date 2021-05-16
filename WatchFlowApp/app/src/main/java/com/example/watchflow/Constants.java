@@ -10,6 +10,12 @@ public class Constants {
     public static final String USER_TYPE = "userType";
     public static final Integer ADM_TYPE = 1;
     public static final String AUTHORIZATION = "authentication";
+    public static final String OPERATION = "operation";
+    public static final int CREATE_USER_OPERATION = 1;
+    public static final int DELETE_USER_OPERATION = 2;
+    public static final int CREATE_CAM_OPERATION = 3;
+    public static final int DELETE_CAM_OPERATION = 4;
+
     //ENDPOINTS
     public static final String BASE_URL = "http://192.168.0.13:5000";
     public static final String ALL_RUNNING_CAMERAS_ENDPOINT = "/allRunningCameras";
@@ -40,7 +46,12 @@ public class Constants {
     public static final String MESSAGE = "message";
     public static final String LOCATIONS = "locations";
 
-    public static final List<String> LOGIN_USER_PARAMS_FIELDS = new ArrayList<String>() {{
+    public static final List<String> COMMON_HEADER_FIELDS = new ArrayList<String>() {{
+        add(REQUESTER_USER_ID);
+        add(REQUESTER_PWD);
+    }};
+
+    public static final List<String> LOGIN_USER_HEADER_FIELDS = new ArrayList<String>() {{
         add(USERNAME);
         add(PASSWORD);
     }};
@@ -50,18 +61,15 @@ public class Constants {
         add(LONGITUDE);
     }};
 
-    public static final List<String> ALL_RUNNING_CAMERAS_PARAMS_FIELDS = new ArrayList<String>() {{
-        add(REQUESTER_USER_ID);
-        add(REQUESTER_PWD);
+    public static final List<String> REGISTER_USER_BODY_FIELDS = new ArrayList<String>() {{
+        add(NEW_USERNAME);
+        add(NEW_USER_PWD);
+        add(TYPE);
     }};
 
-    public static final List<String> USERS_POSITIONS_PARAMS_FIELDS = new ArrayList<String>() {{
+    public static final List<String> DELETE_USER_HEADER_FIELDS = new ArrayList<String>() {{
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);
-    }};
-
-    public static final List<String> USER_LOGOUT_PARAMS_FIELDS = new ArrayList<String>() {{
-        add(REQUESTER_USER_ID);
-        add(REQUESTER_PWD);
+        add(OLD_USERNAME);
     }};
 }

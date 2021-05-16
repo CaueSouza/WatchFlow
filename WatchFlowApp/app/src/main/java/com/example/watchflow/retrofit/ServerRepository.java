@@ -54,17 +54,17 @@ public class ServerRepository {
         return fields == null && data == null || fields != null && data != null && fields.size() == data.size();
     }
 
-    public void createPost(Callback<JsonObject> objectCallback, String postRequest, List<String> fields, List<Object> data, boolean sendAsHeader) {
+    public void createRequest(Callback<JsonObject> objectCallback, String endpoint, List<String> fields, List<Object> data, boolean sendAsHeader) {
         if (sendAsHeader) {
-            createPost(objectCallback, postRequest, fields, data, null, null);
+            createRequest(objectCallback, endpoint, fields, data, null, null);
         } else {
-            createPost(objectCallback, postRequest, null, null, fields, data);
+            createRequest(objectCallback, endpoint, null, null, fields, data);
         }
     }
 
-    public void createPost(Callback<JsonObject> objectCallback, String postRequest,
-                           @Nullable List<String> header_fields, @Nullable List<Object> header_data,
-                           @Nullable List<String> body_fields, @Nullable List<Object> body_data) {
+    public void createRequest(Callback<JsonObject> objectCallback, String endpoint,
+                              @Nullable List<String> header_fields, @Nullable List<Object> header_data,
+                              @Nullable List<String> body_fields, @Nullable List<Object> body_data) {
 
         if (!(checkFieldAndData(header_fields, header_data) && checkFieldAndData(body_fields, body_data))) {
             return;
@@ -84,9 +84,9 @@ public class ServerRepository {
             bodyJson = JsonParser.parseString(bodyData).getAsJsonObject();
         }
 
-        switch (postRequest) {
+        switch (endpoint) {
             case ALL_RUNNING_CAMERAS_ENDPOINT:
-                call = watchFlowServerApiInterface.getAllCamerasIps(headersJson, bodyJson);
+                call = watchFlowServerApiInterface.getAllCamerasIps(headersJson);
                 break;
             case USER_LOGIN_ENDPOINT:
                 call = watchFlowServerApiInterface.userLogin(headersJson, bodyJson);
@@ -98,16 +98,16 @@ public class ServerRepository {
                 call = watchFlowServerApiInterface.registerUser(headersJson, bodyJson);
                 break;
             case DELETE_USER_ENDPOINT:
-                call = watchFlowServerApiInterface.deleteUser(headersJson, bodyJson);
+                call = watchFlowServerApiInterface.deleteUser(headersJson);
                 break;
             case REGISTER_CAMERA_ENDPOINT:
                 call = watchFlowServerApiInterface.registerCamera(headersJson, bodyJson);
                 break;
             case DELETE_CAMERA_ENDPOINT:
-                call = watchFlowServerApiInterface.deleteCamera(headersJson, bodyJson);
+                call = watchFlowServerApiInterface.deleteCamera(headersJson);
                 break;
             case USERS_POSITIONS_ENDPOINT:
-                call = watchFlowServerApiInterface.usersPositions(headersJson, bodyJson);
+                call = watchFlowServerApiInterface.usersPositions(headersJson);
                 break;
         }
 
