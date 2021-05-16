@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.watchflow.maps.GpsTracker;
+import com.example.watchflow.maps.MapsActivity;
 import com.example.watchflow.retrofit.ServerRepository;
 import com.google.gson.JsonObject;
 
@@ -21,7 +23,7 @@ import retrofit2.Response;
 
 import static com.example.watchflow.Constants.ADM_TYPE;
 import static com.example.watchflow.Constants.LOGIN_USER_BODY_FIELDS;
-import static com.example.watchflow.Constants.LOGIN_USER_PARAMS_FIELDS;
+import static com.example.watchflow.Constants.LOGIN_USER_HEADER_FIELDS;
 import static com.example.watchflow.Constants.PASSWORD;
 import static com.example.watchflow.Constants.USER_ID;
 import static com.example.watchflow.Constants.USER_LOGIN_ENDPOINT;
@@ -50,8 +52,8 @@ public class MainActivityViewModel extends AndroidViewModel {
         body_data.add(gpsTracker.getLatitude());
         body_data.add(gpsTracker.getLongitude());
 
-        serverRepository.createPost(loginUserCallback, USER_LOGIN_ENDPOINT,
-                LOGIN_USER_PARAMS_FIELDS, params_data,
+        serverRepository.createRequest(loginUserCallback, USER_LOGIN_ENDPOINT,
+                LOGIN_USER_HEADER_FIELDS, params_data,
                 LOGIN_USER_BODY_FIELDS, body_data);
     }
 
@@ -86,7 +88,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         @Override
         public void onFailure(Call<JsonObject> call, Throwable t) {
             Log.e(TAG, "onFailure: " + t);
-            Toast.makeText(application.getApplicationContext(), R.string.invalid_user_message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
         }
     };
 }

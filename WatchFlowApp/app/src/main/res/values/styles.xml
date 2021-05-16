@@ -7,6 +7,11 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="textInputLayout" parent="parent">
+        <item name="boxCornerRadiusTopStart">@dimen/textInputLayoutRadius</item>
+        <item name="boxCornerRadiusTopEnd">@dimen/textInputLayoutRadius</item>
+    </style>
+
     <style name="loginParent" parent="parent">
         <item name="android:layout_height">match_parent</item>
         <item name="android:focusableInTouchMode">true</item>
@@ -39,7 +44,7 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
-    <style name="loginButton" parent="viewParent">
+    <style name="buttonStyle" parent="viewParent">
         <item name="android:background">@drawable/login_button_bk</item>
         <item name="android:textColor">@color/whiteTextColor</item>
         <item name="android:textStyle">bold</item>
