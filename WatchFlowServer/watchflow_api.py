@@ -2,9 +2,12 @@ import flask
 from flask import request
 import socket
 from Database import database
+from geopy.geocoders import Nominatim
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
+
+locator = Nominatim(user_agent='WatchFlow')
 
 
 @app.route('/allRunningCameras', methods=['GET'])
@@ -44,32 +47,6 @@ def usersPositions():
 
     else:
         return 'Missing data', 400
-
-# @app.route('/allCamerasIps', methods=['POST'])
-# def allCamerasIps():
-#     dataJson = request.get_json()
-#     dataArgs = request.args.to_dict()
-
-#     if dataJson is None and not bool(dataArgs):
-#         return 'Missing params', 400
-
-#     else:
-#         if not bool(dataArgs):
-#             data = dataJson
-#         else:
-#             data = dataArgs
-
-#         neededKeys = {'requesterUserId', 'requesterPwd'}
-
-#         if neededKeys <= data.keys():
-#             success, message = database.getCamerasDatabaseAsJSON(
-#                 requesterUserId=data['requesterUserId'],
-#                 requesterPwd=data['requesterPwd'],
-#                 onlyIps=True)
-
-#             return message, 200 if success else 400
-#         else:
-#             return 'Missing params', 400
 
 
 @app.route('/userLogin', methods=['POST'])
@@ -163,60 +140,56 @@ def deleteUser():
 
 @app.route('/registerCamera', methods=['POST'])
 def registerCamera():
-    dataJson = request.get_json()
-    dataArgs = request.args.to_dict()
+    if 'Authentication' not in request.headers or request.get_json() is None:
+        return 'Missing headers', 400
 
-    if dataJson is None and not bool(dataArgs):
-        return 'Missing params', 400
+    headers = eval(request.headers.get("Authentication"))
+    body = request.get_json()
 
+    neededHeadersKeys = {'requesterUserId', 'requesterPwd'}
+    neededBodyKeys = {'cameraIp', 'street', 'number',
+                      'neighborhood', 'city', 'country'}
+
+    if neededHeadersKeys <= headers.keys() and neededBodyKeys <= body.keys():
+        cameraIp = body.pop('cameraIp', None)
+        fullAddress = ''
+
+        for data in body:
+            fullAddress += f' {body[data]}'
+
+        location = locator.geocode(fullAddress)
+
+        success, message = database.createCamera(
+            requesterUserId=headers['requesterUserId'],
+            requesterPwd=headers['requesterPwd'],
+            cameraIp=cameraIp,
+            latitude=location.latitude,
+            longitude=location.longitude)
+
+        return message, 200 if success else 400
     else:
-        if not bool(dataArgs):
-            data = dataJson
-        else:
-            data = dataArgs
-
-        neededKeys = {'requesterUserId', 'requesterPwd',
-                      'cameraIp', 'latitude', 'longitude'}
-
-        if neededKeys <= data.keys():
-            success, message = database.createCamera(
-                requesterUserId=data['requesterUserId'],
-                requesterPwd=data['requesterPwd'],
-                cameraIp=data['cameraIp'],
-                latitude=data['latitude'],
-                longitude=data['longitude'])
-
-            return message, 200 if success else 400
-        else:
-            return 'Missing params', 400
+        return 'Missing params', 400
 
 
 @app.route('/deleteCamera', methods=['DELETE'])
 def deleteCamera():
-    dataJson = request.get_json()
-    dataArgs = request.args.to_dict()
+    if 'Authentication' not in request.headers:
+        return 'Missing headers', 400
 
-    if dataJson is None and not bool(dataArgs):
-        return 'Missing params', 400
+    headers = eval(request.headers.get("Authentication"))
+
+    neededHeadersKeys = {'requesterUserId', 'requesterPwd', 'cameraIp'}
+
+    if neededHeadersKeys <= headers.keys():
+        success, message = database.deleteCamera(
+            requesterUserId=headers['requesterUserId'],
+            requesterPwd=headers['requesterPwd'],
+            cameraIp=headers['cameraIp'])
+
+        return message, 200 if success else 400
 
     else:
-        if not bool(dataArgs):
-            data = dataJson
-        else:
-            data = dataArgs
-
-        neededKeys = {'requesterUserId', 'requesterPwd', 'cameraIp'}
-
-        if neededKeys <= data.keys():
-            success, message = database.deleteCamera(
-                requesterUserId=data['requesterUserId'],
-                requesterPwd=data['requesterPwd'],
-                cameraIp=data['cameraIp'])
-
-            return message, 200 if success else 400
-
-        else:
-            return 'Missing params', 400
+        return 'Missing params', 400
 
 
 @app.route('/updateCamera', methods=['POST'])

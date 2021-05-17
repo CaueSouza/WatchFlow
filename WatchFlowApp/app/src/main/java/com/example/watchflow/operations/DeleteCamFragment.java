@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.watchflow.IPv4ValidatorRegex;
 import com.example.watchflow.R;
 import com.example.watchflow.databinding.FragmentDeleteCamBinding;
 
@@ -30,9 +31,14 @@ public class DeleteCamFragment extends Fragment {
 
     private void initBindings() {
         binding.button.setOnClickListener(v -> {
-            if (viewModel.getOldUserName().getValue() == null || viewModel.getOldUserName().getValue().isEmpty()) {
+            if (viewModel.getCameraInfo().getValue().getIP() == null ||
+                    viewModel.getCameraInfo().getValue().getIP().isEmpty()) {
                 Toast.makeText(getContext(), R.string.missing_fields_login, Toast.LENGTH_SHORT).show();
-            } else {
+            }
+            else if (!IPv4ValidatorRegex.isValid(viewModel.getCameraInfo().getValue().getIP())){
+                Toast.makeText(getContext(), R.string.incorrect_ip_message_txt, Toast.LENGTH_SHORT).show();
+            }
+            else {
                 viewModel.deleteCam();
             }
         });

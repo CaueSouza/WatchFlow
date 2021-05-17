@@ -81,29 +81,87 @@
                                     android:text="@string/register_cameras_txt" />
 
                                 <com.google.android.material.textfield.TextInputLayout
-                                    android:id="@+id/textInputEmail"
+                                    android:id="@+id/textInputIP"
                                     style="@style/textInputLayout"
                                     android:layout_marginTop="@dimen/viewsMargin">
 
                                     <EditText
-                                        android:id="@+id/editTextEmail"
+                                        android:id="@+id/editTextIP"
                                         style="@style/modifiedEditText"
-                                        android:hint="@string/login_username_hint"
-                                        android:inputType="textEmailAddress"
-                                        android:maxLines="1" />
+                                        android:hint="@string/register_cam_ip"
+                                        android:inputType="text"
+                                        android:maxLines="1"
+                                        android:text="@={viewModel.cameraInfo.IP}" />
                                 </com.google.android.material.textfield.TextInputLayout>
 
                                 <com.google.android.material.textfield.TextInputLayout
-                                    android:id="@+id/textInputPassword"
+                                    android:id="@+id/textInputStreet"
                                     style="@style/textInputLayout"
                                     android:layout_marginTop="@dimen/viewsMargin">
 
                                     <EditText
-                                        android:id="@+id/editTextPassword"
+                                        android:id="@+id/editTextStreet"
                                         style="@style/modifiedEditText"
-                                        android:hint="@string/login_password_hint"
-                                        android:inputType="textPassword"
-                                        android:maxLines="1" />
+                                        android:hint="@string/register_cam_street"
+                                        android:inputType="text"
+                                        android:maxLines="1"
+                                        android:text="@={viewModel.cameraInfo.street}" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/textInputStreetNumber"
+                                    style="@style/textInputLayout"
+                                    android:layout_marginTop="@dimen/viewsMargin">
+
+                                    <EditText
+                                        android:id="@+id/editTextStreetNumber"
+                                        style="@style/modifiedEditText"
+                                        android:hint="@string/register_cam_num"
+                                        android:inputType="number"
+                                        android:maxLines="1"
+                                        android:text="@={viewModel.cameraInfo.number}" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/textInputNeighborhood"
+                                    style="@style/textInputLayout"
+                                    android:layout_marginTop="@dimen/viewsMargin">
+
+                                    <EditText
+                                        android:id="@+id/editTextNeighborhood"
+                                        style="@style/modifiedEditText"
+                                        android:hint="@string/register_cam_neighborhood"
+                                        android:inputType="text"
+                                        android:maxLines="1"
+                                        android:text="@={viewModel.cameraInfo.neighborhood}" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/textInputCity"
+                                    style="@style/textInputLayout"
+                                    android:layout_marginTop="@dimen/viewsMargin">
+
+                                    <EditText
+                                        android:id="@+id/editTextCity"
+                                        style="@style/modifiedEditText"
+                                        android:hint="@string/register_cam_city"
+                                        android:inputType="text"
+                                        android:maxLines="1"
+                                        android:text="@={viewModel.cameraInfo.city}" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/textInputCountry"
+                                    style="@style/textInputLayout"
+                                    android:layout_marginTop="@dimen/viewsMargin">
+
+                                    <EditText
+                                        android:id="@+id/editTextCountry"
+                                        style="@style/modifiedEditText"
+                                        android:hint="@string/register_cam_country"
+                                        android:inputType="text"
+                                        android:maxLines="1"
+                                        android:text="@={viewModel.cameraInfo.country}" />
                                 </com.google.android.material.textfield.TextInputLayout>
 
                                 <Button

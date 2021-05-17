@@ -37,6 +37,7 @@
     <string name="remove_cameras_txt">Remover câmera</string>
     <string name="logout_txt">Logout</string>
     <string name="only_adm_message_txt">Somente Administrador</string>
+    <string name="incorrect_ip_message_txt">IP inválido</string>
 
 <!--    REGISTER USER-->
     <string name="register_admin_question_txt">Usuário administrador?</string>
@@ -46,4 +47,18 @@
 <!--    DELETE USER-->
     <string name="delete_user_success_message">Usuário removido com sucesso</string>
     <string name="delete_user_fail_message">Erro ao remover usuário</string>
+
+<!--    REGISTER CAM-->
+    <string name="register_cam_ip">IP</string>
+    <string name="register_cam_street">Rua</string>
+    <string name="register_cam_num">Número</string>
+    <string name="register_cam_neighborhood">Bairro</string>
+    <string name="register_cam_city">Cidade</string>
+    <string name="register_cam_country">País</string>
+    <string name="register_cam_success_message">Câmera registrada com sucesso</string>
+    <string name="register_cam_fail_message">Erro ao registrar câmera</string>
+
+<!--    DELETE CAM-->
+    <string name="delete_cam_success_message">Câmera removida com sucesso</string>
+    <string name="delete_cam_fail_message">Erro ao remover câmera</string>
 </resources>

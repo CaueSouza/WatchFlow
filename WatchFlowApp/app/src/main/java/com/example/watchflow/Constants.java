@@ -39,12 +39,17 @@ public class Constants {
     public static final String TYPE = "type";
     public static final String NEW_USERNAME = "newUserName";
     public static final String NEW_USER_PWD = "newUserPwd";
-    public static final String CAMERA_IP = "cameraIp";
     public static final String OLD_USERNAME = "oldUserName";
     public static final String USER_ID = "userId";
     public static final String CAMERAS = "cameras";
     public static final String MESSAGE = "message";
     public static final String LOCATIONS = "locations";
+    public static final String CAMERA_IP = "cameraIp";
+    public static final String STREET = "street";
+    public static final String NUMBER = "number";
+    public static final String NEIGHBORHOOD = "neighborhood";
+    public static final String CITY = "city";
+    public static final String COUNTRY = "country";
 
     public static final List<String> COMMON_HEADER_FIELDS = new ArrayList<String>() {{
         add(REQUESTER_USER_ID);
@@ -71,5 +76,20 @@ public class Constants {
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);
         add(OLD_USERNAME);
+    }};
+
+    public static final List<String> REGISTER_CAM_BODY_FIELDS = new ArrayList<String>() {{
+        add(CAMERA_IP);
+        add(STREET);
+        add(NUMBER);
+        add(NEIGHBORHOOD);
+        add(CITY);
+        add(COUNTRY);
+    }};
+
+    public static final List<String> DELETE_CAM_HEADER_FIELDS = new ArrayList<String>() {{
+        add(REQUESTER_USER_ID);
+        add(REQUESTER_PWD);
+        add(CAMERA_IP);
     }};
 }
