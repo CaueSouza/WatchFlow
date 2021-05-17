@@ -81,29 +81,17 @@
                                     android:text="@string/remove_cameras_txt" />
 
                                 <com.google.android.material.textfield.TextInputLayout
-                                    android:id="@+id/textInputEmail"
+                                    android:id="@+id/textInputIP"
                                     style="@style/textInputLayout"
                                     android:layout_marginTop="@dimen/viewsMargin">
 
                                     <EditText
-                                        android:id="@+id/editTextEmail"
+                                        android:id="@+id/editTextIP"
                                         style="@style/modifiedEditText"
-                                        android:hint="@string/login_username_hint"
-                                        android:inputType="textEmailAddress"
-                                        android:maxLines="1" />
-                                </com.google.android.material.textfield.TextInputLayout>
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:id="@+id/textInputPassword"
-                                    style="@style/textInputLayout"
-                                    android:layout_marginTop="@dimen/viewsMargin">
-
-                                    <EditText
-                                        android:id="@+id/editTextPassword"
-                                        style="@style/modifiedEditText"
-                                        android:hint="@string/login_password_hint"
-                                        android:inputType="textPassword"
-                                        android:maxLines="1" />
+                                        android:hint="@string/register_cam_ip"
+                                        android:inputType="text"
+                                        android:maxLines="1"
+                                        android:text="@={viewModel.cameraInfo.IP}"/>
                                 </com.google.android.material.textfield.TextInputLayout>
 
                                 <Button

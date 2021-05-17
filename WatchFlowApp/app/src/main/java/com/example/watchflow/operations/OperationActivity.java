@@ -60,6 +60,10 @@ public class OperationActivity extends AppCompatActivity {
                 finish();
         }
 
+        initBindings();
+    }
+
+    private void initBindings(){
         viewModel.getEndActivityEvent().observe(this, v -> finish());
     }
 }
