@@ -1,5 +1,8 @@
 package com.example.watchflow;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserIdPwd {
     private static UserIdPwd mInstance = null;
 
@@ -42,5 +45,12 @@ public class UserIdPwd {
 
     public void setAdm(Boolean adm) {
         isAdm = adm;
+    }
+
+    public List<Object> getUserIdPwdList() {
+        List<Object> data = new ArrayList<>();
+        data.add(getUserId());
+        data.add(getPassword());
+        return data;
     }
 }

@@ -29,6 +29,29 @@ def allRunningCameras():
         return 'Missing data', 400
 
 
+@app.route('/cameraInformations', methods=['GET'])
+def cameraInformations():
+    if 'Authentication' not in request.headers:
+        return 'Missing headers', 400
+
+    headers = eval(request.headers.get("Authentication"))
+
+    neededHeadersKeys = {'requesterUserId', 'requesterPwd', 'cameraIp'}
+
+    if neededHeadersKeys <= headers.keys():
+        _, message = database.cameraInformations(
+            requesterUserId=headers['requesterUserId'],
+            requesterPwd=headers['requesterPwd'],
+            cameraIp=headers['cameraIp'])
+
+        print(message)
+
+        return message, 200
+
+    else:
+        return 'Missing data', 400
+
+
 @app.route('/usersPositions', methods=['GET'])
 def usersPositions():
     if 'Authentication' not in request.headers:

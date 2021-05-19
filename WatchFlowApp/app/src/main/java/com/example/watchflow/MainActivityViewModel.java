@@ -13,6 +13,8 @@ import com.example.watchflow.maps.GpsTracker;
 import com.example.watchflow.maps.MapsActivity;
 import com.example.watchflow.retrofit.ServerRepository;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,9 +76,9 @@ public class MainActivityViewModel extends AndroidViewModel {
                 return;
             }
 
-            UserIdPwd.getInstance().setUserId(response.body().get(USER_ID).getAsString());
-            UserIdPwd.getInstance().setPassword(response.body().get(PASSWORD).getAsString());
-            UserIdPwd.getInstance().setAdm(response.body().get(USER_TYPE).getAsInt() == ADM_TYPE);
+            UserIdPwd.getInstance().setUserId(response.body().getAsJsonObject().get(USER_ID).getAsString());
+            UserIdPwd.getInstance().setPassword(response.body().getAsJsonObject().get(PASSWORD).getAsString());
+            UserIdPwd.getInstance().setAdm(response.body().getAsJsonObject().get(USER_TYPE).getAsInt() == ADM_TYPE);
 
             Intent intent = new Intent(application.getApplicationContext(), MapsActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

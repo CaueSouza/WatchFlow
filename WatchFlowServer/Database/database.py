@@ -2,22 +2,19 @@ import sqlite3 as sqlite
 from pathlib import Path
 import csv
 import os
-import base64
 import uuid
+from json import dumps
+from base64 import b64encode
+
+ENCODING = 'utf-8'
+IMAGE_NAME = 'snapshot'
+JSON_NAME = 'output.json'
 
 
 def convertToBinaryData(filename):
     with open(filename, 'rb') as file:
         blobData = file.read()
     return blobData
-
-
-def encodeBinaryData(data):
-    return base64.b64encode(data)
-
-
-def decodeBinaryData(data):
-    return base64.b64decode(data)
 
 
 def executeQuery(query, data):
@@ -96,7 +93,7 @@ def resetDatabase():
     users_rows = csv.reader(users_file)
 
     sql = """INSERT INTO users (userName, pwd, type, latitude, longitude, logged)
-    VALUES (?, ?, ?, ?, ?, 0)"""
+    VALUES (?, ?, ?, ?, ?, 1)"""
 
     cursor.executemany(sql, users_rows)
 
@@ -106,6 +103,16 @@ def resetDatabase():
     cursor.executemany(
         "INSERT INTO cameras (ip, latitude, longitude) VALUES (?, ?, ?)",
         cams_rows)
+
+    conn.commit()
+
+    img_data = convertToBinaryData('testimg.jpg')
+    _, retorno = userLogin('admin', 'admin', 23.5505, 46.6333)
+
+    updateCamera(retorno['userId'], 'admin',
+                 '127.0.0.1', b64encode(img_data))
+    updateCamera(retorno['userId'], 'admin',
+                 '127.0.0.2', b64encode(img_data))
 
     conn.commit()
     cursor.close()
@@ -136,7 +143,7 @@ def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
 
         return (True, {'message': json_output})
     else:
-        return (False, {'message': 'Incorrect credentials'})
+        return (False, {'message': 'Invalid credentials'})
 
 
 def validateUserName(userName, pwd):
@@ -204,7 +211,7 @@ def createUser(requesterUserId, requesterPwd, newUserName, newUserPwd,
 
         return (True, {'message': 'User registered'})
     else:
-        return (False, {'message': 'Incorrect credentials'})
+        return (False, {'message': 'Invalid credentials'})
 
 
 def deleteUser(requesterUserId, requesterPwd, oldUserName):
@@ -224,7 +231,7 @@ def deleteUser(requesterUserId, requesterPwd, oldUserName):
         return (True, {'message': 'User deleted'})
     else:
 
-        return (False, {'message': 'Incorrect credentials'})
+        return (False, {'message': 'Invalid credentials'})
 
 
 def userLogin(userName, pwd, latitude, longitude):
@@ -307,7 +314,7 @@ def deleteCamera(requesterUserId, requesterPwd, cameraIp):
 
         return (True, {'message': 'Camera deleted'})
     else:
-        return (False, {'message': 'Incorrect credentials'})
+        return (False, {'message': 'Invalid credentials'})
 
 
 def updateCamera(requesterUserId, requesterPwd, cameraIp, snapshot):
@@ -327,7 +334,7 @@ def updateCamera(requesterUserId, requesterPwd, cameraIp, snapshot):
 
         return (True, {'message': 'Camera updated'})
     else:
-        return (False, {'message': 'Incorrect credentials'})
+        return (False, {'message': 'Invalid credentials'})
 
 
 def getAllLoggedUsersPositions(requesterUserId, requesterPwd):
@@ -359,4 +366,31 @@ def getAllLoggedUsersPositions(requesterUserId, requesterPwd):
 
         return (True, {'message': json_output})
     else:
-        return (False, {'message': 'Failed'})
+        return (False, {'message': 'Invalid credentials'})
+
+
+def cameraInformations(requesterUserId, requesterPwd, cameraIp):
+    if validateUser(requesterUserId, requesterPwd):
+
+        query = """
+                SELECT
+                    snapshot
+                FROM
+                    cameras
+                WHERE
+                    ip=?
+        """
+
+        data = (cameraIp,)
+
+        queryResult = executeFetchallQuery(query, data)
+
+        response = queryResult[0][0]
+
+        base64_string = response.decode(ENCODING)
+        raw_data = {IMAGE_NAME: base64_string}
+        json_data = dumps(raw_data)
+
+        return (True, json_data)
+    else:
+        return (False, {'message': 'Invalid credentials'})
