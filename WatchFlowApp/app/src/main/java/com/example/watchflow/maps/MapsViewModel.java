@@ -243,48 +243,15 @@ public class MapsViewModel extends AndroidViewModel {
                 return;
             }
 
-
             try {
-
                 String image = ImageUtil.saveImage(application, response.body().get("snapshot").getAsString());
                 Intent intent = new Intent(application.getApplicationContext(), CameraInformationActivity.class);
                 intent.putExtra(IMAGE,image);
 
                 application.startActivity(intent);
-                Toast.makeText(application.getApplicationContext(), "NAO DEU THROW", Toast.LENGTH_SHORT).show();
             } catch (IOException e) {
                 e.printStackTrace();
-                Toast.makeText(application.getApplicationContext(), "DEU THROW", Toast.LENGTH_SHORT).show();
             }
-            //byte[] imageBytes = Base64.decode(response.body().get("image").getAsString(), Base64.DEFAULT);
-//            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-
-            //String imagePath = saveImage(imageBytes);
-
-
-
-
-            //byte[] bytes = response.body().get(IMAGE).getAsString().getBytes(StandardCharsets.UTF_8);
-
-
-//            ByteBuffer buffer = StandardCharsets.UTF_8.encode(response.body().get("image").getAsString());
-//            byte[] imageBytes = new byte[buffer.remaining()];
-//            buffer.get(imageBytes);
-//            Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
-
-
-//            Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//            byte[] byteArray = stream.toByteArray();
-//
-
-
-//            Intent intent = new Intent(application.getApplicationContext(), CameraInformationActivity.class);
-//            intent.putExtra(IMAGE,byteArray);
-//
-//            application.startActivity(intent);
-//
 
             Log.d(TAG, "onResponse: " + response);
         }
