@@ -11,13 +11,14 @@ public class Constants {
     public static final Integer ADM_TYPE = 1;
     public static final String AUTHORIZATION = "authentication";
     public static final String OPERATION = "operation";
+    public static final String IMAGE = "image";
     public static final int CREATE_USER_OPERATION = 1;
     public static final int DELETE_USER_OPERATION = 2;
     public static final int CREATE_CAM_OPERATION = 3;
     public static final int DELETE_CAM_OPERATION = 4;
 
     //ENDPOINTS
-    public static final String BASE_URL = "http://192.168.0.13:5000";
+    public static final String BASE_URL = "http://172.29.160.1:5000";
     public static final String ALL_RUNNING_CAMERAS_ENDPOINT = "/allRunningCameras";
     public static final String USER_LOGIN_ENDPOINT = "/userLogin";
     public static final String USER_LOGOUT_ENDPOINT = "/userLogout";
@@ -26,6 +27,7 @@ public class Constants {
     public static final String REGISTER_CAMERA_ENDPOINT = "/registerCamera";
     public static final String DELETE_CAMERA_ENDPOINT = "/deleteCamera";
     public static final String USERS_POSITIONS_ENDPOINT = "/usersPositions";
+    public static final String CAMERA_INFORMATIONS_ENDPOINT = "/cameraInformations";
     public static final int RETROFIT_TIME_OUT_LIMIT = 50;
 
     //REQUEST FIELDS
@@ -87,7 +89,7 @@ public class Constants {
         add(COUNTRY);
     }};
 
-    public static final List<String> DELETE_CAM_HEADER_FIELDS = new ArrayList<String>() {{
+    public static final List<String> GET_INFO_OR_DELETE_CAM_HEADER_FIELDS = new ArrayList<String>() {{
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);
         add(CAMERA_IP);

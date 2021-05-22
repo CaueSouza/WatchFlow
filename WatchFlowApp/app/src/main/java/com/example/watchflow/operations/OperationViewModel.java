@@ -13,6 +13,8 @@ import com.example.watchflow.SingleLiveEvent;
 import com.example.watchflow.UserIdPwd;
 import com.example.watchflow.retrofit.ServerRepository;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,7 @@ import retrofit2.Response;
 
 import static com.example.watchflow.Constants.COMMON_HEADER_FIELDS;
 import static com.example.watchflow.Constants.DELETE_CAMERA_ENDPOINT;
-import static com.example.watchflow.Constants.DELETE_CAM_HEADER_FIELDS;
+import static com.example.watchflow.Constants.GET_INFO_OR_DELETE_CAM_HEADER_FIELDS;
 import static com.example.watchflow.Constants.DELETE_USER_ENDPOINT;
 import static com.example.watchflow.Constants.DELETE_USER_HEADER_FIELDS;
 import static com.example.watchflow.Constants.REGISTER_CAMERA_ENDPOINT;
@@ -93,13 +95,12 @@ public class OperationViewModel extends AndroidViewModel {
     }
 
     public void deleteCam() {
-        List<Object> headers_data = new ArrayList<>();
-        headers_data.add(UserIdPwd.getInstance().getUserId());
-        headers_data.add(UserIdPwd.getInstance().getPassword());
+        List<Object> headers_data;
+        headers_data = UserIdPwd.getInstance().getUserIdPwdList();
         headers_data.add(cameraInfo.getValue().getIP());
 
         serverRepository.createRequest(deleteCamCallback, DELETE_CAMERA_ENDPOINT,
-                DELETE_CAM_HEADER_FIELDS, headers_data, null, null);
+                GET_INFO_OR_DELETE_CAM_HEADER_FIELDS, headers_data, null, null);
     }
 
     public MutableLiveData<String> getNewUserName() {

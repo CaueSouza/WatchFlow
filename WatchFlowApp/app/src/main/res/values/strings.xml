@@ -61,4 +61,7 @@
 <!--    DELETE CAM-->
     <string name="delete_cam_success_message">Câmera removida com sucesso</string>
     <string name="delete_cam_fail_message">Erro ao remover câmera</string>
+
+<!--    GET CAMERA INFORMATIONS-->
+    <string name="camera_informations_fail_message">Erro ao receber dados</string>
 </resources>

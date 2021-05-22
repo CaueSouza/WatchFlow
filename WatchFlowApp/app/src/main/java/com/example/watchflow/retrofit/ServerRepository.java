@@ -2,8 +2,12 @@ package com.example.watchflow.retrofit;
 
 import androidx.annotation.Nullable;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.example.watchflow.Constants.ALL_RUNNING_CAMERAS_ENDPOINT;
 import static com.example.watchflow.Constants.BASE_URL;
+import static com.example.watchflow.Constants.CAMERA_INFORMATIONS_ENDPOINT;
 import static com.example.watchflow.Constants.DELETE_CAMERA_ENDPOINT;
 import static com.example.watchflow.Constants.DELETE_USER_ENDPOINT;
 import static com.example.watchflow.Constants.REGISTER_CAMERA_ENDPOINT;
@@ -30,12 +35,16 @@ public class ServerRepository {
     public static final String TAG = ServerRepository.class.getSimpleName();
 
     private static ServerRepository instance = null;
-    private final WatchFlowServerApiInterface watchFlowServerApiInterface;
+    public final WatchFlowServerApiInterface watchFlowServerApiInterface;
 
     private ServerRepository() {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         watchFlowServerApiInterface = retrofit.create(WatchFlowServerApiInterface.class);
@@ -108,6 +117,9 @@ public class ServerRepository {
                 break;
             case USERS_POSITIONS_ENDPOINT:
                 call = watchFlowServerApiInterface.usersPositions(headersJson);
+                break;
+            case CAMERA_INFORMATIONS_ENDPOINT:
+                call = watchFlowServerApiInterface.getCameraInformations(headersJson);
                 break;
         }
 

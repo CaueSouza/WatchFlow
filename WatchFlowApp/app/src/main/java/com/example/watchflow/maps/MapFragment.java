@@ -9,7 +9,9 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,7 +26,10 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -75,6 +80,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         requestMapsInformation();
         moveToUserPosition();
+
+        mMap.setOnMarkerClickListener(marker -> {
+            String cameraIp = marker.getTitle();
+
+            viewModel.getCameraInformation(cameraIp);
+
+            return false;
+        });
     }
 
     private void initBindings() {
@@ -107,7 +120,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             LatLng location = new LatLng(camera.getLatitude(), camera.getLongitude());
             mMap.addMarker(new MarkerOptions().position(location)
                     .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.ic_camera_pin)))
-                    .title(camera.getIp()));
+                    .title(camera.getIp())).setTag(0);
         }
     }
 
@@ -116,7 +129,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             LatLng location = new LatLng(user.getLatitude(), user.getLongitude());
             mMap.addMarker(new MarkerOptions().position(location)
                     .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.ic_car_pin)))
-                    .title(user.getUserName()));
+                    .title(user.getUserName())).setTag(0);
         }
     }
 

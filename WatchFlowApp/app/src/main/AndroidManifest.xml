@@ -49,6 +49,9 @@
             android:name=".operations.OperationActivity"
             android:label="@string/title_activity_operations"
             android:theme="@style/Theme.WatchFlow.NoActionBar" />
+        <activity
+            android:name=".cameraInformation.CameraInformationActivity"
+            android:label="@string/title_activity_operations" />
     </application>
 
 </manifest>
