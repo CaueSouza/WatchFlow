@@ -146,8 +146,8 @@ public class ImageUtil {
 
         try {
             return readFileAsBytes(sha256File);
-        } catch (IOException e){
-
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return null;
@@ -178,8 +178,6 @@ public class ImageUtil {
                     builder.append("\n").append(line);
                 }
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

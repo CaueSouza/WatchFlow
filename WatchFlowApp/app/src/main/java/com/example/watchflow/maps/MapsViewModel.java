@@ -246,6 +246,7 @@ public class MapsViewModel extends AndroidViewModel {
             try {
                 String image = ImageUtil.saveImage(application, response.body().get("snapshot").getAsString());
                 Intent intent = new Intent(application.getApplicationContext(), CameraInformationActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra(IMAGE,image);
 
                 application.startActivity(intent);

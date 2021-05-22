@@ -26,10 +26,6 @@ public class CameraInformationActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(CameraInformationViewModel.class);
         binding.setViewModel(viewModel);
 
-//        byte[] byteArray = getIntent().getByteArrayExtra(IMAGE);
-//        Bitmap bmp = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-//        binding.camImageView.setImageBitmap(bmp);
-
         viewModel.getImage().setValue(getIntent().getStringExtra(IMAGE));
     }
 }

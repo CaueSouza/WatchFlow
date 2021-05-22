@@ -19,7 +19,7 @@ import java.io.File;
 public class BindingAdapters {
     public static final String TAG = BindingAdapters.class.getSimpleName();
 
-    @BindingAdapter(value = {"imageUrl", "imagePlaceHolder", "cornerRadius", "imageBorder", "imageRequestListener"}, requireAll = false)
+    @BindingAdapter(value = {"imageUrl", "imagePlaceHolder", "imageRoundCorners", "cornerRadius", "imageBorder", "imageRequestListener"}, requireAll = false)
     public static void bindImage(@NonNull ImageView imageView, Object imageData, Drawable placeholderDrawable, boolean imageRoundCorners, Float cornerRadius, boolean imageBorder, RequestListener<Drawable> listener){
         RequestOptions requestOptions = new RequestOptions();
 
