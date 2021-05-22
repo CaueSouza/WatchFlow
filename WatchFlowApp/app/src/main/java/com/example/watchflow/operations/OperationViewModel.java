@@ -13,8 +13,8 @@ import com.example.watchflow.SingleLiveEvent;
 import com.example.watchflow.UserIdPwd;
 import com.example.watchflow.retrofit.ServerRepository;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonObject;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +25,9 @@ import retrofit2.Response;
 
 import static com.example.watchflow.Constants.COMMON_HEADER_FIELDS;
 import static com.example.watchflow.Constants.DELETE_CAMERA_ENDPOINT;
-import static com.example.watchflow.Constants.GET_INFO_OR_DELETE_CAM_HEADER_FIELDS;
 import static com.example.watchflow.Constants.DELETE_USER_ENDPOINT;
 import static com.example.watchflow.Constants.DELETE_USER_HEADER_FIELDS;
+import static com.example.watchflow.Constants.GET_INFO_OR_DELETE_CAM_HEADER_FIELDS;
 import static com.example.watchflow.Constants.REGISTER_CAMERA_ENDPOINT;
 import static com.example.watchflow.Constants.REGISTER_CAM_BODY_FIELDS;
 import static com.example.watchflow.Constants.REGISTER_USER_BODY_FIELDS;
@@ -126,7 +126,7 @@ public class OperationViewModel extends AndroidViewModel {
     //CALLBACKS
     Callback<JsonObject> registerUserCallback = new Callback<JsonObject>() {
         @Override
-        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+        public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
                 Toast.makeText(application.getApplicationContext(), R.string.register_user_fail_message, Toast.LENGTH_SHORT).show();
                 return;
@@ -139,7 +139,7 @@ public class OperationViewModel extends AndroidViewModel {
         }
 
         @Override
-        public void onFailure(Call<JsonObject> call, Throwable t) {
+        public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
             Log.e(TAG, "onFailure: " + t);
             Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
         }
@@ -147,7 +147,7 @@ public class OperationViewModel extends AndroidViewModel {
 
     Callback<JsonObject> deleteUserCallback = new Callback<JsonObject>() {
         @Override
-        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+        public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
                 Toast.makeText(application.getApplicationContext(), R.string.delete_user_fail_message, Toast.LENGTH_SHORT).show();
                 return;
@@ -160,7 +160,7 @@ public class OperationViewModel extends AndroidViewModel {
         }
 
         @Override
-        public void onFailure(Call<JsonObject> call, Throwable t) {
+        public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
             Log.e(TAG, "onFailure: " + t);
             Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
         }
@@ -168,7 +168,7 @@ public class OperationViewModel extends AndroidViewModel {
 
     Callback<JsonObject> registerCamCallback = new Callback<JsonObject>() {
         @Override
-        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+        public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
                 Toast.makeText(application.getApplicationContext(), R.string.register_cam_fail_message, Toast.LENGTH_SHORT).show();
                 return;
@@ -181,7 +181,7 @@ public class OperationViewModel extends AndroidViewModel {
         }
 
         @Override
-        public void onFailure(Call<JsonObject> call, Throwable t) {
+        public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
             Log.e(TAG, "onFailure: " + t);
             Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
         }
@@ -189,7 +189,7 @@ public class OperationViewModel extends AndroidViewModel {
 
     Callback<JsonObject> deleteCamCallback = new Callback<JsonObject>() {
         @Override
-        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+        public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
                 Toast.makeText(application.getApplicationContext(), R.string.delete_cam_fail_message, Toast.LENGTH_SHORT).show();
                 return;
@@ -202,7 +202,7 @@ public class OperationViewModel extends AndroidViewModel {
         }
 
         @Override
-        public void onFailure(Call<JsonObject> call, Throwable t) {
+        public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
             Log.e(TAG, "onFailure: " + t);
             Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
         }

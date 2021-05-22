@@ -13,8 +13,8 @@ import com.example.watchflow.maps.GpsTracker;
 import com.example.watchflow.maps.MapsActivity;
 import com.example.watchflow.retrofit.ServerRepository;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonObject;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,9 +68,8 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     Callback<JsonObject> loginUserCallback = new Callback<JsonObject>() {
-
         @Override
-        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+        public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
                 Toast.makeText(application.getApplicationContext(), R.string.fail_message_login, Toast.LENGTH_SHORT).show();
                 return;
@@ -88,7 +87,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         }
 
         @Override
-        public void onFailure(Call<JsonObject> call, Throwable t) {
+        public void onFailure(@NotNull Call<JsonObject> call, Throwable t) {
             Log.e(TAG, "onFailure: " + t);
             Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
         }

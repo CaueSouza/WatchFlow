@@ -2,9 +2,6 @@ package com.example.watchflow.maps;
 
 import android.app.Application;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,34 +22,22 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.ListIterator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.watchflow.Constants.*;
+import static com.example.watchflow.Constants.ALL_RUNNING_CAMERAS_ENDPOINT;
 import static com.example.watchflow.Constants.CAMERAS;
 import static com.example.watchflow.Constants.CAMERA_INFORMATIONS_ENDPOINT;
 import static com.example.watchflow.Constants.COMMON_HEADER_FIELDS;
 import static com.example.watchflow.Constants.GET_INFO_OR_DELETE_CAM_HEADER_FIELDS;
+import static com.example.watchflow.Constants.IMAGE;
 import static com.example.watchflow.Constants.IP;
 import static com.example.watchflow.Constants.LATITUDE;
 import static com.example.watchflow.Constants.LOCATIONS;
@@ -65,7 +50,7 @@ import static com.example.watchflow.Constants.USER_LOGOUT_ENDPOINT;
 public class MapsViewModel extends AndroidViewModel {
 
     private static final String TAG = MapsViewModel.class.getSimpleName();
-    public GpsTracker gpsTracker;
+    private GpsTracker gpsTracker;
     private final ServerRepository serverRepository = ServerRepository.getInstance();
     private final MutableLiveData<List<CameraInformations>> allCameras = new MutableLiveData<>();
     private final MutableLiveData<List<UserInformations>> allUsers = new MutableLiveData<>();
@@ -103,24 +88,6 @@ public class MapsViewModel extends AndroidViewModel {
                 GET_INFO_OR_DELETE_CAM_HEADER_FIELDS, headers_data, true);
     }
 
-    private String formatJson(List<String> fields, List<Object> data) {
-        final JSONObject root = new JSONObject();
-        ListIterator<String> fieldsIterator = fields.listIterator();
-        ListIterator<Object> dataIterator = data.listIterator();
-
-        try {
-            while (fieldsIterator.hasNext()) {
-                root.put(fieldsIterator.next(), dataIterator.next());
-            }
-
-            return root.toString();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     public void setAllCameras(List<CameraInformations> allCameras) {
         this.allCameras.setValue(allCameras);
     }
@@ -145,9 +112,13 @@ public class MapsViewModel extends AndroidViewModel {
         return endActivityEvent;
     }
 
+    public GpsTracker getGpsTracker() {
+        return gpsTracker;
+    }
+
     Callback<JsonObject> allRunningCamerasCallback = new Callback<JsonObject>() {
         @Override
-        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+        public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
                 Toast.makeText(application.getApplicationContext(), R.string.all_running_cams_fail_message, Toast.LENGTH_SHORT).show();
                 return;
@@ -172,7 +143,7 @@ public class MapsViewModel extends AndroidViewModel {
         }
 
         @Override
-        public void onFailure(Call<JsonObject> call, Throwable t) {
+        public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
             Log.e(TAG, "onFailure: " + t);
             Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
         }
@@ -181,7 +152,7 @@ public class MapsViewModel extends AndroidViewModel {
     Callback<JsonObject> allLoggedUsersCallback = new Callback<JsonObject>() {
 
         @Override
-        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+        public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
                 Toast.makeText(application.getApplicationContext(), R.string.all_logged_users_fail_message, Toast.LENGTH_SHORT).show();
                 return;
@@ -206,7 +177,7 @@ public class MapsViewModel extends AndroidViewModel {
         }
 
         @Override
-        public void onFailure(Call<JsonObject> call, Throwable t) {
+        public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
             Log.e(TAG, "onFailure: " + t);
             Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
         }
@@ -215,7 +186,7 @@ public class MapsViewModel extends AndroidViewModel {
     Callback<JsonObject> logoutUserCallback = new Callback<JsonObject>() {
 
         @Override
-        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+        public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
                 Toast.makeText(application.getApplicationContext(), R.string.logout_fail_message, Toast.LENGTH_SHORT).show();
                 return;
@@ -228,7 +199,7 @@ public class MapsViewModel extends AndroidViewModel {
         }
 
         @Override
-        public void onFailure(Call<JsonObject> call, Throwable t) {
+        public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
             Log.e(TAG, "onFailure: " + t);
             Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
         }
@@ -247,7 +218,7 @@ public class MapsViewModel extends AndroidViewModel {
                 String image = ImageUtil.saveImage(application, response.body().get("snapshot").getAsString());
                 Intent intent = new Intent(application.getApplicationContext(), CameraInformationActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(IMAGE,image);
+                intent.putExtra(IMAGE, image);
 
                 application.startActivity(intent);
             } catch (IOException e) {

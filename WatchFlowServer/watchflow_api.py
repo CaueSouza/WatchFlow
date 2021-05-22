@@ -246,8 +246,4 @@ def updateCamera():
 
 
 if __name__ == '__main__':
-    hostname = socket.gethostname()
-    local_ip = socket.gethostbyname(hostname)
-
-    app.run(host=local_ip, port=5000)
-    # app.run()
+    app.run(host='192.168.0.13', port=5000)

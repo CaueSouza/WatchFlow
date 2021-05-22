@@ -9,24 +9,19 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.watchflow.CameraInformations;
 import com.example.watchflow.R;
 import com.example.watchflow.UserInformations;
-import com.example.watchflow.retrofit.WatchFlowServerApiInterface;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.jetbrains.annotations.NotNull;
@@ -42,9 +37,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private int mInterval = AUTO_REFRESH_SECONDS * 1000; // Seconds * 1000
     private Handler mHandler;
     private GoogleMap mMap;
-    private int value = 0;
-    private WatchFlowServerApiInterface watchFlowServerApiInterface;
-    private MutableLiveData<CameraInformations> cameraInformationsLiveData = new MutableLiveData<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,7 +45,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         SupportMapFragment supportMapFragment = (SupportMapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.map);
 
-        supportMapFragment.getMapAsync(this::onMapReady);
+        supportMapFragment.getMapAsync(this);
 
         viewModel = new ViewModelProvider(requireActivity()).get(MapsViewModel.class);
 
@@ -70,7 +62,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
      * installed Google Play services and returned to the app.
      */
     @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(@NotNull GoogleMap googleMap) {
         mMap = googleMap;
 
         mHandler = new Handler(Looper.myLooper());
@@ -82,9 +74,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         moveToUserPosition();
 
         mMap.setOnMarkerClickListener(marker -> {
-            String cameraIp = marker.getTitle();
+            String markerTitle = marker.getTitle();
 
-            viewModel.getCameraInformation(cameraIp);
+            if (!markerTitle.equals(getString(R.string.your_position))){
+                viewModel.getCameraInformation(markerTitle);
+            }
 
             return false;
         });
@@ -106,12 +100,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void setUserPosition() {
-        LatLng location = new LatLng(viewModel.gpsTracker.getLatitude(), viewModel.gpsTracker.getLongitude());
+        LatLng location = new LatLng(viewModel.getGpsTracker().getLatitude(), viewModel.getGpsTracker().getLongitude());
         mMap.addMarker(new MarkerOptions().position(location).title(getString(R.string.your_position)));
     }
 
     private void moveToUserPosition() {
-        LatLng location = new LatLng(viewModel.gpsTracker.getLatitude(), viewModel.gpsTracker.getLongitude());
+        LatLng location = new LatLng(viewModel.getGpsTracker().getLatitude(), viewModel.getGpsTracker().getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
     }
 

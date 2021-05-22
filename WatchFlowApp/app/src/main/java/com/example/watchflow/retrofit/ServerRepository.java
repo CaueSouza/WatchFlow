@@ -5,16 +5,17 @@ import androidx.annotation.Nullable;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -37,6 +38,20 @@ public class ServerRepository {
     private static ServerRepository instance = null;
     public final WatchFlowServerApiInterface watchFlowServerApiInterface;
 
+    private OkHttpClient getClient() {
+        return new OkHttpClient.Builder()
+                .readTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(15, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(true)
+                .addInterceptor(chain -> {
+                    Request request = chain.request()
+                            .newBuilder()
+                            .build();
+
+                    return chain.proceed(request);
+                }).build();
+    }
+
     private ServerRepository() {
         Gson gson = new GsonBuilder()
                 .setLenient()
@@ -44,6 +59,7 @@ public class ServerRepository {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
+                .client(getClient())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 

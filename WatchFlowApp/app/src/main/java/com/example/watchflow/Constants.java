@@ -18,7 +18,7 @@ public class Constants {
     public static final int DELETE_CAM_OPERATION = 4;
 
     //ENDPOINTS
-    public static final String BASE_URL = "http://172.29.160.1:5000";
+    public static final String BASE_URL = "http://192.168.0.13:5000";
     public static final String ALL_RUNNING_CAMERAS_ENDPOINT = "/allRunningCameras";
     public static final String USER_LOGIN_ENDPOINT = "/userLogin";
     public static final String USER_LOGOUT_ENDPOINT = "/userLogout";
@@ -28,7 +28,6 @@ public class Constants {
     public static final String DELETE_CAMERA_ENDPOINT = "/deleteCamera";
     public static final String USERS_POSITIONS_ENDPOINT = "/usersPositions";
     public static final String CAMERA_INFORMATIONS_ENDPOINT = "/cameraInformations";
-    public static final int RETROFIT_TIME_OUT_LIMIT = 50;
 
     //REQUEST FIELDS
     public static final String USERNAME = "userName";
