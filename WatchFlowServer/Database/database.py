@@ -93,7 +93,7 @@ def resetDatabase():
     users_rows = csv.reader(users_file)
 
     sql = """INSERT INTO users (userName, pwd, type, latitude, longitude, logged)
-    VALUES (?, ?, ?, ?, ?, 1)"""
+    VALUES (?, ?, ?, ?, ?, 0)"""
 
     cursor.executemany(sql, users_rows)
 

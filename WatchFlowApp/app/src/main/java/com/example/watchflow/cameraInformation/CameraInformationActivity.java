@@ -26,6 +26,17 @@ public class CameraInformationActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(CameraInformationViewModel.class);
         binding.setViewModel(viewModel);
 
+        getSupportActionBar().setTitle(R.string.title_activity_cam_information);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().show();
+
         viewModel.getImage().setValue(getIntent().getStringExtra(IMAGE));
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }

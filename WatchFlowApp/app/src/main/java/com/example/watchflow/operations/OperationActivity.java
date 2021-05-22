@@ -29,6 +29,11 @@ public class OperationActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(OperationViewModel.class);
 
+        getSupportActionBar().setTitle(R.string.title_activity_operations);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().show();
+
         int operation = getIntent().getIntExtra(OPERATION, 0);
 
         switch (operation) {
@@ -65,5 +70,11 @@ public class OperationActivity extends AppCompatActivity {
 
     private void initBindings(){
         viewModel.getEndActivityEvent().observe(this, v -> finish());
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 }
