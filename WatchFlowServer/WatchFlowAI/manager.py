@@ -4,7 +4,7 @@ import time
 import requests
 
 # GET ALL CAMERAS IPS ENDPOINTS
-URL = "http://127.0.0.1:5000/allCamerasIps"
+URL = "http://192.168.0.13:5000/allCamerasIps"
 
 
 def thread_function(name):
@@ -18,8 +18,7 @@ def run():
     r = requests.get(url=URL)
     r = r.json()
 
-    response = r['response']
-    cameras = response['cameras']
+    cameras = r['cameras']
 
     format = "%(asctime)s: %(message)s"
     logging.basicConfig(format=format, level=logging.INFO,
@@ -33,3 +32,7 @@ def run():
 
     for ip, thread in enumerate(threads):
         thread.join()
+
+
+if __name__ == '__main__':
+    run()

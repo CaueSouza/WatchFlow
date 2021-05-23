@@ -1,7 +1,7 @@
-from Database import database
-
+from WatchFlowAPI import watchflow_api
+from WatchFlowAI import manager
 
 if __name__ == '__main__':
-    database.resetDatabase()
-
-    exec(open('watchflow_api.py').read())
+    # RUN BOTH IN DIFFERENT THREADS
+    watchflow_api.run()
+    # manager.run()
