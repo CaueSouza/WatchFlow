@@ -1,7 +1,6 @@
 import flask
 from flask import request
-import socket
-from Database import database
+import database
 from geopy.geocoders import Nominatim
 
 app = flask.Flask(__name__)
@@ -27,6 +26,11 @@ def allRunningCameras():
         return message, 200 if success else 400
     else:
         return 'Missing data', 400
+
+
+@app.route('/allCamerasIps', methods=['GET'])
+def allCamerasIps():
+    return database.getCamerasIpsAsJSON()
 
 
 @app.route('/cameraInformations', methods=['GET'])
@@ -245,5 +249,6 @@ def updateCamera():
             return 'Missing params', 400
 
 
-if __name__ == '__main__':
+def run():
+    database.resetDatabase()
     app.run(host='192.168.0.13', port=5000)

@@ -18,7 +18,7 @@ def convertToBinaryData(filename):
 
 
 def executeQuery(query, data):
-    conn = sqlite.connect('Database/database.db')
+    conn = sqlite.connect('database.db')
     cursor = conn.cursor()
 
     cursor.execute(query, data)
@@ -28,7 +28,7 @@ def executeQuery(query, data):
 
 
 def executeFetchallQuery(query, data=None):
-    conn = sqlite.connect('Database/database.db')
+    conn = sqlite.connect('database.db')
     cursor = conn.cursor()
 
     if data is not None:
@@ -44,12 +44,12 @@ def executeFetchallQuery(query, data=None):
 
 def createDatabases():
 
-    if Path('Database/database.db').is_file():
+    if Path('database.db').is_file():
         pass
 
     else:
         # conectando...
-        conn = sqlite.connect('Database/database.db')
+        conn = sqlite.connect('database.db')
 
         # definindo um cursor
         cursor = conn.cursor()
@@ -83,10 +83,10 @@ def createDatabases():
 
 
 def resetDatabase():
-    os.remove('Database/database.db')
+    os.remove('database.db')
     createDatabases()
 
-    conn = sqlite.connect('Database/database.db')
+    conn = sqlite.connect('database.db')
     cursor = conn.cursor()
 
     users_file = open('users_tcc.csv')
@@ -145,6 +145,21 @@ def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
         return (True, {'message': json_output})
     else:
         return (False, {'message': 'Invalid credentials'})
+
+
+def getCamerasIpsAsJSON():
+
+    json_list = []
+    json_output = {'cameras': json_list}
+
+    query = "SELECT * FROM cameras"
+
+    queryResult = executeFetchallQuery(query)
+    for row in queryResult:
+        json_dict = {'ip': row[1]}
+        json_list.append(json_dict)
+
+    return json_output
 
 
 def validateUserName(userName, pwd):
