@@ -9,6 +9,7 @@ from base64 import b64encode
 ENCODING = 'utf-8'
 IMAGE_NAME = 'snapshot'
 JSON_NAME = 'output.json'
+FILES_PATH = 'WatchFlowAPI/WatchFlowDatabase/'
 
 
 def convertToBinaryData(filename):
@@ -18,7 +19,7 @@ def convertToBinaryData(filename):
 
 
 def executeQuery(query, data):
-    conn = sqlite.connect('database.db')
+    conn = sqlite.connect(FILES_PATH + 'database.db')
     cursor = conn.cursor()
 
     cursor.execute(query, data)
@@ -28,7 +29,7 @@ def executeQuery(query, data):
 
 
 def executeFetchallQuery(query, data=None):
-    conn = sqlite.connect('database.db')
+    conn = sqlite.connect(FILES_PATH + 'database.db')
     cursor = conn.cursor()
 
     if data is not None:
@@ -44,12 +45,12 @@ def executeFetchallQuery(query, data=None):
 
 def createDatabases():
 
-    if Path('database.db').is_file():
+    if Path(FILES_PATH + 'database.db').is_file():
         pass
 
     else:
         # conectando...
-        conn = sqlite.connect('database.db')
+        conn = sqlite.connect(FILES_PATH + 'database.db')
 
         # definindo um cursor
         cursor = conn.cursor()
@@ -83,13 +84,13 @@ def createDatabases():
 
 
 def resetDatabase():
-    os.remove('database.db')
+    os.remove(FILES_PATH + 'database.db')
     createDatabases()
 
-    conn = sqlite.connect('database.db')
+    conn = sqlite.connect(FILES_PATH + 'database.db')
     cursor = conn.cursor()
 
-    users_file = open('users_tcc.csv')
+    users_file = open(FILES_PATH + 'users_tcc.csv')
     users_rows = csv.reader(users_file)
 
     sql = """INSERT INTO users (userName, pwd, type, latitude, longitude, logged)
@@ -97,7 +98,7 @@ def resetDatabase():
 
     cursor.executemany(sql, users_rows)
 
-    cams_file = open('cameras.csv')
+    cams_file = open(FILES_PATH + 'cameras.csv')
     cams_rows = csv.reader(cams_file)
 
     cursor.executemany(
@@ -106,8 +107,8 @@ def resetDatabase():
 
     conn.commit()
 
-    img_data1 = convertToBinaryData('cat.jpg')
-    img_data2 = convertToBinaryData('dog.jpg')
+    img_data1 = convertToBinaryData(FILES_PATH + 'cat.jpg')
+    img_data2 = convertToBinaryData(FILES_PATH + 'dog.jpg')
     _, retorno = userLogin('admin', 'admin', 23.5505, 46.6333)
 
     updateCamera(retorno['userId'], 'admin',

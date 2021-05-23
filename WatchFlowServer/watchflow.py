@@ -1,5 +1,5 @@
-import watchflow_api
-import manager
+from WatchFlowAPI import watchflow_api
+from WatchFlowAI import manager
 
 if __name__ == '__main__':
     # RUN BOTH IN DIFFERENT THREADS

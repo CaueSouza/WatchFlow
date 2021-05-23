@@ -1,6 +1,6 @@
 import flask
 from flask import request
-import database
+from .WatchFlowDatabase import database
 from geopy.geocoders import Nominatim
 
 app = flask.Flask(__name__)
