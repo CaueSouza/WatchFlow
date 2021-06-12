@@ -8,13 +8,15 @@ app.config["DEBUG"] = True
 
 locator = Nominatim(user_agent='WatchFlow')
 
+AUTHORIZATION = "Authorization"
+
 
 @app.route('/allRunningCameras', methods=['GET'])
 def allRunningCameras():
-    if 'Authentication' not in request.headers:
+    if AUTHORIZATION not in request.headers:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
 
     neededKeys = {'requesterUserId', 'requesterPwd'}
 
@@ -35,10 +37,10 @@ def allCamerasIps():
 
 @app.route('/cameraInformations', methods=['GET'])
 def cameraInformations():
-    if 'Authentication' not in request.headers:
+    if AUTHORIZATION not in request.headers:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
 
     neededHeadersKeys = {'requesterUserId', 'requesterPwd', 'cameraIp'}
 
@@ -48,7 +50,7 @@ def cameraInformations():
             requesterPwd=headers['requesterPwd'],
             cameraIp=headers['cameraIp'])
 
-        print(message)
+        # print(message)
 
         return message, 200
 
@@ -58,10 +60,10 @@ def cameraInformations():
 
 @app.route('/usersPositions', methods=['GET'])
 def usersPositions():
-    if 'Authentication' not in request.headers:
+    if AUTHORIZATION not in request.headers:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
 
     neededKeys = {'requesterUserId', 'requesterPwd'}
 
@@ -79,10 +81,10 @@ def usersPositions():
 @app.route('/userLogin', methods=['POST'])
 def userLogin():
 
-    if 'Authentication' not in request.headers or request.get_json() is None:
+    if AUTHORIZATION not in request.headers or request.get_json() is None:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
     body = request.get_json()
 
     neededHeadersKeys = {'userName', 'pwd'}
@@ -102,10 +104,10 @@ def userLogin():
 
 @app.route('/userLogout', methods=['POST'])
 def userLogout():
-    if 'Authentication' not in request.headers:
+    if AUTHORIZATION not in request.headers:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
 
     neededKeys = {'requesterUserId', 'requesterPwd'}
 
@@ -121,10 +123,10 @@ def userLogout():
 
 @app.route('/registerUser', methods=['POST'])
 def registerUser():
-    if 'Authentication' not in request.headers or request.get_json() is None:
+    if AUTHORIZATION not in request.headers or request.get_json() is None:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
     body = request.get_json()
 
     neededHeadersKeys = {'requesterUserId', 'requesterPwd'}
@@ -146,10 +148,10 @@ def registerUser():
 
 @app.route('/deleteUser', methods=['DELETE'])
 def deleteUser():
-    if 'Authentication' not in request.headers:
+    if AUTHORIZATION not in request.headers:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
 
     neededHeadersKeys = {'requesterUserId', 'requesterPwd', 'oldUserName'}
 
@@ -167,10 +169,10 @@ def deleteUser():
 
 @app.route('/registerCamera', methods=['POST'])
 def registerCamera():
-    if 'Authentication' not in request.headers or request.get_json() is None:
+    if AUTHORIZATION not in request.headers or request.get_json() is None:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
     body = request.get_json()
 
     neededHeadersKeys = {'requesterUserId', 'requesterPwd'}
@@ -200,10 +202,10 @@ def registerCamera():
 
 @app.route('/deleteCamera', methods=['DELETE'])
 def deleteCamera():
-    if 'Authentication' not in request.headers:
+    if AUTHORIZATION not in request.headers:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
 
     neededHeadersKeys = {'requesterUserId', 'requesterPwd', 'cameraIp'}
 
@@ -219,7 +221,7 @@ def deleteCamera():
         return 'Missing params', 400
 
 
-@app.route('/updateCamera', methods=['POST'])
+@app.route('/updateCamera', methods=['POST'])  # UNFINISHED REQUEST
 def updateCamera():
     dataJson = request.get_json()
     dataArgs = request.args.to_dict()

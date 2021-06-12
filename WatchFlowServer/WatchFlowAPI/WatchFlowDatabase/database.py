@@ -107,8 +107,8 @@ def resetDatabase():
 
     conn.commit()
 
-    img_data1 = convertToBinaryData(FILES_PATH + 'cat.jpg')
-    img_data2 = convertToBinaryData(FILES_PATH + 'dog.jpg')
+    img_data1 = convertToBinaryData(FILES_PATH + 'img1.jpg')
+    img_data2 = convertToBinaryData(FILES_PATH + 'img2.jpg')
     _, retorno = userLogin('admin', 'admin', 23.5505, 46.6333)
 
     updateCamera(retorno['userId'], 'admin',

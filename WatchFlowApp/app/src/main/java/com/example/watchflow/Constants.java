@@ -9,7 +9,7 @@ public class Constants {
     public static final String EMPTY_STRING = "";
     public static final String USER_TYPE = "userType";
     public static final Integer ADM_TYPE = 1;
-    public static final String AUTHORIZATION = "authentication";
+    public static final String AUTHORIZATION = "authorization";
     public static final String OPERATION = "operation";
     public static final String IMAGE = "image";
     public static final int CREATE_USER_OPERATION = 1;

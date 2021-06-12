@@ -2,6 +2,8 @@ import logging
 import threading
 import time
 import requests
+# from .ImageDetection import imgDetection
+# from PIL import Image
 
 # GET ALL CAMERAS IPS ENDPOINTS
 URL = "http://192.168.0.13:5000/allCamerasIps"
@@ -9,6 +11,7 @@ URL = "http://192.168.0.13:5000/allCamerasIps"
 
 def thread_function(name):
     logging.info("Thread %s: starting", name)
+#    imgDetection.runImgDetection(imagem=Image.open("img1.jpg"))
     time.sleep(2)
     logging.info("Thread %s: finishing", name)
 
