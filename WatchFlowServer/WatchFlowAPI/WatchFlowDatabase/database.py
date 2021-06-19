@@ -75,10 +75,21 @@ def createDatabases():
                 ip TEXT NOT NULL,
                 latitude REAL NOT NULL,
                 longitude REAL NOT NULL,
-                snapshot BLOB
+                snapshot BLOB,
+                total INTEGER,
+                articulated_truck INTEGER,
+                bicycle INTEGER,
+                bus INTEGER,
+                car INTEGER,
+                motorcycle INTEGER,
+                motorized_vehicle INTEGER,
+                non_motorized_vehicle INTEGER,
+                pedestrian INTEGER,
+                pickup_truck INTEGER,
+                single_unit_truck INTEGER,
+                work_van INTEGER
         );
         """)
-
         # desconectando...
         cursor.close()
 
@@ -104,6 +115,22 @@ def resetDatabase():
     cursor.executemany(
         "INSERT INTO cameras (ip, latitude, longitude) VALUES (?, ?, ?)",
         cams_rows)
+
+    cursor.execute("""
+        UPDATE cameras
+        SET total = 0,
+            articulated_truck = 0,
+            bicycle = 0,
+            bus = 0,
+            car = 0,
+            motorcycle = 0,
+            motorized_vehicle = 0,
+            non_motorized_vehicle = 0,
+            pedestrian = 0,
+            pickup_truck = 0,
+            single_unit_truck = 0,
+            work_van = 0
+    """)
 
     conn.commit()
 

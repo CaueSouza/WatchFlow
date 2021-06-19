@@ -76,7 +76,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap.setOnMarkerClickListener(marker -> {
             String markerTitle = marker.getTitle();
 
-            if (!markerTitle.equals(getString(R.string.your_position))){
+            if (markerTitle != null && !markerTitle.equals(getString(R.string.your_position)) &&
+                    marker.getTag() != null && ((int) marker.getTag()) != 1) {
                 viewModel.getCameraInformation(markerTitle);
             }
 
@@ -123,7 +124,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             LatLng location = new LatLng(user.getLatitude(), user.getLongitude());
             mMap.addMarker(new MarkerOptions().position(location)
                     .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.ic_car_pin)))
-                    .title(user.getUserName())).setTag(0);
+                    .title(user.getUserName())).setTag(1);
         }
     }
 
