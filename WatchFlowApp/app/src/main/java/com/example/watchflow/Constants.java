@@ -18,7 +18,7 @@ public class Constants {
     public static final int DELETE_CAM_OPERATION = 4;
 
     //ENDPOINTS
-    public static final String BASE_URL = "http://192.168.0.13:5000";
+    public static final String BASE_URL = "http://192.168.0.16:5000";
     public static final String ALL_RUNNING_CAMERAS_ENDPOINT = "/allRunningCameras";
     public static final String USER_LOGIN_ENDPOINT = "/userLogin";
     public static final String USER_LOGOUT_ENDPOINT = "/userLogout";

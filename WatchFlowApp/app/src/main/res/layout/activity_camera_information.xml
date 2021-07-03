@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -15,6 +16,7 @@
         android:background="@color/colorSecondary">
 
         <FrameLayout
+            android:id="@+id/cam_info_frame_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp"
@@ -26,12 +28,51 @@
                 android:id="@+id/cam_info_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:imageUrl="@{viewModel.image}"
+                android:adjustViewBounds="true"
                 android:background="@drawable/image_view_border"
-                android:adjustViewBounds="true"/>
+                app:imageUrl="@{viewModel.image}" />
         </FrameLayout>
 
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cam_info_frame_layout">
 
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/cam_basic_info_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Dados da camera"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/camera_data_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/cam_advanced_info_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Dados de reconhecimento"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recognition_data_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
