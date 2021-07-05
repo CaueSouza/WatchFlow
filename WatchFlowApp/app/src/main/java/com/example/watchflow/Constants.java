@@ -12,6 +12,7 @@ public class Constants {
     public static final String AUTHORIZATION = "authorization";
     public static final String OPERATION = "operation";
     public static final String IMAGE = "image";
+    public static final String MARKER_TITLE_IP = "marker_title_ip";
     public static final int CREATE_USER_OPERATION = 1;
     public static final int DELETE_USER_OPERATION = 2;
     public static final int CREATE_CAM_OPERATION = 3;

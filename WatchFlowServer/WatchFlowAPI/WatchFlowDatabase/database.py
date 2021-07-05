@@ -418,7 +418,21 @@ def cameraInformations(requesterUserId, requesterPwd, cameraIp):
 
         query = """
                 SELECT
-                    snapshot
+                    snapshot,
+                    latitude,
+                    longitude,
+                    total,
+                    articulated_truck,
+                    bicycle,
+                    bus,
+                    car,
+                    motorcycle,
+                    motorized_vehicle,
+                    non_motorized_vehicle,
+                    pedestrian,
+                    pickup_truck,
+                    single_unit_truck,
+                    work_van
                 FROM
                     cameras
                 WHERE
@@ -433,6 +447,26 @@ def cameraInformations(requesterUserId, requesterPwd, cameraIp):
 
         base64_string = response.decode(ENCODING)
         raw_data = {IMAGE_NAME: base64_string}
+
+        raw_data['latitude'] = queryResult[0][1]
+        raw_data['longitude'] = queryResult[0][2]
+
+        recognitions = {}
+        recognitions['total'] = queryResult[0][3]
+        recognitions['articulated_truck'] = queryResult[0][4]
+        recognitions['bicycle'] = queryResult[0][5]
+        recognitions['bus'] = queryResult[0][6]
+        recognitions['car'] = queryResult[0][7]
+        recognitions['motorcycle'] = queryResult[0][8]
+        recognitions['motorized_vehicle'] = queryResult[0][9]
+        recognitions['non_motorized_vehicle'] = queryResult[0][10]
+        recognitions['pedestrian'] = queryResult[0][11]
+        recognitions['pickup_truck'] = queryResult[0][12]
+        recognitions['single_unit_truck'] = queryResult[0][13]
+        recognitions['work_van'] = queryResult[0][14]
+
+        raw_data['recognitions'] = recognitions
+
         json_data = dumps(raw_data)
 
         return (True, json_data)

@@ -8,7 +8,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.watchflow.R;
 import com.example.watchflow.databinding.ActivityCameraInformationBinding;
@@ -16,6 +15,7 @@ import com.example.watchflow.databinding.ActivityCameraInformationBinding;
 import java.util.ArrayList;
 
 import static com.example.watchflow.Constants.IMAGE;
+import static com.example.watchflow.Constants.MARKER_TITLE_IP;
 
 public class CameraInformationActivity extends AppCompatActivity {
 
@@ -40,8 +40,10 @@ public class CameraInformationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().show();
 
-        viewModel.getImage().setValue(getIntent().getStringExtra(IMAGE));
+        initBindings();
+    }
 
+    private void initBindings() {
         binding.cameraDataRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cameraDataArrayList = new ArrayList<>();
         cameraDataAdapter = new DataAdapter(this, cameraDataArrayList);
@@ -54,10 +56,12 @@ public class CameraInformationActivity extends AppCompatActivity {
         binding.recognitionDataRecyclerView.setAdapter(recognitionDataAdapter);
         binding.recognitionDataRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-        createListData();
+        createDataRequests();
     }
 
-    private void createListData() {
+    private void createDataRequests() {
+        viewModel.getCameraInformation(getIntent().getStringExtra(MARKER_TITLE_IP));
+
         Data data = new Data("IP", "127.0.0.1");
         Data data2 = new Data("Rua", "visconde");
         cameraDataArrayList.add(data);
