@@ -14,7 +14,6 @@ import com.example.watchflow.databinding.ActivityCameraInformationBinding;
 
 import java.util.ArrayList;
 
-import static com.example.watchflow.Constants.IMAGE;
 import static com.example.watchflow.Constants.MARKER_TITLE_IP;
 
 public class CameraInformationActivity extends AppCompatActivity {
@@ -22,10 +21,11 @@ public class CameraInformationActivity extends AppCompatActivity {
     ActivityCameraInformationBinding binding;
     CameraInformationViewModel viewModel;
 
-    private DataAdapter cameraDataAdapter;
+    private DataAdapter localizationDataAdapter;
     private DataAdapter recognitionDataAdapter;
-    private ArrayList<Data> cameraDataArrayList;
+    private ArrayList<Data> localizationDataArrayList;
     private ArrayList<Data> recognitionDataArrayList;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,11 +44,11 @@ public class CameraInformationActivity extends AppCompatActivity {
     }
 
     private void initBindings() {
-        binding.cameraDataRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        cameraDataArrayList = new ArrayList<>();
-        cameraDataAdapter = new DataAdapter(this, cameraDataArrayList);
-        binding.cameraDataRecyclerView.setAdapter(cameraDataAdapter);
-        binding.cameraDataRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        binding.localizationDataRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        localizationDataArrayList = new ArrayList<>();
+        localizationDataAdapter = new DataAdapter(this, localizationDataArrayList);
+        binding.localizationDataRecyclerView.setAdapter(localizationDataAdapter);
+        binding.localizationDataRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
         binding.recognitionDataRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         recognitionDataArrayList = new ArrayList<>();
@@ -62,15 +62,17 @@ public class CameraInformationActivity extends AppCompatActivity {
     private void createDataRequests() {
         viewModel.getCameraInformation(getIntent().getStringExtra(MARKER_TITLE_IP));
 
-        Data data = new Data("IP", "127.0.0.1");
-        Data data2 = new Data("Rua", "visconde");
-        cameraDataArrayList.add(data);
-        cameraDataArrayList.add(data2);
+        viewModel.getLocalizationData().observe(this, vmArrayList -> {
+            localizationDataArrayList.clear();
+            localizationDataArrayList.addAll(vmArrayList);
+            localizationDataAdapter.notifyDataSetChanged();
+        });
 
-        Data data3 = new Data("Carros", "13");
-        Data data4 = new Data("Motos", "5");
-        recognitionDataArrayList.add(data3);
-        recognitionDataArrayList.add(data4);
+        viewModel.getRecognitionData().observe(this, vmArrayList -> {
+            recognitionDataArrayList.clear();
+            recognitionDataArrayList.addAll(vmArrayList);
+            recognitionDataAdapter.notifyDataSetChanged();
+        });
     }
 
     @Override

@@ -53,6 +53,36 @@ public class Constants {
     public static final String CITY = "city";
     public static final String COUNTRY = "country";
 
+    //RECOGNITIONS FIELDS
+    public static final String TOTAL = "total";
+    public static final String ARTICULATED_TRUCK = "articulated_truck";
+    public static final String BICYCLE = "bicycle";
+    public static final String BUS = "bus";
+    public static final String CAR = "car";
+    public static final String MOTORCYCLE = "motorcycle";
+    public static final String MOTORIZED_VEHICLE = "motorized_vehicle";
+    public static final String NON_MOTORIZED_VEHICLE = "non_motorized_vehicle";
+    public static final String PEDESTRIAN = "pedestrian";
+    public static final String PICKUP_TRUCK = "pickup_truck";
+    public static final String SINGLE_UNIT_TRUCK = "single_unit_truck";
+    public static final String WORK_VAN = "work_van";
+
+    public static final List<String> RECOGNITION_FIELDS = new ArrayList<String>() {{
+        add(TOTAL);
+        add(ARTICULATED_TRUCK);
+        add(BICYCLE);
+        add(BUS);
+        add(CAR);
+        add(MOTORCYCLE);
+        add(MOTORIZED_VEHICLE);
+        add(NON_MOTORIZED_VEHICLE);
+        add(PEDESTRIAN);
+        add(PICKUP_TRUCK);
+        add(SINGLE_UNIT_TRUCK);
+        add(WORK_VAN);
+    }};
+
+
     public static final List<String> COMMON_HEADER_FIELDS = new ArrayList<String>() {{
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);

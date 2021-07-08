@@ -65,4 +65,23 @@
 
 <!--    GET CAMERA INFORMATIONS-->
     <string name="camera_informations_fail_message">Erro ao receber dados</string>
+
+<!--    RECOGNITIONS-->
+    <string name="address_title">Endereço:</string>
+    <string name="recognitions_total">Total:</string>
+    <string name="recognitions_articulated_truck">Caminhões Articulados:</string>
+    <string name="recognitions_bicycle">Bicicletas:</string>
+    <string name="recognitions_bus">Ônibus:</string>
+    <string name="recognitions_car">Carros:</string>
+    <string name="recognitions_motorcycle">Motocicletas:</string>
+    <string name="recognitions_motorized_vehicle">Veículos Motorizados:</string>
+    <string name="recognitions_non_motorized_vehicle">Veículos Não Motorizados:</string>
+    <string name="recognitions_pedestrian">Pedestres:</string>
+    <string name="recognitions_pickup_truck">Picapes:</string>
+    <string name="recognitions_single_unit_truck">Caminhões de unidade única:</string>
+    <string name="recognitions_work_van">Vans:</string>
+
+
+    <string name="camera_localization">Dados de Localização</string>
+    <string name="camera_recognitions">Dados de Reconhecimento</string>
 </resources>

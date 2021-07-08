@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
@@ -36,41 +37,44 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:paddingEnd="20dp"
             android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cam_info_frame_layout">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@color/colorSecondary"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/cam_basic_info_title"
+                    style="@style/info_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="Dados da camera"/>
+                    android:text="@string/camera_localization"
+                    android:visibility="@{viewModel.localizationData.size() > 0 ? View.VISIBLE : View.GONE, default=gone}" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/camera_data_recycler_view"
+                    android:id="@+id/localization_data_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/cam_advanced_info_title"
+                    style="@style/info_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="Dados de reconhecimento"/>
+                    android:text="@string/camera_recognitions"
+                    android:visibility="@{viewModel.recognitionData.size() > 0 ? View.VISIBLE : View.GONE, default=gone}" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recognition_data_recycler_view"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
