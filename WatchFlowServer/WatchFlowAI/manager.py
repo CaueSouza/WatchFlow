@@ -1,27 +1,24 @@
+from WatchFlowAPI.WatchFlowDatabase import database
 import logging
 import threading
-import time
-import requests
-# from .ImageDetection import imgDetection
-# from PIL import Image
-
-# GET ALL CAMERAS IPS ENDPOINTS
-URL = "http://192.168.0.13:5000/allCamerasIps"
+from .ImageDetection import imgDetection
+import cv2
 
 
-def thread_function(name):
-    logging.info("Thread %s: starting", name)
-#    imgDetection.runImgDetection(imagem=Image.open("img1.jpg"))
-    time.sleep(2)
-    logging.info("Thread %s: finishing", name)
+def evalCamera(name):
+    logging.info("Thread %s: starting", name['ip'])
+
+    rec = imgDetection.runImgDetection(imagem=cv2.imread(
+        'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\img1.jpg'))
+    print(rec)
+
+    logging.info("Thread %s: finishing", name['ip'])
+
+# def saveReconToDB():
 
 
 def run():
-
-    r = requests.get(url=URL)
-    r = r.json()
-
-    cameras = r['cameras']
+    cameras = database.getCamerasIpsAsJSON()['cameras']
 
     format = "%(asctime)s: %(message)s"
     logging.basicConfig(format=format, level=logging.INFO,
@@ -29,7 +26,7 @@ def run():
 
     threads = list()
     for ip in cameras:
-        x = threading.Thread(target=thread_function, args=(ip,))
+        x = threading.Thread(target=evalCamera, args=(ip,))
         threads.append(x)
         x.start()
 

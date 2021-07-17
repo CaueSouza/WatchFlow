@@ -253,4 +253,4 @@ def updateCamera():
 
 def run():
     database.resetDatabase()
-    app.run(host='192.168.0.16', port=5000)
+    app.run(host='192.168.0.17', port=5000)
