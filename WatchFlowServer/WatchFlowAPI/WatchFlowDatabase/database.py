@@ -134,8 +134,8 @@ def resetDatabase():
 
     conn.commit()
 
-    img_data1 = convertToBinaryData(FILES_PATH + 'img2.jpg')
-    img_data2 = convertToBinaryData(FILES_PATH + 'img1.jpg')
+    img_data1 = convertToBinaryData(FILES_PATH + 'img1.jpg')
+    img_data2 = convertToBinaryData(FILES_PATH + 'img2.jpg')
     _, retorno = userLogin('admin', 'admin', -19.9167, -43.9345)
 
     updateCamera(retorno['userId'], 'admin',
@@ -148,7 +148,6 @@ def resetDatabase():
 
 
 def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
-
     if validateUser(requesterUserId, requesterPwd):
 
         json_list = []
@@ -175,21 +174,6 @@ def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
         return (False, {'message': 'Invalid credentials'})
 
 
-def getCamerasIpsAsJSON():
-
-    json_list = []
-    json_output = {'cameras': json_list}
-
-    query = "SELECT * FROM cameras"
-
-    queryResult = executeFetchallQuery(query)
-    for row in queryResult:
-        json_dict = {'ip': row[1]}
-        json_list.append(json_dict)
-
-    return json_output
-
-
 def validateUserName(userName, pwd):
     query = """
             SELECT
@@ -211,7 +195,6 @@ def validateUserName(userName, pwd):
 
 
 def validateUser(userId, pwd, shouldValidateAdmin=False):
-
     query = """
             SELECT
                 type
@@ -239,7 +222,6 @@ def validateUser(userId, pwd, shouldValidateAdmin=False):
 
 def createUser(requesterUserId, requesterPwd, newUserName, newUserPwd,
                userType):
-
     if validateUser(requesterUserId, requesterPwd, shouldValidateAdmin=True):
         query = """
                 INSERT INTO
@@ -259,7 +241,6 @@ def createUser(requesterUserId, requesterPwd, newUserName, newUserPwd,
 
 
 def deleteUser(requesterUserId, requesterPwd, oldUserName):
-
     if validateUser(requesterUserId, requesterPwd, shouldValidateAdmin=True):
         query = """
                 DELETE FROM
@@ -279,7 +260,6 @@ def deleteUser(requesterUserId, requesterPwd, oldUserName):
 
 
 def userLogin(userName, pwd, latitude, longitude):
-
     if validateUserName(userName, pwd):
         userId = str(uuid.uuid4())
 
@@ -328,7 +308,6 @@ def userLogout(requesterUserId, requesterPwd):
 
 
 def createCamera(requesterUserId, requesterPwd, cameraIp, latitude, longitude):
-
     if validateUser(requesterUserId, requesterPwd, shouldValidateAdmin=True):
         query = """
                 INSERT INTO
@@ -348,7 +327,6 @@ def createCamera(requesterUserId, requesterPwd, cameraIp, latitude, longitude):
 
 
 def deleteCamera(requesterUserId, requesterPwd, cameraIp):
-
     if validateUser(requesterUserId, requesterPwd, shouldValidateAdmin=True):
         query = "DELETE FROM cameras WHERE ip=?"
 
@@ -472,3 +450,55 @@ def cameraInformations(requesterUserId, requesterPwd, cameraIp):
         return (True, json_data)
     else:
         return (False, {'message': 'Invalid credentials'})
+
+
+def getCamerasIpsAsJSON():
+    json_list = []
+    json_output = {'cameras': json_list}
+
+    query = "SELECT * FROM cameras"
+
+    queryResult = executeFetchallQuery(query)
+    for row in queryResult:
+        json_dict = {'ip': row[1]}
+        json_list.append(json_dict)
+
+    return json_output
+
+
+def saveReconToDatabase(cameraIp, recognitions):
+    query = """
+            UPDATE
+                cameras
+            SET
+                total=?,
+                articulated_truck=?,
+                bicycle=?,
+                bus=?,
+                car=?,
+                motorcycle=?,
+                motorized_vehicle=?,
+                non_motorized_vehicle=?,
+                pedestrian=?,
+                pickup_truck=?,
+                single_unit_truck=?,
+                work_van=?
+            WHERE
+                ip=?
+    """
+
+    data = (int(recognitions['total']),
+            int(recognitions['articulated_truck']),
+            int(recognitions['bicycle']),
+            int(recognitions['bus']),
+            int(recognitions['car']),
+            int(recognitions['motorcycle']),
+            int(recognitions['motorized_vehicle']),
+            int(recognitions['non-motorized_vehicle']),
+            int(recognitions['pedestrian']),
+            int(recognitions['pickup_truck']),
+            int(recognitions['single_unit_truck']),
+            int(recognitions['work_van']),
+            cameraIp)
+
+    executeQuery(query, data)

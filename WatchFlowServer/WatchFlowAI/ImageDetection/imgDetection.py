@@ -57,4 +57,6 @@ def runImgDetection(imagem):
     for key in recognitions:
         recognitions[key] = allDetections[LABELS.index(key)]
 
+    recognitions['total'] = len(objs)
+
     return recognitions

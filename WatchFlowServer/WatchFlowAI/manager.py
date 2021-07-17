@@ -3,18 +3,26 @@ import logging
 import threading
 from .ImageDetection import imgDetection
 import cv2
+sem = threading.Semaphore()
 
 
 def evalCamera(name):
     logging.info("Thread %s: starting", name['ip'])
 
-    rec = imgDetection.runImgDetection(imagem=cv2.imread(
-        'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\img1.jpg'))
+    # TODO RECEIVE SNAPSHOT FROM DB AND AS A IMG PASS THROUGH]
+    if name['ip'] == '127.0.0.1':
+        rec = imgDetection.runImgDetection(imagem=cv2.imread(
+            'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\img1.jpg'))
+    elif name['ip'] == '127.0.0.2':
+        rec = imgDetection.runImgDetection(imagem=cv2.imread(
+            'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\img2.jpg'))
+
     print(rec)
+    # sem.acquire()
+    database.saveReconToDatabase(name['ip'], rec)
+    # sem.release()
 
     logging.info("Thread %s: finishing", name['ip'])
-
-# def saveReconToDB():
 
 
 def run():

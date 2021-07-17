@@ -30,11 +30,6 @@ def allRunningCameras():
         return 'Missing data', 400
 
 
-@app.route('/allCamerasIps', methods=['GET'])
-def allCamerasIps():
-    return database.getCamerasIpsAsJSON()
-
-
 @app.route('/cameraInformations', methods=['GET'])
 def cameraInformations():
     if AUTHORIZATION not in request.headers:
@@ -49,8 +44,6 @@ def cameraInformations():
             requesterUserId=headers['requesterUserId'],
             requesterPwd=headers['requesterPwd'],
             cameraIp=headers['cameraIp'])
-
-        # print(message)
 
         return message, 200
 
