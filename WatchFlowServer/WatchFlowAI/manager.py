@@ -1,27 +1,32 @@
+from WatchFlowAPI.WatchFlowDatabase import database
 import logging
 import threading
-import time
-import requests
-# from .ImageDetection import imgDetection
-# from PIL import Image
-
-# GET ALL CAMERAS IPS ENDPOINTS
-URL = "http://192.168.0.13:5000/allCamerasIps"
+from .ImageDetection import imgDetection
+import cv2
+sem = threading.Semaphore()
 
 
-def thread_function(name):
-    logging.info("Thread %s: starting", name)
-#    imgDetection.runImgDetection(imagem=Image.open("img1.jpg"))
-    time.sleep(2)
-    logging.info("Thread %s: finishing", name)
+def evalCamera(name):
+    logging.info("Thread %s: starting", name['ip'])
+
+    # TODO RECEIVE SNAPSHOT FROM DB AND AS A IMG PASS THROUGH]
+    if name['ip'] == '127.0.0.1':
+        rec = imgDetection.runImgDetection(imagem=cv2.imread(
+            'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\img1.jpg'))
+    elif name['ip'] == '127.0.0.2':
+        rec = imgDetection.runImgDetection(imagem=cv2.imread(
+            'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\img2.jpg'))
+
+    print(rec)
+    # sem.acquire()
+    database.saveReconToDatabase(name['ip'], rec)
+    # sem.release()
+
+    logging.info("Thread %s: finishing", name['ip'])
 
 
 def run():
-
-    r = requests.get(url=URL)
-    r = r.json()
-
-    cameras = r['cameras']
+    cameras = database.getCamerasIpsAsJSON()['cameras']
 
     format = "%(asctime)s: %(message)s"
     logging.basicConfig(format=format, level=logging.INFO,
@@ -29,7 +34,7 @@ def run():
 
     threads = list()
     for ip in cameras:
-        x = threading.Thread(target=thread_function, args=(ip,))
+        x = threading.Thread(target=evalCamera, args=(ip,))
         threads.append(x)
         x.start()
 

@@ -12,11 +12,12 @@ LABELS = open(labels_path).read().strip().split('\n')
 THRESHOLD = 0.5
 THRESHOLD_NMS = 0.3
 
-net = cv2.dnn.readNet(config_path, weigths_path)
-ln = net.getLayerNames()
-
 
 def runImgDetection(imagem):
+    net = cv2.dnn.readNet(config_path, weigths_path)
+    ln = net.getLayerNames()
+    ln = [ln[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+
     allDetections = np.zeros((len(LABELS), ), dtype=int)
     caixas = []
     confiancas = []
@@ -31,11 +32,9 @@ def runImgDetection(imagem):
 
     for output in layer_outputs:
         for detection in output:
-
             scores = detection[5:]
             classeId = np.argmax(scores)
             confianca = scores[classeId]
-
             if confianca > THRESHOLD:
 
                 caixa = detection[0:4] * np.array([w, h, w, h])
@@ -57,5 +56,7 @@ def runImgDetection(imagem):
     recognitions = {name: 0 for name in LABELS}
     for key in recognitions:
         recognitions[key] = allDetections[LABELS.index(key)]
+
+    recognitions['total'] = len(objs)
 
     return recognitions
