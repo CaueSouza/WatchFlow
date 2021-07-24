@@ -1,3 +1,4 @@
+from cv2 import data
 from WatchFlowAPI.WatchFlowDatabase import database
 import logging
 import threading
@@ -5,24 +6,39 @@ from .ImageDetection import imgDetection
 import cv2
 sem = threading.Semaphore()
 
+IMAGE1 = 'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\img1.jpg'
+IMAGE2 = 'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\img2.jpg'
+VIDEO1 = 'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\\video1.mp4'
+VIDEO2 = 'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\\video2.mp4'
+TEST_VID = 'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\\testvid.mp4'
+
 
 def evalCamera(name):
-    logging.info("Thread %s: starting", name['ip'])
+    IP = name['ip']
+    logging.info("Thread %s: starting", IP)
 
-    # TODO RECEIVE SNAPSHOT FROM DB AND AS A IMG PASS THROUGH]
-    if name['ip'] == '127.0.0.1':
-        rec = imgDetection.runImgDetection(imagem=cv2.imread(
-            'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\img1.jpg'))
-    elif name['ip'] == '127.0.0.2':
-        rec = imgDetection.runImgDetection(imagem=cv2.imread(
-            'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\img2.jpg'))
+    # TODO RECEIVE SNAPSHOT FROM DB AND AS A IMG PASS THROUGH
 
-    print(rec)
-    # sem.acquire()
-    database.saveReconToDatabase(name['ip'], rec)
-    # sem.release()
+    # CODE FOR MOCKED VIDEOS RECOGNITIONS
+    # if IP == '127.0.0.1':
+    #     recognitions, frame = imgDetection.runVideoDetection(TEST_VID)
+    # else:
+    #     recognitions, frame = imgDetection.runVideoDetection(TEST_VID)
 
-    logging.info("Thread %s: finishing", name['ip'])
+    recognitions, frame = imgDetection.runVideoDetection(TEST_VID)
+    database.saveReconToDatabase(IP, recognitions)
+    database.saveFrameToDatabase(IP, frame)
+
+    # # CODE FOR MOCKED IMAGES RECOGNITIONS
+    # image = cv2.imread(IMAGE1 if name['ip'] == '127.0.0.1' else IMAGE2)
+    # rec = imgDetection.runImgDetection(image)
+
+    # print(rec)
+    # # sem.acquire()
+    # database.saveReconToDatabase(name['ip'], rec)
+    # # sem.release()
+
+    logging.info("Thread %s: finishing", IP)
 
 
 def run():
