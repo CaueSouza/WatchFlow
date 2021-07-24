@@ -214,36 +214,6 @@ def deleteCamera():
         return 'Missing params', 400
 
 
-@app.route('/updateCamera', methods=['POST'])  # UNFINISHED REQUEST
-def updateCamera():
-    dataJson = request.get_json()
-    dataArgs = request.args.to_dict()
-
-    if dataJson is None and not bool(dataArgs):
-        return 'Missing params', 400
-
-    else:
-        if not bool(dataArgs):
-            data = dataJson
-        else:
-            data = dataArgs
-
-        neededKeys = {'requesterUserId',
-                      'requesterPwd', 'cameraIp', 'snapshot'}
-
-        if neededKeys <= data.keys():
-            success, message = database.updateCamera(
-                requesterUserId=data['requesterUserId'],
-                requesterPwd=data['requesterPwd'],
-                cameraIp=data['cameraIp'],
-                snapshot=data['snapshot'])
-
-            return message, 200 if success else 400
-
-        else:
-            return 'Missing params', 400
-
-
 def run():
     database.resetDatabase()
     app.run(host='192.168.0.17', port=5000)

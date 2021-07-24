@@ -1,3 +1,4 @@
+import io
 import sqlite3 as sqlite
 from pathlib import Path
 import csv
@@ -5,6 +6,8 @@ import os
 import uuid
 from json import dumps
 from base64 import b64encode
+from PIL import Image
+import cv2
 
 ENCODING = 'utf-8'
 IMAGE_NAME = 'snapshot'
@@ -16,6 +19,15 @@ def convertToBinaryData(filename):
     with open(filename, 'rb') as file:
         blobData = file.read()
     return blobData
+
+
+def convertFrameToBinaryData(frame):
+    color_converted = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    snapshot = Image.fromarray(color_converted)
+    b = io.BytesIO()
+    snapshot.save(b, 'jpeg')
+    im_bytes = b.getvalue()
+    return im_bytes
 
 
 def executeQuery(query, data):
@@ -500,5 +512,23 @@ def saveReconToDatabase(cameraIp, recognitions):
             int(recognitions['single_unit_truck']),
             int(recognitions['work_van']),
             cameraIp)
+
+    executeQuery(query, data)
+
+
+def saveFrameToDatabase(cameraIp, frame):
+    # Converting frame to image
+    binary_snapshot = convertFrameToBinaryData(frame)
+
+    query = """
+            UPDATE
+                cameras
+            SET
+                snapshot=?
+            WHERE
+                ip=?
+    """
+
+    data = (b64encode(binary_snapshot), cameraIp)
 
     executeQuery(query, data)
