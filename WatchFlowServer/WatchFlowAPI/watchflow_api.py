@@ -1,12 +1,12 @@
 import flask
 from flask import request
 from .WatchFlowDatabase import database
-from geopy.geocoders import Nominatim
+from googlegeocoder import GoogleGeocoder
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-locator = Nominatim(user_agent='WatchFlow')
+geocoder = GoogleGeocoder("AIzaSyCZEkcLehkTBSS0y3Mgx7_6aj8HHgtCK9s")
 
 AUTHORIZATION = "Authorization"
 
@@ -179,16 +179,19 @@ def registerCamera():
         for data in body:
             fullAddress += f' {body[data]}'
 
-        location = locator.geocode(fullAddress)
+        try:
+            search = geocoder.get(fullAddress)
 
-        success, message = database.createCamera(
-            requesterUserId=headers['requesterUserId'],
-            requesterPwd=headers['requesterPwd'],
-            cameraIp=cameraIp,
-            latitude=location.latitude,
-            longitude=location.longitude)
+            success, message = database.createCamera(
+                requesterUserId=headers['requesterUserId'],
+                requesterPwd=headers['requesterPwd'],
+                cameraIp=cameraIp,
+                latitude=search[0].geometry.location.lat,
+                longitude=search[0].geometry.location.lng)
 
-        return message, 200 if success else 400
+            return message, 200 if success else 400
+        except Exception:
+            return 'Invalid Address'
     else:
         return 'Missing params', 400
 

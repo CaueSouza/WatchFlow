@@ -176,10 +176,12 @@ def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
 
         else:
             for row in queryResult:
-                json_dict = {'ip': row[1],
-                             'latitude': row[2],
-                             'longitude': row[3]}
-                json_list.append(json_dict)
+                # Checking if snapshot is available for that camera
+                if row[4] is not None:
+                    json_dict = {'ip': row[1],
+                                 'latitude': row[2],
+                                 'longitude': row[3]}
+                    json_list.append(json_dict)
 
         return (True, {'message': json_output})
     else:
@@ -319,21 +321,37 @@ def userLogout(requesterUserId, requesterPwd):
         return (False, {'message': 'Logout failed'})
 
 
+def ipAlreadyRegistered(cameraIp):
+    query = """SELECT * FROM cameras WHERE ip=?"""
+
+    data = (cameraIp, )
+
+    queryResult = executeFetchallQuery(query, data)
+
+    if len(queryResult) > 0:
+        return True
+    else:
+        return False
+
+
 def createCamera(requesterUserId, requesterPwd, cameraIp, latitude, longitude):
     if validateUser(requesterUserId, requesterPwd, shouldValidateAdmin=True):
-        query = """
-                INSERT INTO
-                    cameras
-                    (ip, latitude, longitude)
-                VALUES
-                    (?,?,?)
-        """
+        if ipAlreadyRegistered(cameraIp):
+            return (False, {'message': 'Ip already registered'})
+        else:
+            query = """
+                    INSERT INTO
+                        cameras
+                        (ip, latitude, longitude)
+                    VALUES
+                        (?,?,?)
+            """
 
-        data = (cameraIp, latitude, longitude)
+            data = (cameraIp, latitude, longitude)
 
-        executeQuery(query, data)
+            executeQuery(query, data)
 
-        return (True, {'message': 'Camera registered'})
+            return (True, {'message': 'Camera registered'})
     else:
         return (False, {'message': 'Invalid user'})
 
