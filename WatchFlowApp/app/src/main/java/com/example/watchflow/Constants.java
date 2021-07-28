@@ -9,16 +9,17 @@ public class Constants {
     public static final String EMPTY_STRING = "";
     public static final String USER_TYPE = "userType";
     public static final Integer ADM_TYPE = 1;
-    public static final String AUTHORIZATION = "authentication";
+    public static final String AUTHORIZATION = "authorization";
     public static final String OPERATION = "operation";
     public static final String IMAGE = "image";
+    public static final String MARKER_TITLE_IP = "marker_title_ip";
     public static final int CREATE_USER_OPERATION = 1;
     public static final int DELETE_USER_OPERATION = 2;
     public static final int CREATE_CAM_OPERATION = 3;
     public static final int DELETE_CAM_OPERATION = 4;
 
     //ENDPOINTS
-    public static final String BASE_URL = "http://192.168.0.13:5000";
+    public static final String BASE_URL = "http://192.168.0.17:5000";
     public static final String ALL_RUNNING_CAMERAS_ENDPOINT = "/allRunningCameras";
     public static final String USER_LOGIN_ENDPOINT = "/userLogin";
     public static final String USER_LOGOUT_ENDPOINT = "/userLogout";
@@ -51,6 +52,36 @@ public class Constants {
     public static final String NEIGHBORHOOD = "neighborhood";
     public static final String CITY = "city";
     public static final String COUNTRY = "country";
+
+    //RECOGNITIONS FIELDS
+    public static final String TOTAL = "total";
+    public static final String ARTICULATED_TRUCK = "articulated_truck";
+    public static final String BICYCLE = "bicycle";
+    public static final String BUS = "bus";
+    public static final String CAR = "car";
+    public static final String MOTORCYCLE = "motorcycle";
+    public static final String MOTORIZED_VEHICLE = "motorized_vehicle";
+    public static final String NON_MOTORIZED_VEHICLE = "non_motorized_vehicle";
+    public static final String PEDESTRIAN = "pedestrian";
+    public static final String PICKUP_TRUCK = "pickup_truck";
+    public static final String SINGLE_UNIT_TRUCK = "single_unit_truck";
+    public static final String WORK_VAN = "work_van";
+
+    public static final List<String> RECOGNITION_FIELDS = new ArrayList<String>() {{
+        add(TOTAL);
+        add(ARTICULATED_TRUCK);
+        add(BICYCLE);
+        add(BUS);
+        add(CAR);
+        add(MOTORCYCLE);
+        add(MOTORIZED_VEHICLE);
+        add(NON_MOTORIZED_VEHICLE);
+        add(PEDESTRIAN);
+        add(PICKUP_TRUCK);
+        add(SINGLE_UNIT_TRUCK);
+        add(WORK_VAN);
+    }};
+
 
     public static final List<String> COMMON_HEADER_FIELDS = new ArrayList<String>() {{
         add(REQUESTER_USER_ID);

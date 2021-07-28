@@ -1,5 +1,6 @@
 package com.example.watchflow.maps;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.watchflow.CameraInformations;
 import com.example.watchflow.R;
 import com.example.watchflow.UserInformations;
+import com.example.watchflow.cameraInformation.CameraInformationActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import static com.example.watchflow.Constants.AUTO_REFRESH_SECONDS;
+import static com.example.watchflow.Constants.MARKER_TITLE_IP;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -76,8 +79,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         mMap.setOnMarkerClickListener(marker -> {
             String markerTitle = marker.getTitle();
 
-            if (!markerTitle.equals(getString(R.string.your_position))){
-                viewModel.getCameraInformation(markerTitle);
+            if (markerTitle != null && !markerTitle.equals(getString(R.string.your_position)) &&
+                    marker.getTag() != null && ((int) marker.getTag()) != 1) {
+                Intent intent = new Intent(getContext(), CameraInformationActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra(MARKER_TITLE_IP, markerTitle);
+
+                startActivity(intent);
             }
 
             return false;
@@ -123,7 +131,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             LatLng location = new LatLng(user.getLatitude(), user.getLongitude());
             mMap.addMarker(new MarkerOptions().position(location)
                     .icon(BitmapDescriptorFactory.fromBitmap(getBitmap(R.drawable.ic_car_pin)))
-                    .title(user.getUserName())).setTag(0);
+                    .title(user.getUserName())).setTag(1);
         }
     }
 

@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.example.watchflow.cameraInformation.CameraInformationViewModel" />
@@ -15,6 +17,7 @@
         android:background="@color/colorSecondary">
 
         <FrameLayout
+            android:id="@+id/cam_info_frame_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="20dp"
@@ -26,12 +29,54 @@
                 android:id="@+id/cam_info_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:imageUrl="@{viewModel.image}"
+                android:adjustViewBounds="true"
                 android:background="@drawable/image_view_border"
-                android:adjustViewBounds="true"/>
+                app:imageUrl="@{viewModel.image}" />
         </FrameLayout>
 
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cam_info_frame_layout">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorSecondary"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/cam_basic_info_title"
+                    style="@style/info_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/camera_localization"
+                    android:visibility="@{viewModel.localizationData.size() > 0 ? View.VISIBLE : View.GONE, default=gone}" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/localization_data_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/cam_advanced_info_title"
+                    style="@style/info_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/camera_recognitions"
+                    android:visibility="@{viewModel.recognitionData.size() > 0 ? View.VISIBLE : View.GONE, default=gone}" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recognition_data_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -79,15 +79,6 @@ public class MapsViewModel extends AndroidViewModel {
                 COMMON_HEADER_FIELDS, UserIdPwd.getInstance().getUserIdPwdList(), true);
     }
 
-    public void getCameraInformation(String cameraIp) {
-        List<Object> headers_data;
-        headers_data = UserIdPwd.getInstance().getUserIdPwdList();
-        headers_data.add(cameraIp);
-
-        serverRepository.createRequest(cameraInformationCallback, CAMERA_INFORMATIONS_ENDPOINT,
-                GET_INFO_OR_DELETE_CAM_HEADER_FIELDS, headers_data, true);
-    }
-
     public void setAllCameras(List<CameraInformations> allCameras) {
         this.allCameras.setValue(allCameras);
     }
@@ -200,36 +191,6 @@ public class MapsViewModel extends AndroidViewModel {
 
         @Override
         public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
-            Log.e(TAG, "onFailure: " + t);
-            Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
-        }
-    };
-
-    Callback<JsonObject> cameraInformationCallback = new Callback<JsonObject>() {
-
-        @Override
-        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-            if (!response.isSuccessful()) {
-                Toast.makeText(application.getApplicationContext(), R.string.camera_informations_fail_message, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            try {
-                String image = ImageUtil.saveImage(application, response.body().get("snapshot").getAsString());
-                Intent intent = new Intent(application.getApplicationContext(), CameraInformationActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(IMAGE, image);
-
-                application.startActivity(intent);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            Log.d(TAG, "onResponse: " + response);
-        }
-
-        @Override
-        public void onFailure(Call<JsonObject> call, Throwable t) {
             Log.e(TAG, "onFailure: " + t);
             Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
         }

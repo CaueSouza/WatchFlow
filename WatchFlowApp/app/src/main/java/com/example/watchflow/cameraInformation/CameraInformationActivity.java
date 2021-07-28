@@ -6,16 +6,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.watchflow.R;
 import com.example.watchflow.databinding.ActivityCameraInformationBinding;
 
-import static com.example.watchflow.Constants.IMAGE;
+import java.util.ArrayList;
+
+import static com.example.watchflow.Constants.MARKER_TITLE_IP;
 
 public class CameraInformationActivity extends AppCompatActivity {
 
     ActivityCameraInformationBinding binding;
     CameraInformationViewModel viewModel;
+
+    private DataAdapter localizationDataAdapter;
+    private DataAdapter recognitionDataAdapter;
+    private ArrayList<Data> localizationDataArrayList;
+    private ArrayList<Data> recognitionDataArrayList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,7 +40,39 @@ public class CameraInformationActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().show();
 
-        viewModel.getImage().setValue(getIntent().getStringExtra(IMAGE));
+        initBindings();
+    }
+
+    private void initBindings() {
+        binding.localizationDataRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        localizationDataArrayList = new ArrayList<>();
+        localizationDataAdapter = new DataAdapter(this, localizationDataArrayList);
+        binding.localizationDataRecyclerView.setAdapter(localizationDataAdapter);
+        binding.localizationDataRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
+        binding.recognitionDataRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recognitionDataArrayList = new ArrayList<>();
+        recognitionDataAdapter = new DataAdapter(this, recognitionDataArrayList);
+        binding.recognitionDataRecyclerView.setAdapter(recognitionDataAdapter);
+        binding.recognitionDataRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
+        createDataRequests();
+    }
+
+    private void createDataRequests() {
+        viewModel.getCameraInformation(getIntent().getStringExtra(MARKER_TITLE_IP));
+
+        viewModel.getLocalizationData().observe(this, vmArrayList -> {
+            localizationDataArrayList.clear();
+            localizationDataArrayList.addAll(vmArrayList);
+            localizationDataAdapter.notifyDataSetChanged();
+        });
+
+        viewModel.getRecognitionData().observe(this, vmArrayList -> {
+            recognitionDataArrayList.clear();
+            recognitionDataArrayList.addAll(vmArrayList);
+            recognitionDataAdapter.notifyDataSetChanged();
+        });
     }
 
     @Override

@@ -1,20 +1,22 @@
 import flask
 from flask import request
 from .WatchFlowDatabase import database
-from geopy.geocoders import Nominatim
+from googlegeocoder import GoogleGeocoder
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-locator = Nominatim(user_agent='WatchFlow')
+geocoder = GoogleGeocoder("AIzaSyCZEkcLehkTBSS0y3Mgx7_6aj8HHgtCK9s")
+
+AUTHORIZATION = "Authorization"
 
 
 @app.route('/allRunningCameras', methods=['GET'])
 def allRunningCameras():
-    if 'Authentication' not in request.headers:
+    if AUTHORIZATION not in request.headers:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
 
     neededKeys = {'requesterUserId', 'requesterPwd'}
 
@@ -28,17 +30,12 @@ def allRunningCameras():
         return 'Missing data', 400
 
 
-@app.route('/allCamerasIps', methods=['GET'])
-def allCamerasIps():
-    return database.getCamerasIpsAsJSON()
-
-
 @app.route('/cameraInformations', methods=['GET'])
 def cameraInformations():
-    if 'Authentication' not in request.headers:
+    if AUTHORIZATION not in request.headers:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
 
     neededHeadersKeys = {'requesterUserId', 'requesterPwd', 'cameraIp'}
 
@@ -48,8 +45,6 @@ def cameraInformations():
             requesterPwd=headers['requesterPwd'],
             cameraIp=headers['cameraIp'])
 
-        print(message)
-
         return message, 200
 
     else:
@@ -58,10 +53,10 @@ def cameraInformations():
 
 @app.route('/usersPositions', methods=['GET'])
 def usersPositions():
-    if 'Authentication' not in request.headers:
+    if AUTHORIZATION not in request.headers:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
 
     neededKeys = {'requesterUserId', 'requesterPwd'}
 
@@ -79,10 +74,10 @@ def usersPositions():
 @app.route('/userLogin', methods=['POST'])
 def userLogin():
 
-    if 'Authentication' not in request.headers or request.get_json() is None:
+    if AUTHORIZATION not in request.headers or request.get_json() is None:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
     body = request.get_json()
 
     neededHeadersKeys = {'userName', 'pwd'}
@@ -102,10 +97,10 @@ def userLogin():
 
 @app.route('/userLogout', methods=['POST'])
 def userLogout():
-    if 'Authentication' not in request.headers:
+    if AUTHORIZATION not in request.headers:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
 
     neededKeys = {'requesterUserId', 'requesterPwd'}
 
@@ -121,10 +116,10 @@ def userLogout():
 
 @app.route('/registerUser', methods=['POST'])
 def registerUser():
-    if 'Authentication' not in request.headers or request.get_json() is None:
+    if AUTHORIZATION not in request.headers or request.get_json() is None:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
     body = request.get_json()
 
     neededHeadersKeys = {'requesterUserId', 'requesterPwd'}
@@ -146,10 +141,10 @@ def registerUser():
 
 @app.route('/deleteUser', methods=['DELETE'])
 def deleteUser():
-    if 'Authentication' not in request.headers:
+    if AUTHORIZATION not in request.headers:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
 
     neededHeadersKeys = {'requesterUserId', 'requesterPwd', 'oldUserName'}
 
@@ -167,10 +162,10 @@ def deleteUser():
 
 @app.route('/registerCamera', methods=['POST'])
 def registerCamera():
-    if 'Authentication' not in request.headers or request.get_json() is None:
+    if AUTHORIZATION not in request.headers or request.get_json() is None:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
     body = request.get_json()
 
     neededHeadersKeys = {'requesterUserId', 'requesterPwd'}
@@ -184,26 +179,29 @@ def registerCamera():
         for data in body:
             fullAddress += f' {body[data]}'
 
-        location = locator.geocode(fullAddress)
+        try:
+            search = geocoder.get(fullAddress)
 
-        success, message = database.createCamera(
-            requesterUserId=headers['requesterUserId'],
-            requesterPwd=headers['requesterPwd'],
-            cameraIp=cameraIp,
-            latitude=location.latitude,
-            longitude=location.longitude)
+            success, message = database.createCamera(
+                requesterUserId=headers['requesterUserId'],
+                requesterPwd=headers['requesterPwd'],
+                cameraIp=cameraIp,
+                latitude=search[0].geometry.location.lat,
+                longitude=search[0].geometry.location.lng)
 
-        return message, 200 if success else 400
+            return message, 200 if success else 400
+        except Exception:
+            return 'Invalid Address'
     else:
         return 'Missing params', 400
 
 
 @app.route('/deleteCamera', methods=['DELETE'])
 def deleteCamera():
-    if 'Authentication' not in request.headers:
+    if AUTHORIZATION not in request.headers:
         return 'Missing headers', 400
 
-    headers = eval(request.headers.get("Authentication"))
+    headers = eval(request.headers.get(AUTHORIZATION))
 
     neededHeadersKeys = {'requesterUserId', 'requesterPwd', 'cameraIp'}
 
@@ -219,36 +217,6 @@ def deleteCamera():
         return 'Missing params', 400
 
 
-@app.route('/updateCamera', methods=['POST'])
-def updateCamera():
-    dataJson = request.get_json()
-    dataArgs = request.args.to_dict()
-
-    if dataJson is None and not bool(dataArgs):
-        return 'Missing params', 400
-
-    else:
-        if not bool(dataArgs):
-            data = dataJson
-        else:
-            data = dataArgs
-
-        neededKeys = {'requesterUserId',
-                      'requesterPwd', 'cameraIp', 'snapshot'}
-
-        if neededKeys <= data.keys():
-            success, message = database.updateCamera(
-                requesterUserId=data['requesterUserId'],
-                requesterPwd=data['requesterPwd'],
-                cameraIp=data['cameraIp'],
-                snapshot=data['snapshot'])
-
-            return message, 200 if success else 400
-
-        else:
-            return 'Missing params', 400
-
-
 def run():
     database.resetDatabase()
-    app.run(host='192.168.0.13', port=5000)
+    app.run(host='192.168.0.17', port=5000)
