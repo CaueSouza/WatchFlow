@@ -1,9 +1,9 @@
-from cv2 import data
+# from cv2 import data
 from WatchFlowAPI.WatchFlowDatabase import database
 import logging
 import threading
 from .ImageDetection import imgDetection
-import cv2
+# import cv2
 sem = threading.Semaphore()
 
 IMAGE1 = 'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\img1.jpg'
