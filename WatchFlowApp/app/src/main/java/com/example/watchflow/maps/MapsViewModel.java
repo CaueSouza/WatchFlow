@@ -54,6 +54,7 @@ public class MapsViewModel extends AndroidViewModel {
     private final ServerRepository serverRepository = ServerRepository.getInstance();
     private final MutableLiveData<List<CameraInformations>> allCameras = new MutableLiveData<>();
     private final MutableLiveData<List<UserInformations>> allUsers = new MutableLiveData<>();
+    private final SingleLiveEvent<Void> toggleTraffic = new SingleLiveEvent<>();
     private final SingleLiveEvent<Void> refreshEvent = new SingleLiveEvent<>();
     private final SingleLiveEvent<Void> endActivityEvent = new SingleLiveEvent<>();
     private final Application application;
@@ -101,6 +102,10 @@ public class MapsViewModel extends AndroidViewModel {
 
     public SingleLiveEvent<Void> getEndActivityEvent() {
         return endActivityEvent;
+    }
+
+    public SingleLiveEvent<Void> getToggleTraffic() {
+        return toggleTraffic;
     }
 
     public GpsTracker getGpsTracker() {

@@ -90,6 +90,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
             return false;
         });
+
+        viewModel.getToggleTraffic().observe(this, v -> googleMap.setTrafficEnabled(!googleMap.isTrafficEnabled()));
     }
 
     private void initBindings() {

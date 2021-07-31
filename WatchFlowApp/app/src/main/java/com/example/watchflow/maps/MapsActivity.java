@@ -53,6 +53,7 @@ public class MapsActivity extends AppCompatActivity {
 
     private void initBindings() {
         viewModel.getEndActivityEvent().observe(this, v -> finish());
+        binding.toggleTrafficFab.setOnClickListener(v -> viewModel.getToggleTraffic().call());
     }
 
     @Override
