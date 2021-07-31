@@ -304,8 +304,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_car_pin" />
-                            <entry key="sourceFile" value="D:\Usuários\Caue Souza\Downloads\car-placeholder.svg" />
+                            <entry key="outputName" value="ic_traffic_icon" />
+                            <entry key="sourceFile" value="D:\Usuários\Caue Souza\Downloads\traffic_icon2.svg" />
                           </map>
                         </option>
                       </PersistentState>

@@ -84,4 +84,5 @@
 
     <string name="camera_localization">Dados de Localização</string>
     <string name="camera_recognitions">Dados de Reconhecimento</string>
+    <string name="toggleTraffic">Exibir Tráfego</string>
 </resources>
