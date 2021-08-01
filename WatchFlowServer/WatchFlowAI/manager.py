@@ -1,44 +1,40 @@
-# from cv2 import data
 from WatchFlowAPI.WatchFlowDatabase import database
 import logging
 import threading
 from .ImageDetection import imgDetection
-# import cv2
+import random
+import os
 sem = threading.Semaphore()
 
-IMAGE1 = 'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\img1.jpg'
-IMAGE2 = 'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\img2.jpg'
-VIDEO1 = 'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\\video1.mp4'
-VIDEO2 = 'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\\video2.mp4'
-TEST_VID = 'D:\Projetos\TCC\WatchFlow\WatchFlowServer\WatchFlowAI\\testvid.mp4'
+SRC_FILE_PATH = os.path.dirname(__file__) + '\\src'
+IMAGE1 = '\\img1.jpg'
+IMAGE2 = '\\img2.jpg'
+FULL_VIDEO1 = '\\fullvideo1.mp4'
+FULL_VIDEO2 = '\\fullvideo2.mp4'
+VIDEO1_1 = '\\video1_1.mp4'
+VIDEO2_1 = '\\video2_1.mp4'
+VIDEO2_2 = '\\video2_2.mp4'
+VIDEO2_3 = '\\video2_3.mp4'
+
+TEST_VIDEOS = {VIDEO1_1, VIDEO2_1, VIDEO2_2, VIDEO2_3}
 
 
 def evalCamera(name):
     IP = name['ip']
-    logging.info("Thread %s: starting", IP)
+    logging.info("-Thread %s: starting", IP)
 
     # TODO RECEIVE SNAPSHOT FROM DB AND AS A IMG PASS THROUGH
 
-    # CODE FOR MOCKED VIDEOS RECOGNITIONS
-    # if IP == '127.0.0.1':
-    #     recognitions, frame = imgDetection.runVideoDetection(TEST_VID)
-    # else:
-    #     recognitions, frame = imgDetection.runVideoDetection(TEST_VID)
+    chooseVid = random.choice(tuple(TEST_VIDEOS))
+    print(IP + ': ' + chooseVid)
 
-    recognitions, frame = imgDetection.runVideoDetection(TEST_VID)
+    recognitions, frame = imgDetection.runVideoDetection(
+        SRC_FILE_PATH + chooseVid)
+
     database.saveReconToDatabase(IP, recognitions)
     database.saveFrameToDatabase(IP, frame)
 
-    # # CODE FOR MOCKED IMAGES RECOGNITIONS
-    # image = cv2.imread(IMAGE1 if name['ip'] == '127.0.0.1' else IMAGE2)
-    # rec = imgDetection.runImgDetection(image)
-
-    # print(rec)
-    # # sem.acquire()
-    # database.saveReconToDatabase(name['ip'], rec)
-    # # sem.release()
-
-    logging.info("Thread %s: finishing", IP)
+    logging.info("-Thread %s: finishing", IP)
 
 
 def run():

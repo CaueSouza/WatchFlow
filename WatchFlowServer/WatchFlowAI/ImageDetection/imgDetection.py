@@ -1,8 +1,7 @@
 import cv2
 import numpy as np
 import os
-import time
-from PIL import Image
+import math
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -44,53 +43,39 @@ def runVideoDetection(video_file):
     width = video.shape[1]
     height = video.shape[0]
 
-    # frame_counter = 0
+    frame_counter = 0
 
-    t_start = time.time()
     last_frame = None
     total_rec = resetVideoDetectionDict()
-    # total_resets = 0
 
     while (True):
         conn, frame = cap.read()
-        # frame_counter += 1
+        frame_counter += 1
 
         if not conn:
             break
-        # if total_resets == 2:
-        #     break
-
-        # print(frame_counter)
-
-        # if frame_counter == cap.get(cv2.CAP_PROP_FRAME_COUNT):
-        #     frame_counter = 0
-        #     total_resets += 1
-        #     cap = cv2.VideoCapture(video_file)
-        #     _, frame = cap.read()
 
         frame = cv2.resize(frame, (width, height))
         last_frame = frame
         rec = runImgDetection(frame)
-        updateVideoDetectionDict(total_rec, rec)
+        total_rec = updateVideoDetectionDict(total_rec, rec)
 
     cap.release()
-    print("{:.2f}".format(time.time() - t_start))
+
+    total_rec = calculateMeanRecognitions(total_rec, frame_counter)
+    total_rec['total'] = sum(total_rec.values())
+
     return total_rec, last_frame
 
 
-def updateVideoDetectionDict(total_recognitions, recognitions):
-    total_recognitions['articulated_truck'] += recognitions['articulated_truck']
-    total_recognitions['bicycle'] += recognitions['bicycle']
-    total_recognitions['bus'] += recognitions['bus']
-    total_recognitions['car'] += recognitions['car']
-    total_recognitions['motorcycle'] += recognitions['motorcycle']
-    total_recognitions['motorized_vehicle'] += recognitions['motorized_vehicle']
-    total_recognitions['non-motorized_vehicle'] += recognitions['non-motorized_vehicle']
-    total_recognitions['pedestrian'] += recognitions['pedestrian']
-    total_recognitions['pickup_truck'] += recognitions['pickup_truck']
-    total_recognitions['single_unit_truck'] += recognitions['single_unit_truck']
-    total_recognitions['work_van'] += recognitions['work_van']
-    total_recognitions['total'] += recognitions['total']
+def updateVideoDetectionDict(total_rec, recognitions):
+    return {name: value + recognitions[name]
+            for name, value in total_rec.items()}
+
+
+def calculateMeanRecognitions(total_rec, total_frames):
+    return {name: math.ceil(value/total_frames)
+            for name, value in total_rec.items()}
 
 
 def resetVideoDetectionDict():
@@ -105,8 +90,7 @@ def resetVideoDetectionDict():
         'pedestrian': 0,
         'pickup_truck': 0,
         'single_unit_truck': 0,
-        'work_van': 0,
-        'total': 0
+        'work_van': 0
     }
 
 
