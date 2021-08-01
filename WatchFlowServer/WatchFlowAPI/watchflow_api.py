@@ -2,6 +2,7 @@ import flask
 from flask import request
 from .WatchFlowDatabase import database
 from googlegeocoder import GoogleGeocoder
+import socket
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -219,4 +220,4 @@ def deleteCamera():
 
 def run():
     database.resetDatabase()
-    app.run(host='192.168.0.17', port=5000)
+    app.run(host=socket.gethostbyname(socket.gethostname()), port=5000)
