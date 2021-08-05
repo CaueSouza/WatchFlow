@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import os
 import math
+import time
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -37,6 +38,8 @@ def blob_image(net, ln, image):
 
 
 def runVideoDetection(video_file):
+    firstSec = math.ceil(time.time())
+
     cap = cv2.VideoCapture(video_file)
     _, video = cap.read()
 
@@ -53,6 +56,9 @@ def runVideoDetection(video_file):
         frame_counter += 1
 
         if not conn:
+            break
+
+        if math.ceil(time.time()) - firstSec > 30:  # STOP AFTER 60 SECONDS
             break
 
         frame = cv2.resize(frame, (width, height))

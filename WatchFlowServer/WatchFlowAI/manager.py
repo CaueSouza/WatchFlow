@@ -23,8 +23,6 @@ def evalCamera(name):
     IP = name['ip']
     logging.info("-Thread %s: starting", IP)
 
-    # TODO RECEIVE SNAPSHOT FROM DB AND AS A IMG PASS THROUGH
-
     chooseVid = random.choice(tuple(TEST_VIDEOS))
     print(IP + ': ' + chooseVid)
 
@@ -37,12 +35,10 @@ def evalCamera(name):
     logging.info("-Thread %s: finishing", IP)
 
 
-def run():
-    cameras = database.getCamerasIpsAsJSON()['cameras']
+def runThreads():
+    threading.Timer(60.0, runThreads).start()
 
-    format = "%(asctime)s: %(message)s"
-    logging.basicConfig(format=format, level=logging.INFO,
-                        datefmt="%H:%M:%S")
+    cameras = database.getCamerasIpsAsJSON()['cameras']
 
     threads = list()
     for ip in cameras:
@@ -54,5 +50,9 @@ def run():
         thread.join()
 
 
-if __name__ == '__main__':
-    run()
+def run():
+    format = "%(asctime)s: %(message)s"
+    logging.basicConfig(format=format, level=logging.INFO,
+                        datefmt="%H:%M:%S")
+
+    runThreads()
