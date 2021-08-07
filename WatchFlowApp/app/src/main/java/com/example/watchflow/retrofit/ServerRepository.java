@@ -28,6 +28,7 @@ import static com.example.watchflow.Constants.DELETE_CAMERA_ENDPOINT;
 import static com.example.watchflow.Constants.DELETE_USER_ENDPOINT;
 import static com.example.watchflow.Constants.REGISTER_CAMERA_ENDPOINT;
 import static com.example.watchflow.Constants.REGISTER_USER_ENDPOINT;
+import static com.example.watchflow.Constants.UPDATE_PHONE_ENDPOINT;
 import static com.example.watchflow.Constants.USERS_POSITIONS_ENDPOINT;
 import static com.example.watchflow.Constants.USER_LOGIN_ENDPOINT;
 import static com.example.watchflow.Constants.USER_LOGOUT_ENDPOINT;
@@ -136,6 +137,9 @@ public class ServerRepository {
                 break;
             case CAMERA_INFORMATIONS_ENDPOINT:
                 call = watchFlowServerApiInterface.getCameraInformations(headersJson);
+                break;
+            case UPDATE_PHONE_ENDPOINT:
+                call = watchFlowServerApiInterface.updatePhone(headersJson, bodyJson);
                 break;
         }
 

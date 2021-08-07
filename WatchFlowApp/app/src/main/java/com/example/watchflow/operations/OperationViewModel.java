@@ -1,5 +1,17 @@
 package com.example.watchflow.operations;
 
+import static com.example.watchflow.Constants.COMMON_HEADER_FIELDS;
+import static com.example.watchflow.Constants.DELETE_CAMERA_ENDPOINT;
+import static com.example.watchflow.Constants.DELETE_USER_ENDPOINT;
+import static com.example.watchflow.Constants.DELETE_USER_HEADER_FIELDS;
+import static com.example.watchflow.Constants.GET_INFO_OR_DELETE_CAM_HEADER_FIELDS;
+import static com.example.watchflow.Constants.REGISTER_CAMERA_ENDPOINT;
+import static com.example.watchflow.Constants.REGISTER_CAM_BODY_FIELDS;
+import static com.example.watchflow.Constants.REGISTER_USER_BODY_FIELDS;
+import static com.example.watchflow.Constants.REGISTER_USER_ENDPOINT;
+import static com.example.watchflow.Constants.UPDATE_PHONE_BODY_FIELDS;
+import static com.example.watchflow.Constants.UPDATE_PHONE_ENDPOINT;
+
 import android.app.Application;
 import android.util.Log;
 import android.widget.Toast;
@@ -8,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.watchflow.Mask;
 import com.example.watchflow.R;
 import com.example.watchflow.SingleLiveEvent;
 import com.example.watchflow.UserIdPwd;
@@ -23,16 +36,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.watchflow.Constants.COMMON_HEADER_FIELDS;
-import static com.example.watchflow.Constants.DELETE_CAMERA_ENDPOINT;
-import static com.example.watchflow.Constants.DELETE_USER_ENDPOINT;
-import static com.example.watchflow.Constants.DELETE_USER_HEADER_FIELDS;
-import static com.example.watchflow.Constants.GET_INFO_OR_DELETE_CAM_HEADER_FIELDS;
-import static com.example.watchflow.Constants.REGISTER_CAMERA_ENDPOINT;
-import static com.example.watchflow.Constants.REGISTER_CAM_BODY_FIELDS;
-import static com.example.watchflow.Constants.REGISTER_USER_BODY_FIELDS;
-import static com.example.watchflow.Constants.REGISTER_USER_ENDPOINT;
-
 public class OperationViewModel extends AndroidViewModel {
     public static final String TAG = OperationViewModel.class.getSimpleName();
 
@@ -40,6 +43,7 @@ public class OperationViewModel extends AndroidViewModel {
     private final MutableLiveData<String> newUserName = new MutableLiveData<>();
     private final MutableLiveData<String> newPassword = new MutableLiveData<>();
     private final MutableLiveData<String> oldUserName = new MutableLiveData<>();
+    private final MutableLiveData<String> newTelephone = new MutableLiveData<>();
     private final MutableLiveData<CameraAddressPOJO> cameraInfo = new MutableLiveData<>();
     private final SingleLiveEvent<Void> endActivityEvent = new SingleLiveEvent<>();
     private Application application;
@@ -58,6 +62,7 @@ public class OperationViewModel extends AndroidViewModel {
         List<Object> body_data = new ArrayList<>();
         body_data.add(newUserName.getValue());
         body_data.add(newPassword.getValue());
+        body_data.add(Mask.unmask(newTelephone.getValue()));
         body_data.add(isAdm ? 1 : 0);
 
         serverRepository.createRequest(registerUserCallback, REGISTER_USER_ENDPOINT,
@@ -103,6 +108,19 @@ public class OperationViewModel extends AndroidViewModel {
                 GET_INFO_OR_DELETE_CAM_HEADER_FIELDS, headers_data, null, null);
     }
 
+    public void updatePhone() {
+        List<Object> headers_data = new ArrayList<>();
+        headers_data.add(UserIdPwd.getInstance().getUserId());
+        headers_data.add(UserIdPwd.getInstance().getPassword());
+
+        List<Object> body_data = new ArrayList<>();
+        body_data.add(Mask.unmask(newTelephone.getValue()));
+
+        serverRepository.createRequest(updatePhoneCallback, UPDATE_PHONE_ENDPOINT,
+                COMMON_HEADER_FIELDS, headers_data,
+                UPDATE_PHONE_BODY_FIELDS, body_data);
+    }
+
     public MutableLiveData<String> getNewUserName() {
         return newUserName;
     }
@@ -113,6 +131,10 @@ public class OperationViewModel extends AndroidViewModel {
 
     public MutableLiveData<String> getOldUserName() {
         return oldUserName;
+    }
+
+    public MutableLiveData<String> getNewTelephone() {
+        return newTelephone;
     }
 
     public SingleLiveEvent<Void> getEndActivityEvent() {
@@ -203,6 +225,27 @@ public class OperationViewModel extends AndroidViewModel {
 
         @Override
         public void onFailure(@NotNull Call<JsonObject> call, @NotNull Throwable t) {
+            Log.e(TAG, "onFailure: " + t);
+            Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
+        }
+    };
+
+    Callback<JsonObject> updatePhoneCallback = new Callback<JsonObject>() {
+        @Override
+        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            if (!response.isSuccessful()) {
+                Toast.makeText(application.getApplicationContext(), R.string.update_phone_fail_message, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            endActivityEvent.call();
+            Toast.makeText(application.getApplicationContext(), R.string.update_phone_success_message, Toast.LENGTH_SHORT).show();
+
+            Log.d(TAG, "onResponse: " + response);
+        }
+
+        @Override
+        public void onFailure(Call<JsonObject> call, Throwable t) {
             Log.e(TAG, "onFailure: " + t);
             Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
         }

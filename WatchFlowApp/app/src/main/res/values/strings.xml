@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">WatchFlow</string>
     <string name="title_activity_maps">Maps</string>
     <string name="title_activity_main">WatchFlow</string>
@@ -14,6 +14,8 @@
     <string name="remove">Remover</string>
     <string name="login_username_hint">Usuário</string>
     <string name="login_password_hint">Senha</string>
+    <string name="login_phone_hint">Telefone</string>
+    <string name="update">Atualizar</string>
     <string name="login_signup_hint">Não possui conta? Contate o administrador</string>
     <string name="login">Entrar</string>
     <string name="login_title">Login</string>
@@ -21,7 +23,7 @@
 
     <string name="server_error_message">Erro com o servidor</string>
 
-<!--    APP MESSAGES-->
+    <!--    APP MESSAGES-->
     <string name="missing_fields_login">Preencha corretamente</string>
     <string name="fail_message_login">Não foi possível efetuar o login</string>
     <string name="invalid_user_message">Usuário Inválido</string>
@@ -37,19 +39,20 @@
     <string name="register_cameras_txt">Registrar câmera</string>
     <string name="remove_cameras_txt">Remover câmera</string>
     <string name="logout_txt">Logout</string>
+    <string name="update_phone_txt">Atualizar Telefone</string>
     <string name="only_adm_message_txt">Somente Administrador</string>
     <string name="incorrect_ip_message_txt">IP inválido</string>
 
-<!--    REGISTER USER-->
+    <!--    REGISTER USER-->
     <string name="register_admin_question_txt">Usuário administrador?</string>
     <string name="register_user_success_message">Usuário registrado com sucesso</string>
     <string name="register_user_fail_message">Erro ao registrar usuário</string>
 
-<!--    DELETE USER-->
+    <!--    DELETE USER-->
     <string name="delete_user_success_message">Usuário removido com sucesso</string>
     <string name="delete_user_fail_message">Erro ao remover usuário</string>
 
-<!--    REGISTER CAM-->
+    <!--    REGISTER CAM-->
     <string name="register_cam_ip">IP</string>
     <string name="register_cam_street">Rua</string>
     <string name="register_cam_num">Número</string>
@@ -59,14 +62,19 @@
     <string name="register_cam_success_message">Câmera registrada com sucesso</string>
     <string name="register_cam_fail_message">Erro ao registrar câmera</string>
 
-<!--    DELETE CAM-->
+    <!--    DELETE CAM-->
     <string name="delete_cam_success_message">Câmera removida com sucesso</string>
     <string name="delete_cam_fail_message">Erro ao remover câmera</string>
 
-<!--    GET CAMERA INFORMATIONS-->
+    <!--    UPDATE PHONE-->
+    <string name="update_phone">Novo Telefone</string>
+    <string name="update_phone_success_message">Telefone atualizado</string>
+    <string name="update_phone_fail_message">Erro ao atualizar telefone</string>
+
+    <!--    GET CAMERA INFORMATIONS-->
     <string name="camera_informations_fail_message">Erro ao receber dados</string>
 
-<!--    RECOGNITIONS-->
+    <!--    RECOGNITIONS-->
     <string name="address_title">Endereço:</string>
     <string name="recognitions_total">Total:</string>
     <string name="recognitions_articulated_truck">Caminhões Articulados:</string>

@@ -44,4 +44,8 @@ public interface WatchFlowServerApiInterface {
 
     @GET(Constants.CAMERA_INFORMATIONS_ENDPOINT)
     Call<JsonObject> getCameraInformations(@Header(AUTHORIZATION) JsonObject headers);
+
+    @POST(Constants.UPDATE_PHONE_ENDPOINT)
+    Call<JsonObject> updatePhone(@Header(AUTHORIZATION) JsonObject headers,
+                                  @Body JsonObject body);
 }

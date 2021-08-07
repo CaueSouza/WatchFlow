@@ -47,6 +47,11 @@
     </item>
 
     <item
+        android:id="@+id/update_phone_item"
+        android:title="@string/update_phone_txt"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/logout_item"
         android:title="@string/logout_txt"
         app:showAsAction="never" />
