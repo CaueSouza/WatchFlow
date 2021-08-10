@@ -1,5 +1,12 @@
 package com.example.watchflow.maps;
 
+import static com.example.watchflow.Constants.CREATE_CAM_OPERATION;
+import static com.example.watchflow.Constants.CREATE_USER_OPERATION;
+import static com.example.watchflow.Constants.DELETE_CAM_OPERATION;
+import static com.example.watchflow.Constants.DELETE_USER_OPERATION;
+import static com.example.watchflow.Constants.OPERATION;
+import static com.example.watchflow.Constants.UPDATE_PHONE_OPERATION;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,12 +23,6 @@ import com.example.watchflow.R;
 import com.example.watchflow.UserIdPwd;
 import com.example.watchflow.databinding.ActivityMapsBinding;
 import com.example.watchflow.operations.OperationActivity;
-
-import static com.example.watchflow.Constants.CREATE_CAM_OPERATION;
-import static com.example.watchflow.Constants.CREATE_USER_OPERATION;
-import static com.example.watchflow.Constants.DELETE_CAM_OPERATION;
-import static com.example.watchflow.Constants.DELETE_USER_OPERATION;
-import static com.example.watchflow.Constants.OPERATION;
 
 public class MapsActivity extends AppCompatActivity {
 
@@ -72,6 +73,7 @@ public class MapsActivity extends AppCompatActivity {
             case R.id.refresh_item:
                 viewModel.getRefreshEvent().call();
                 return true;
+
             case R.id.add_user_item:
                 if (userIdPwd.getAdm()) {
                     Intent intent = new Intent(this, OperationActivity.class);
@@ -81,6 +83,7 @@ public class MapsActivity extends AppCompatActivity {
                     Toast.makeText(this, R.string.only_adm_message_txt, Toast.LENGTH_SHORT).show();
                 }
                 return true;
+
             case R.id.remove_user_item:
                 if (userIdPwd.getAdm()) {
                     Intent intent = new Intent(this, OperationActivity.class);
@@ -90,6 +93,7 @@ public class MapsActivity extends AppCompatActivity {
                     Toast.makeText(this, R.string.only_adm_message_txt, Toast.LENGTH_SHORT).show();
                 }
                 return true;
+
             case R.id.add_cam_item:
                 if (userIdPwd.getAdm()) {
                     Intent intent = new Intent(this, OperationActivity.class);
@@ -99,6 +103,7 @@ public class MapsActivity extends AppCompatActivity {
                     Toast.makeText(this, R.string.only_adm_message_txt, Toast.LENGTH_SHORT).show();
                 }
                 return true;
+
             case R.id.remove_cam_item:
                 if (userIdPwd.getAdm()) {
                     Intent intent = new Intent(this, OperationActivity.class);
@@ -108,6 +113,13 @@ public class MapsActivity extends AppCompatActivity {
                     Toast.makeText(this, R.string.only_adm_message_txt, Toast.LENGTH_SHORT).show();
                 }
                 return true;
+
+            case R.id.update_phone_item:
+                Intent intent = new Intent(this, OperationActivity.class);
+                intent.putExtra(OPERATION, UPDATE_PHONE_OPERATION);
+                startActivity(intent);
+                return true;
+
             case R.id.logout_item:
                 viewModel.logoutUser();
                 return true;

@@ -1,5 +1,24 @@
 package com.example.watchflow.cameraInformation;
 
+import static com.example.watchflow.Constants.ARTICULATED_TRUCK;
+import static com.example.watchflow.Constants.BICYCLE;
+import static com.example.watchflow.Constants.BUS;
+import static com.example.watchflow.Constants.CAMERA_INFORMATIONS_ENDPOINT;
+import static com.example.watchflow.Constants.CAR;
+import static com.example.watchflow.Constants.GET_INFO_OR_DELETE_CAM_HEADER_FIELDS;
+import static com.example.watchflow.Constants.LATITUDE;
+import static com.example.watchflow.Constants.LONGITUDE;
+import static com.example.watchflow.Constants.MOTORCYCLE;
+import static com.example.watchflow.Constants.MOTORIZED_VEHICLE;
+import static com.example.watchflow.Constants.NON_MOTORIZED_VEHICLE;
+import static com.example.watchflow.Constants.PEDESTRIAN;
+import static com.example.watchflow.Constants.PICKUP_TRUCK;
+import static com.example.watchflow.Constants.RECOGNITIONS;
+import static com.example.watchflow.Constants.RECOGNITION_FIELDS;
+import static com.example.watchflow.Constants.SINGLE_UNIT_TRUCK;
+import static com.example.watchflow.Constants.TOTAL;
+import static com.example.watchflow.Constants.WORK_VAN;
+
 import android.app.Application;
 import android.location.Address;
 import android.location.Geocoder;
@@ -26,30 +45,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.example.watchflow.Constants.ARTICULATED_TRUCK;
-import static com.example.watchflow.Constants.BICYCLE;
-import static com.example.watchflow.Constants.BUS;
-import static com.example.watchflow.Constants.CAMERA_INFORMATIONS_ENDPOINT;
-import static com.example.watchflow.Constants.CAR;
-import static com.example.watchflow.Constants.GET_INFO_OR_DELETE_CAM_HEADER_FIELDS;
-import static com.example.watchflow.Constants.MOTORCYCLE;
-import static com.example.watchflow.Constants.MOTORIZED_VEHICLE;
-import static com.example.watchflow.Constants.NON_MOTORIZED_VEHICLE;
-import static com.example.watchflow.Constants.PEDESTRIAN;
-import static com.example.watchflow.Constants.PICKUP_TRUCK;
-import static com.example.watchflow.Constants.RECOGNITION_FIELDS;
-import static com.example.watchflow.Constants.SINGLE_UNIT_TRUCK;
-import static com.example.watchflow.Constants.TOTAL;
-import static com.example.watchflow.Constants.WORK_VAN;
-
 public class CameraInformationViewModel extends AndroidViewModel {
     public static final String TAG = CameraInformationViewModel.class.getSimpleName();
     private MutableLiveData<String> image = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<Data>> localizationData = new MutableLiveData<>();
-    private MutableLiveData<ArrayList<Data>> recognitionData = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Data>> localizationData = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<Data>> recognitionData = new MutableLiveData<>();
     private final Application application;
     private final ServerRepository serverRepository = ServerRepository.getInstance();
-    private Geocoder geocoder;
+    private final Geocoder geocoder;
 
     public CameraInformationViewModel(@NonNull Application application) {
         super(application);
@@ -83,8 +86,8 @@ public class CameraInformationViewModel extends AndroidViewModel {
                 String image = ImageUtil.saveImage(application, response.body().get("snapshot").getAsString());
                 getImage().setValue(image);
 
-                Double latitude = response.body().get("latitude").getAsDouble();
-                Double longitude = response.body().get("longitude").getAsDouble();
+                double latitude = response.body().get(LATITUDE).getAsDouble();
+                double longitude = response.body().get(LONGITUDE).getAsDouble();
                 List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
                 String address = addresses.get(0).getAddressLine(0);
 
@@ -92,7 +95,7 @@ public class CameraInformationViewModel extends AndroidViewModel {
                 localizationArrayList.add(new Data(application.getApplicationContext().getResources().getString(R.string.address_title), address));
                 localizationData.setValue(localizationArrayList);
 
-                JsonObject recognitions = response.body().get("recognitions").getAsJsonObject();
+                JsonObject recognitions = response.body().get(RECOGNITIONS).getAsJsonObject();
                 ArrayList<Data> recognitionArrayList = retriveJsonData(recognitions);
                 recognitionData.setValue(recognitionArrayList);
 

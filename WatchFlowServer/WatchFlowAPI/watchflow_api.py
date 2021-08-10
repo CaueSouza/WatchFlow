@@ -52,6 +52,27 @@ def cameraInformations():
         return 'Missing data', 400
 
 
+@app.route('/userInformations', methods=['GET'])
+def userInformations():
+    if AUTHORIZATION not in request.headers:
+        return 'Missing headers', 400
+
+    headers = eval(request.headers.get(AUTHORIZATION))
+
+    neededHeadersKeys = {'requesterUserId', 'requesterPwd', 'userName'}
+
+    if neededHeadersKeys <= headers.keys():
+        _, message = database.userInformations(
+            requesterUserId=headers['requesterUserId'],
+            requesterPwd=headers['requesterPwd'],
+            username=headers['userName'])
+
+        return message, 200
+
+    else:
+        return 'Missing data', 400
+
+
 @app.route('/usersPositions', methods=['GET'])
 def usersPositions():
     if AUTHORIZATION not in request.headers:
@@ -124,7 +145,7 @@ def registerUser():
     body = request.get_json()
 
     neededHeadersKeys = {'requesterUserId', 'requesterPwd'}
-    neededBodyKeys = {'newUserName', 'newUserPwd'}
+    neededBodyKeys = {'newUserName', 'newUserPwd', 'newUserPhone'}
 
     if neededHeadersKeys <= headers.keys() and neededBodyKeys <= body.keys():
         success, message = database.createUser(
@@ -132,6 +153,7 @@ def registerUser():
             requesterPwd=headers['requesterPwd'],
             newUserName=body['newUserName'],
             newUserPwd=body['newUserPwd'],
+            newUserPhone=body['newUserPhone'],
             userType=body['type'] if ('type' in body) else 0)
 
         return message, 200 if success else 400
@@ -214,6 +236,28 @@ def deleteCamera():
 
         return message, 200 if success else 400
 
+    else:
+        return 'Missing params', 400
+
+
+@app.route('/updatePhone', methods=['POST'])
+def updatePhone():
+    if AUTHORIZATION not in request.headers or request.get_json() is None:
+        return 'Missing headers', 400
+
+    headers = eval(request.headers.get(AUTHORIZATION))
+    body = request.get_json()
+
+    neededHeadersKeys = {'requesterUserId', 'requesterPwd'}
+    neededBodyKeys = {'newUserPhone'}
+
+    if neededHeadersKeys <= headers.keys() and neededBodyKeys <= body.keys():
+        success, message = database.updatePhone(
+            requesterUserId=headers['requesterUserId'],
+            requesterPwd=headers['requesterPwd'],
+            newUserPhone=body['newUserPhone'])
+
+        return message, 200 if success else 400
     else:
         return 'Missing params', 400
 

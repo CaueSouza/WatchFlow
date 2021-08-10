@@ -12,11 +12,12 @@ public class Constants {
     public static final String AUTHORIZATION = "authorization";
     public static final String OPERATION = "operation";
     public static final String IMAGE = "image";
-    public static final String MARKER_TITLE_IP = "marker_title_ip";
+    public static final String MARKER_TITLE = "marker_title";
     public static final int CREATE_USER_OPERATION = 1;
     public static final int DELETE_USER_OPERATION = 2;
     public static final int CREATE_CAM_OPERATION = 3;
     public static final int DELETE_CAM_OPERATION = 4;
+    public static final int UPDATE_PHONE_OPERATION = 5;
 
     //ENDPOINTS
     public static final String BASE_URL = "http://192.168.0.14:5000";
@@ -29,6 +30,8 @@ public class Constants {
     public static final String DELETE_CAMERA_ENDPOINT = "/deleteCamera";
     public static final String USERS_POSITIONS_ENDPOINT = "/usersPositions";
     public static final String CAMERA_INFORMATIONS_ENDPOINT = "/cameraInformations";
+    public static final String USER_INFORMATIONS_ENDPOINT = "/userInformations";
+    public static final String UPDATE_PHONE_ENDPOINT = "/updatePhone";
 
     //REQUEST FIELDS
     public static final String USERNAME = "userName";
@@ -42,6 +45,9 @@ public class Constants {
     public static final String NEW_USERNAME = "newUserName";
     public static final String NEW_USER_PWD = "newUserPwd";
     public static final String OLD_USERNAME = "oldUserName";
+    public static final String NEW_TELEPHONE = "newUserPhone";
+    public static final String OLD_TELEPHONE = "oldUserPhone";
+    public static final String PHONE = "phone";
     public static final String USER_ID = "userId";
     public static final String CAMERAS = "cameras";
     public static final String MESSAGE = "message";
@@ -52,6 +58,7 @@ public class Constants {
     public static final String NEIGHBORHOOD = "neighborhood";
     public static final String CITY = "city";
     public static final String COUNTRY = "country";
+    public static final String RECOGNITIONS = "recognitions";
 
     //RECOGNITIONS FIELDS
     public static final String TOTAL = "total";
@@ -101,6 +108,7 @@ public class Constants {
     public static final List<String> REGISTER_USER_BODY_FIELDS = new ArrayList<String>() {{
         add(NEW_USERNAME);
         add(NEW_USER_PWD);
+        add(NEW_TELEPHONE);
         add(TYPE);
     }};
 
@@ -123,5 +131,15 @@ public class Constants {
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);
         add(CAMERA_IP);
+    }};
+
+    public static final List<String> UPDATE_PHONE_BODY_FIELDS = new ArrayList<String>() {{
+        add(NEW_TELEPHONE);
+    }};
+
+    public static final List<String> GET_USER_INFO_CAM_HEADER_FIELDS = new ArrayList<String>() {{
+        add(REQUESTER_USER_ID);
+        add(REQUESTER_PWD);
+        add(USERNAME);
     }};
 }

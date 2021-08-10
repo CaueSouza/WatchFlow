@@ -1,5 +1,12 @@
 package com.example.watchflow.operations;
 
+import static com.example.watchflow.Constants.CREATE_CAM_OPERATION;
+import static com.example.watchflow.Constants.CREATE_USER_OPERATION;
+import static com.example.watchflow.Constants.DELETE_CAM_OPERATION;
+import static com.example.watchflow.Constants.DELETE_USER_OPERATION;
+import static com.example.watchflow.Constants.OPERATION;
+import static com.example.watchflow.Constants.UPDATE_PHONE_OPERATION;
+
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -9,12 +16,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.watchflow.R;
 import com.example.watchflow.databinding.ActivityOperationBinding;
-
-import static com.example.watchflow.Constants.CREATE_CAM_OPERATION;
-import static com.example.watchflow.Constants.CREATE_USER_OPERATION;
-import static com.example.watchflow.Constants.DELETE_CAM_OPERATION;
-import static com.example.watchflow.Constants.DELETE_USER_OPERATION;
-import static com.example.watchflow.Constants.OPERATION;
 
 public class OperationActivity extends AppCompatActivity {
 
@@ -61,6 +62,12 @@ public class OperationActivity extends AppCompatActivity {
                         .replace(R.id.operation_layout, new DeleteCamFragment())
                         .commit();
                 break;
+            case UPDATE_PHONE_OPERATION:
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.operation_layout, new UpdatePhoneFragment())
+                        .commit();
+                break;
             default:
                 finish();
         }
@@ -68,7 +75,7 @@ public class OperationActivity extends AppCompatActivity {
         initBindings();
     }
 
-    private void initBindings(){
+    private void initBindings() {
         viewModel.getEndActivityEvent().observe(this, v -> finish());
     }
 

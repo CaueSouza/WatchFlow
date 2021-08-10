@@ -1,5 +1,18 @@
 package com.example.watchflow.retrofit;
 
+import static com.example.watchflow.Constants.ALL_RUNNING_CAMERAS_ENDPOINT;
+import static com.example.watchflow.Constants.BASE_URL;
+import static com.example.watchflow.Constants.CAMERA_INFORMATIONS_ENDPOINT;
+import static com.example.watchflow.Constants.DELETE_CAMERA_ENDPOINT;
+import static com.example.watchflow.Constants.DELETE_USER_ENDPOINT;
+import static com.example.watchflow.Constants.REGISTER_CAMERA_ENDPOINT;
+import static com.example.watchflow.Constants.REGISTER_USER_ENDPOINT;
+import static com.example.watchflow.Constants.UPDATE_PHONE_ENDPOINT;
+import static com.example.watchflow.Constants.USERS_POSITIONS_ENDPOINT;
+import static com.example.watchflow.Constants.USER_INFORMATIONS_ENDPOINT;
+import static com.example.watchflow.Constants.USER_LOGIN_ENDPOINT;
+import static com.example.watchflow.Constants.USER_LOGOUT_ENDPOINT;
+
 import androidx.annotation.Nullable;
 
 import com.google.gson.Gson;
@@ -20,17 +33,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static com.example.watchflow.Constants.ALL_RUNNING_CAMERAS_ENDPOINT;
-import static com.example.watchflow.Constants.BASE_URL;
-import static com.example.watchflow.Constants.CAMERA_INFORMATIONS_ENDPOINT;
-import static com.example.watchflow.Constants.DELETE_CAMERA_ENDPOINT;
-import static com.example.watchflow.Constants.DELETE_USER_ENDPOINT;
-import static com.example.watchflow.Constants.REGISTER_CAMERA_ENDPOINT;
-import static com.example.watchflow.Constants.REGISTER_USER_ENDPOINT;
-import static com.example.watchflow.Constants.USERS_POSITIONS_ENDPOINT;
-import static com.example.watchflow.Constants.USER_LOGIN_ENDPOINT;
-import static com.example.watchflow.Constants.USER_LOGOUT_ENDPOINT;
 
 public class ServerRepository {
     public static final String TAG = ServerRepository.class.getSimpleName();
@@ -136,6 +138,12 @@ public class ServerRepository {
                 break;
             case CAMERA_INFORMATIONS_ENDPOINT:
                 call = watchFlowServerApiInterface.getCameraInformations(headersJson);
+                break;
+            case UPDATE_PHONE_ENDPOINT:
+                call = watchFlowServerApiInterface.updatePhone(headersJson, bodyJson);
+                break;
+            case USER_INFORMATIONS_ENDPOINT:
+                call = watchFlowServerApiInterface.getUserInformations(headersJson);
                 break;
         }
 

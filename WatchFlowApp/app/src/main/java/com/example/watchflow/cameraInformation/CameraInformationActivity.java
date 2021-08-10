@@ -1,5 +1,7 @@
 package com.example.watchflow.cameraInformation;
 
+import static com.example.watchflow.Constants.MARKER_TITLE;
+
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -13,8 +15,6 @@ import com.example.watchflow.R;
 import com.example.watchflow.databinding.ActivityCameraInformationBinding;
 
 import java.util.ArrayList;
-
-import static com.example.watchflow.Constants.MARKER_TITLE_IP;
 
 public class CameraInformationActivity extends AppCompatActivity {
 
@@ -60,7 +60,7 @@ public class CameraInformationActivity extends AppCompatActivity {
     }
 
     private void createDataRequests() {
-        viewModel.getCameraInformation(getIntent().getStringExtra(MARKER_TITLE_IP));
+        viewModel.getCameraInformation(getIntent().getStringExtra(MARKER_TITLE));
 
         viewModel.getLocalizationData().observe(this, vmArrayList -> {
             localizationDataArrayList.clear();

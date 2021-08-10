@@ -108,6 +108,21 @@
                                         android:text="@={viewModel.newPassword}" />
                                 </com.google.android.material.textfield.TextInputLayout>
 
+                                <com.google.android.material.textfield.TextInputLayout
+                                    android:id="@+id/textInputPhone"
+                                    style="@style/textInputLayout"
+                                    android:layout_marginTop="@dimen/viewsMargin">
+
+                                    <EditText
+                                        android:id="@+id/editTextPhone"
+                                        style="@style/modifiedEditText"
+                                        android:digits="1234567890"
+                                        android:hint="@string/login_phone_hint"
+                                        android:inputType="phone"
+                                        android:maxLines="1"
+                                        android:text="@={viewModel.newTelephone}" />
+                                </com.google.android.material.textfield.TextInputLayout>
+
                                 <androidx.constraintlayout.widget.ConstraintLayout
                                     android:id="@+id/admUserCheckBoxLayout"
                                     style="@style/parent"

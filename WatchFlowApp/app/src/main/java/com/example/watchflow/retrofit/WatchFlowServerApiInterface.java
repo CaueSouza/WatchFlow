@@ -1,5 +1,7 @@
 package com.example.watchflow.retrofit;
 
+import static com.example.watchflow.Constants.AUTHORIZATION;
+
 import com.example.watchflow.Constants;
 import com.google.gson.JsonObject;
 
@@ -9,8 +11,6 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
-
-import static com.example.watchflow.Constants.AUTHORIZATION;
 
 public interface WatchFlowServerApiInterface {
 
@@ -44,4 +44,11 @@ public interface WatchFlowServerApiInterface {
 
     @GET(Constants.CAMERA_INFORMATIONS_ENDPOINT)
     Call<JsonObject> getCameraInformations(@Header(AUTHORIZATION) JsonObject headers);
+
+    @POST(Constants.UPDATE_PHONE_ENDPOINT)
+    Call<JsonObject> updatePhone(@Header(AUTHORIZATION) JsonObject headers,
+                                 @Body JsonObject body);
+
+    @GET(Constants.USER_INFORMATIONS_ENDPOINT)
+    Call<JsonObject> getUserInformations(@Header(AUTHORIZATION) JsonObject headers);
 }
