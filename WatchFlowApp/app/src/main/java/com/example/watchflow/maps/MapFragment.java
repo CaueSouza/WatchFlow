@@ -1,5 +1,8 @@
 package com.example.watchflow.maps;
 
+import static com.example.watchflow.Constants.AUTO_REFRESH_SECONDS;
+import static com.example.watchflow.Constants.MARKER_TITLE;
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -18,6 +21,7 @@ import com.example.watchflow.CameraInformations;
 import com.example.watchflow.R;
 import com.example.watchflow.UserInformations;
 import com.example.watchflow.cameraInformation.CameraInformationActivity;
+import com.example.watchflow.userInformation.UserInformationActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,9 +33,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-
-import static com.example.watchflow.Constants.AUTO_REFRESH_SECONDS;
-import static com.example.watchflow.Constants.MARKER_TITLE_IP;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback {
 
@@ -80,12 +81,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             String markerTitle = marker.getTitle();
 
             if (markerTitle != null && !markerTitle.equals(getString(R.string.your_position)) &&
-                    marker.getTag() != null && ((int) marker.getTag()) != 1) {
-                Intent intent = new Intent(getContext(), CameraInformationActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.putExtra(MARKER_TITLE_IP, markerTitle);
+                    marker.getTag() != null) {
 
-                startActivity(intent);
+                int tag = (int) marker.getTag();
+                Intent intent;
+
+                if (tag == 0) { //Camera marker
+                    intent = new Intent(getContext(), CameraInformationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra(MARKER_TITLE, markerTitle);
+                    startActivity(intent);
+                } else if (tag == 1) { //User marker
+                    intent = new Intent(getContext(), UserInformationActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.putExtra(MARKER_TITLE, markerTitle);
+                    startActivity(intent);
+                }
             }
 
             return false;

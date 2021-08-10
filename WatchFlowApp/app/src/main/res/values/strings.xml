@@ -4,6 +4,7 @@
     <string name="title_activity_main">WatchFlow</string>
     <string name="title_activity_operations">Operações</string>
     <string name="title_activity_cam_information">Informações da Câmera</string>
+    <string name="title_activity_user_information">Informações do Usuário</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -93,4 +94,7 @@
     <string name="camera_localization">Dados de Localização</string>
     <string name="camera_recognitions">Dados de Reconhecimento</string>
     <string name="toggleTraffic">Exibir Tráfego</string>
+    <string name="user_information_username_title">Usuário:</string>
+    <string name="user_information_user_phone_title">Telefone:</string>
+    <string name="user_information_user_location_title">Localização:</string>
 </resources>

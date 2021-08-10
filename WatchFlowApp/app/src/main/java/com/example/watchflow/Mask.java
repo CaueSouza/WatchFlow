@@ -12,6 +12,35 @@ public class Mask {
                 .replaceAll("[)]", "");
     }
 
+    public static String mask(String text, String mask, String controlCharacters) {
+
+        if (text == null || text.length() < 1) {
+            return "";
+        }
+
+        int nCount = 0;
+        StringBuilder maskedString = new StringBuilder();
+
+        for (int i = 0; i <= mask.length(); i++) {
+            try {
+                char character = ' ';
+                character = mask.charAt(i);
+
+                boolean bolMask = controlCharacters.contains(character + "");
+
+                if (bolMask) {
+                    maskedString.append(character);
+                } else {
+                    maskedString.append(text.charAt(nCount));
+                    nCount++;
+                }
+            } catch (StringIndexOutOfBoundsException e) {
+                return maskedString.toString();
+            }
+        }
+        return maskedString.toString();
+    }
+
     public static TextWatcher insert(final String mask, final EditText ediTxt) {
         return new TextWatcher() {
             boolean isUpdating;

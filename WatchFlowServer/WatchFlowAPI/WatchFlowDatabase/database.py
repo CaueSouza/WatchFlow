@@ -150,6 +150,7 @@ def resetDatabase():
     img_data1 = convertToBinaryData(FILES_PATH + 'img1.jpg')
     img_data2 = convertToBinaryData(FILES_PATH + 'img2.jpg')
     _, retorno = userLogin('admin', 'admin', -19.9167, -43.9345)
+    _, retorno = userLogin('Joe', 'senha1', -23.5535, -46.6767)
 
     updateCamera(retorno['userId'], 'admin',
                  '127.0.0.1', b64encode(img_data1))
@@ -479,6 +480,33 @@ def cameraInformations(requesterUserId, requesterPwd, cameraIp):
         json_data = dumps(raw_data)
 
         return (True, json_data)
+    else:
+        return (False, {'message': 'Invalid credentials'})
+
+
+def userInformations(requesterUserId, requesterPwd, username):
+    if validateUser(requesterUserId, requesterPwd):
+
+        query = """
+                SELECT
+                    phone,
+                    latitude,
+                    longitude
+                FROM
+                    users
+                WHERE
+                    username=? AND logged=1
+        """
+
+        data = (username,)
+
+        queryResult = executeFetchallQuery(query, data)[0]
+
+        json_dict = {'phone': queryResult[0],
+                     'latitude': queryResult[1],
+                     'longitude': queryResult[2]}
+
+        return (True, json_dict)
     else:
         return (False, {'message': 'Invalid credentials'})
 
