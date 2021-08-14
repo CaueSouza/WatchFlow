@@ -1,4 +1,4 @@
-from WatchFlowAI import manager
+from WatchFlowAI import watchflow_ai_manager
 
 if __name__ == '__main__':
-    manager.run()
+    watchflow_ai_manager.run()
