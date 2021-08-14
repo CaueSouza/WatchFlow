@@ -20,7 +20,7 @@ public class Constants {
     public static final int UPDATE_PHONE_OPERATION = 5;
 
     //ENDPOINTS
-    public static final String BASE_URL = "http://192.168.0.14:5000";
+    public static final String BASE_URL = "http://192.168.0.12:5000";
     public static final String ALL_RUNNING_CAMERAS_ENDPOINT = "/allRunningCameras";
     public static final String USER_LOGIN_ENDPOINT = "/userLogin";
     public static final String USER_LOGOUT_ENDPOINT = "/userLogout";
