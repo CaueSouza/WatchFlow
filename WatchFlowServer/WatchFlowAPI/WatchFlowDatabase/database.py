@@ -103,6 +103,27 @@ def createDatabases():
                 work_van INTEGER
         );
         """)
+
+        cursor.execute("""
+        CREATE TABLE historic (
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                ip TEXT NOT NULL,
+                timestamp REAL NOT NULL,
+                total INTEGER,
+                articulated_truck INTEGER,
+                bicycle INTEGER,
+                bus INTEGER,
+                car INTEGER,
+                motorcycle INTEGER,
+                motorized_vehicle INTEGER,
+                non_motorized_vehicle INTEGER,
+                pedestrian INTEGER,
+                pickup_truck INTEGER,
+                single_unit_truck INTEGER,
+                work_van INTEGER
+        );
+        """)
+
         # desconectando...
         cursor.close()
 
@@ -545,7 +566,7 @@ def getCamerasIpsAsJSON():
     return json_output
 
 
-def saveReconToDatabase(cameraIp, recognitions):
+def saveReconToCamerasDatabase(cameraIp, recognitions):
     query = """
             UPDATE
                 cameras
@@ -582,8 +603,48 @@ def saveReconToDatabase(cameraIp, recognitions):
 
     executeQuery(query, data)
 
+def saveReconToHistoricDatabase(cameraIp, recognitions, timestamp):
+    query = """
+            INSERT INTO
+                historic
+                (   
+                    ip, 
+                    timestamp,
+                    total,
+                    articulated_truck,
+                    bicycle,
+                    bus,
+                    car,
+                    motorcycle,
+                    motorized_vehicle,
+                    non_motorized_vehicle,
+                    pedestrian,
+                    pickup_truck,
+                    single_unit_truck,
+                    work_van
+                )
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+    """
 
-def saveFrameToDatabase(cameraIp, frame):
+    data = (cameraIp,
+            timestamp,
+            int(recognitions['total']),
+            int(recognitions['articulated_truck']),
+            int(recognitions['bicycle']),
+            int(recognitions['bus']),
+            int(recognitions['car']),
+            int(recognitions['motorcycle']),
+            int(recognitions['motorized_vehicle']),
+            int(recognitions['non-motorized_vehicle']),
+            int(recognitions['pedestrian']),
+            int(recognitions['pickup_truck']),
+            int(recognitions['single_unit_truck']),
+            int(recognitions['work_van']))
+
+    executeQuery(query, data)
+
+
+def saveFrameToCameraDatabase(cameraIp, frame):
     # Converting frame to image
     binary_snapshot = convertFrameToBinaryData(frame)
 
