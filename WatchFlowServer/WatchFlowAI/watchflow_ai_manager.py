@@ -4,6 +4,9 @@ import threading
 from .ImageDetection import imgDetection
 import random
 import os
+import calendar
+import time
+
 sem = threading.Semaphore()
 
 SRC_FILE_PATH = os.path.dirname(__file__) + '\\src'
@@ -29,11 +32,14 @@ def evalCamera(name):
     recognitions, frame = imgDetection.runVideoDetection(
         SRC_FILE_PATH + chooseVid)
 
-    database.saveReconToDatabase(IP, recognitions)
-    database.saveFrameToDatabase(IP, frame)
+    saveDataToDatabase(IP, frame, recognitions)
 
     logging.info("-Thread %s: finishing", IP)
 
+def saveDataToDatabase(IP, frame, recognitions):
+    database.saveReconToCamerasDatabase(IP, recognitions)
+    database.saveFrameToCameraDatabase(IP, frame)
+    database.saveReconToHistoricDatabase(IP, recognitions, calendar.timegm(time.gmtime()))
 
 def runThreads():
     threading.Timer(60.0, runThreads).start()
