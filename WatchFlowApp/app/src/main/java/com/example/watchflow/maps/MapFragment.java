@@ -13,6 +13,7 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -110,6 +111,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         viewModel.getAllUsers().observe(this, this::updateMapsUsersMarkers);
 
         viewModel.getRefreshEvent().observe(this, v -> requestMapsInformation());
+        viewModel.getOpenDashboardEvent().observe(this, v -> {
+            //TODO open the dashboard activity
+            Toast.makeText(getContext(), "Opening Dashboard", Toast.LENGTH_SHORT).show();
+        });
     }
 
     private void requestMapsInformation() {
