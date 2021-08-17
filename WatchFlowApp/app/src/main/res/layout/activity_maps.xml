@@ -2,10 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,19 +11,68 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/toggle_traffic_fab"
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/main_fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_gravity="start"
             android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginBottom="64dp"
             android:backgroundTint="@android:color/black"
-            android:contentDescription="@string/toggleTraffic"
-            android:src="@drawable/ic_traffic_icon"
+            android:textColor="@android:color/white"
+            app:icon="@drawable/ic_gear_option"
+            app:iconTint="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/dashboard_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@android:color/black"
+            android:contentDescription="@string/app_name"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/main_fab"
+            app:layout_constraintEnd_toEndOf="@+id/main_fab"
+            app:srcCompat="@drawable/ic_dashboard"
+            app:tint="@android:color/white" />
+
+        <TextView
+            android:id="@+id/dashboard_fab_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Dashboard"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/dashboard_fab"
+            app:layout_constraintEnd_toStartOf="@+id/dashboard_fab"
+            app:layout_constraintTop_toTopOf="@+id/dashboard_fab" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/traffic_fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="@android:color/black"
+            android:contentDescription="@string/app_name"
+            app:fabSize="normal"
+            app:layout_constraintBottom_toTopOf="@+id/dashboard_fab"
+            app:layout_constraintEnd_toEndOf="@+id/dashboard_fab"
+            app:layout_constraintStart_toStartOf="@+id/dashboard_fab"
+            app:srcCompat="@drawable/ic_traffic_icon"
+            app:tint="@android:color/white" />
+
+        <TextView
+            android:id="@+id/traffic_fab_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="Alternar Tráfego"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/traffic_fab"
+            app:layout_constraintEnd_toStartOf="@+id/traffic_fab"
+            app:layout_constraintTop_toTopOf="@+id/traffic_fab" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

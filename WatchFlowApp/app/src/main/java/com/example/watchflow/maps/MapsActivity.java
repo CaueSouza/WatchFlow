@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ public class MapsActivity extends AppCompatActivity {
 
     MapsViewModel viewModel;
     ActivityMapsBinding binding;
+    Boolean isAllFabsVisible;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,35 @@ public class MapsActivity extends AppCompatActivity {
     }
 
     private void initBindings() {
+        binding.trafficFab.setVisibility(View.GONE);
+        binding.trafficFabText.setVisibility(View.GONE);
+        binding.dashboardFab.setVisibility(View.GONE);
+        binding.dashboardFabText.setVisibility(View.GONE);
+
+        isAllFabsVisible = false;
+        binding.mainFab.shrink();
+        binding.mainFab.setOnClickListener(v -> {
+            if (!isAllFabsVisible) {
+                binding.trafficFab.show();
+                binding.dashboardFab.show();
+                binding.trafficFabText.setVisibility(View.VISIBLE);
+                binding.dashboardFabText.setVisibility(View.VISIBLE);
+                binding.mainFab.extend();
+            } else {
+                binding.trafficFab.hide();
+                binding.dashboardFab.hide();
+                binding.trafficFabText.setVisibility(View.GONE);
+                binding.dashboardFabText.setVisibility(View.GONE);
+                binding.mainFab.shrink();
+            }
+
+            isAllFabsVisible = !isAllFabsVisible;
+        });
+
+        binding.trafficFab.setOnClickListener(v -> viewModel.getToggleTraffic().call());
+        binding.dashboardFab.setOnClickListener(v -> viewModel.getOpenDashboardEvent().call());
+
         viewModel.getEndActivityEvent().observe(this, v -> finish());
-        binding.toggleTrafficFab.setOnClickListener(v -> viewModel.getToggleTraffic().call());
     }
 
     @Override

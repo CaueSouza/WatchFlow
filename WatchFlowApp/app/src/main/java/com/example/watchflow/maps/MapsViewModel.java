@@ -1,43 +1,8 @@
 package com.example.watchflow.maps;
 
-import android.app.Application;
-import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
-import com.example.watchflow.CameraInformations;
-import com.example.watchflow.ImageUtil;
-import com.example.watchflow.R;
-import com.example.watchflow.SingleLiveEvent;
-import com.example.watchflow.UserIdPwd;
-import com.example.watchflow.UserInformations;
-import com.example.watchflow.cameraInformation.CameraInformationActivity;
-import com.example.watchflow.retrofit.ServerRepository;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 import static com.example.watchflow.Constants.ALL_RUNNING_CAMERAS_ENDPOINT;
 import static com.example.watchflow.Constants.CAMERAS;
-import static com.example.watchflow.Constants.CAMERA_INFORMATIONS_ENDPOINT;
 import static com.example.watchflow.Constants.COMMON_HEADER_FIELDS;
-import static com.example.watchflow.Constants.GET_INFO_OR_DELETE_CAM_HEADER_FIELDS;
-import static com.example.watchflow.Constants.IMAGE;
 import static com.example.watchflow.Constants.IP;
 import static com.example.watchflow.Constants.LATITUDE;
 import static com.example.watchflow.Constants.LOCATIONS;
@@ -47,6 +12,34 @@ import static com.example.watchflow.Constants.USERNAME;
 import static com.example.watchflow.Constants.USERS_POSITIONS_ENDPOINT;
 import static com.example.watchflow.Constants.USER_LOGOUT_ENDPOINT;
 
+import android.app.Application;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.watchflow.CameraInformations;
+import com.example.watchflow.R;
+import com.example.watchflow.SingleLiveEvent;
+import com.example.watchflow.UserIdPwd;
+import com.example.watchflow.UserInformations;
+import com.example.watchflow.retrofit.ServerRepository;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MapsViewModel extends AndroidViewModel {
 
     private static final String TAG = MapsViewModel.class.getSimpleName();
@@ -55,6 +48,7 @@ public class MapsViewModel extends AndroidViewModel {
     private final MutableLiveData<List<CameraInformations>> allCameras = new MutableLiveData<>();
     private final MutableLiveData<List<UserInformations>> allUsers = new MutableLiveData<>();
     private final SingleLiveEvent<Void> toggleTraffic = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Void> openDashboardEvent = new SingleLiveEvent<>();
     private final SingleLiveEvent<Void> refreshEvent = new SingleLiveEvent<>();
     private final SingleLiveEvent<Void> endActivityEvent = new SingleLiveEvent<>();
     private final Application application;
@@ -106,6 +100,10 @@ public class MapsViewModel extends AndroidViewModel {
 
     public SingleLiveEvent<Void> getToggleTraffic() {
         return toggleTraffic;
+    }
+
+    public SingleLiveEvent<Void> getOpenDashboardEvent() {
+        return openDashboardEvent;
     }
 
     public GpsTracker getGpsTracker() {
