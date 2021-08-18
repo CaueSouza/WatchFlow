@@ -64,7 +64,7 @@ public class UserInformationViewModel extends AndroidViewModel {
         return userLocation;
     }
 
-    Callback<JsonObject> userInformationCallback = new Callback<JsonObject>() {
+    Callback<JsonObject> userInformationCallback = new Callback<>() {
 
         @Override
         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

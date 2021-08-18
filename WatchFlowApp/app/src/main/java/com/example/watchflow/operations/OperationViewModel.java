@@ -46,7 +46,7 @@ public class OperationViewModel extends AndroidViewModel {
     private final MutableLiveData<String> newTelephone = new MutableLiveData<>();
     private final MutableLiveData<CameraAddressPOJO> cameraInfo = new MutableLiveData<>();
     private final SingleLiveEvent<Void> endActivityEvent = new SingleLiveEvent<>();
-    private Application application;
+    private final Application application;
 
     public OperationViewModel(@NonNull Application application) {
         super(application);
@@ -146,7 +146,7 @@ public class OperationViewModel extends AndroidViewModel {
     }
 
     //CALLBACKS
-    Callback<JsonObject> registerUserCallback = new Callback<JsonObject>() {
+    Callback<JsonObject> registerUserCallback = new Callback<>() {
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
@@ -167,7 +167,7 @@ public class OperationViewModel extends AndroidViewModel {
         }
     };
 
-    Callback<JsonObject> deleteUserCallback = new Callback<JsonObject>() {
+    Callback<JsonObject> deleteUserCallback = new Callback<>() {
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
@@ -188,7 +188,7 @@ public class OperationViewModel extends AndroidViewModel {
         }
     };
 
-    Callback<JsonObject> registerCamCallback = new Callback<JsonObject>() {
+    Callback<JsonObject> registerCamCallback = new Callback<>() {
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
@@ -209,7 +209,7 @@ public class OperationViewModel extends AndroidViewModel {
         }
     };
 
-    Callback<JsonObject> deleteCamCallback = new Callback<JsonObject>() {
+    Callback<JsonObject> deleteCamCallback = new Callback<>() {
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
@@ -230,7 +230,7 @@ public class OperationViewModel extends AndroidViewModel {
         }
     };
 
-    Callback<JsonObject> updatePhoneCallback = new Callback<JsonObject>() {
+    Callback<JsonObject> updatePhoneCallback = new Callback<>() {
         @Override
         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {

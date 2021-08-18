@@ -73,7 +73,7 @@ public class CameraInformationViewModel extends AndroidViewModel {
                 GET_INFO_OR_DELETE_CAM_HEADER_FIELDS, headers_data, true);
     }
 
-    Callback<JsonObject> cameraInformationCallback = new Callback<JsonObject>() {
+    Callback<JsonObject> cameraInformationCallback = new Callback<>() {
 
         @Override
         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

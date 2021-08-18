@@ -110,7 +110,7 @@ public class MapsViewModel extends AndroidViewModel {
         return gpsTracker;
     }
 
-    Callback<JsonObject> allRunningCamerasCallback = new Callback<JsonObject>() {
+    Callback<JsonObject> allRunningCamerasCallback = new Callback<>() {
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
@@ -143,7 +143,7 @@ public class MapsViewModel extends AndroidViewModel {
         }
     };
 
-    Callback<JsonObject> allLoggedUsersCallback = new Callback<JsonObject>() {
+    Callback<JsonObject> allLoggedUsersCallback = new Callback<>() {
 
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
@@ -177,7 +177,7 @@ public class MapsViewModel extends AndroidViewModel {
         }
     };
 
-    Callback<JsonObject> logoutUserCallback = new Callback<JsonObject>() {
+    Callback<JsonObject> logoutUserCallback = new Callback<>() {
 
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
