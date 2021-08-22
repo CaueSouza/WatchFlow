@@ -22,9 +22,55 @@ def allRunningCameras():
     neededKeys = {'requesterUserId', 'requesterPwd'}
 
     if neededKeys <= headers.keys():
+
+        shouldReturnIPs = headers['onlyIps'] if 'onlyIps' in headers else 0
+        shouldReturnIPs = True if shouldReturnIPs == 1 else False
+
         success, message = database.getCamerasDatabaseAsJSON(
             requesterUserId=headers['requesterUserId'],
+            requesterPwd=headers['requesterPwd'],
+            onlyIps=shouldReturnIPs)
+
+        return message, 200 if success else 400
+    else:
+        return 'Missing data', 400
+
+
+@app.route('/myDashboardCameras', methods=['GET'])
+def myDashboardCameras():
+    if AUTHORIZATION not in request.headers:
+        return 'Missing headers', 400
+
+    headers = eval(request.headers.get(AUTHORIZATION))
+
+    neededKeys = {'requesterUserId', 'requesterPwd'}
+
+    if neededKeys <= headers.keys():
+        success, message = database.getDashboardCams(
+            requesterUserId=headers['requesterUserId'],
             requesterPwd=headers['requesterPwd'])
+
+        return message, 200 if success else 400
+    else:
+        return 'Missing data', 400
+
+
+@app.route('/saveDashboardSelectedIPs', methods=['POST'])
+def saveDashboardSelectedIPs():
+    if AUTHORIZATION not in request.headers or request.get_json() is None:
+        return 'Missing headers', 400
+
+    headers = eval(request.headers.get(AUTHORIZATION))
+    body = request.get_json()
+
+    neededHeadersKeys = {'requesterUserId', 'requesterPwd'}
+    neededBodyKeys = {'selectedCameras'}
+
+    if neededHeadersKeys <= headers.keys() and neededBodyKeys <= body.keys():
+        success, message = database.saveDashboardSelectedCameras(
+            requesterUserId=headers['requesterUserId'],
+            requesterPwd=headers['requesterPwd'],
+            selectedCameras=body['selectedCameras'])
 
         return message, 200 if success else 400
     else:

@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.watchflow.R;
 import com.example.watchflow.UserIdPwd;
+import com.example.watchflow.dashboard.configurations.DashboardConfigurationActivity;
 import com.example.watchflow.databinding.ActivityMapsBinding;
 import com.example.watchflow.operations.OperationActivity;
 
@@ -97,6 +98,7 @@ public class MapsActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         UserIdPwd userIdPwd = UserIdPwd.getInstance();
+        Intent intent;
 
         switch (item.getItemId()) {
             case R.id.refresh_item:
@@ -105,7 +107,7 @@ public class MapsActivity extends AppCompatActivity {
 
             case R.id.add_user_item:
                 if (userIdPwd.getAdm()) {
-                    Intent intent = new Intent(this, OperationActivity.class);
+                    intent = new Intent(this, OperationActivity.class);
                     intent.putExtra(OPERATION, CREATE_USER_OPERATION);
                     startActivity(intent);
                 } else {
@@ -115,7 +117,7 @@ public class MapsActivity extends AppCompatActivity {
 
             case R.id.remove_user_item:
                 if (userIdPwd.getAdm()) {
-                    Intent intent = new Intent(this, OperationActivity.class);
+                    intent = new Intent(this, OperationActivity.class);
                     intent.putExtra(OPERATION, DELETE_USER_OPERATION);
                     startActivity(intent);
                 } else {
@@ -125,7 +127,7 @@ public class MapsActivity extends AppCompatActivity {
 
             case R.id.add_cam_item:
                 if (userIdPwd.getAdm()) {
-                    Intent intent = new Intent(this, OperationActivity.class);
+                    intent = new Intent(this, OperationActivity.class);
                     intent.putExtra(OPERATION, CREATE_CAM_OPERATION);
                     startActivity(intent);
                 } else {
@@ -135,7 +137,7 @@ public class MapsActivity extends AppCompatActivity {
 
             case R.id.remove_cam_item:
                 if (userIdPwd.getAdm()) {
-                    Intent intent = new Intent(this, OperationActivity.class);
+                    intent = new Intent(this, OperationActivity.class);
                     intent.putExtra(OPERATION, DELETE_CAM_OPERATION);
                     startActivity(intent);
                 } else {
@@ -144,8 +146,13 @@ public class MapsActivity extends AppCompatActivity {
                 return true;
 
             case R.id.update_phone_item:
-                Intent intent = new Intent(this, OperationActivity.class);
+                intent = new Intent(this, OperationActivity.class);
                 intent.putExtra(OPERATION, UPDATE_PHONE_OPERATION);
+                startActivity(intent);
+                return true;
+
+            case R.id.dashboard_config_item:
+                intent = new Intent(this, DashboardConfigurationActivity.class);
                 startActivity(intent);
                 return true;
 

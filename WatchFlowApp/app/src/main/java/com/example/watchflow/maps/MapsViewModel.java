@@ -45,7 +45,7 @@ public class MapsViewModel extends AndroidViewModel {
     private static final String TAG = MapsViewModel.class.getSimpleName();
     private GpsTracker gpsTracker;
     private final ServerRepository serverRepository = ServerRepository.getInstance();
-    private final MutableLiveData<List<CameraInformations>> allCameras = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<CameraInformations>> allCameras = new MutableLiveData<>();
     private final MutableLiveData<List<UserInformations>> allUsers = new MutableLiveData<>();
     private final SingleLiveEvent<Void> toggleTraffic = new SingleLiveEvent<>();
     private final SingleLiveEvent<Void> openDashboardEvent = new SingleLiveEvent<>();
@@ -74,11 +74,11 @@ public class MapsViewModel extends AndroidViewModel {
                 COMMON_HEADER_FIELDS, UserIdPwd.getInstance().getUserIdPwdList(), true);
     }
 
-    public void setAllCameras(List<CameraInformations> allCameras) {
+    public void setAllCameras(ArrayList<CameraInformations> allCameras) {
         this.allCameras.setValue(allCameras);
     }
 
-    public LiveData<List<CameraInformations>> getAllCameras() {
+    public LiveData<ArrayList<CameraInformations>> getAllCameras() {
         return allCameras;
     }
 
@@ -118,7 +118,7 @@ public class MapsViewModel extends AndroidViewModel {
                 return;
             }
 
-            List<CameraInformations> allCameraInformations = new ArrayList<>();
+            ArrayList<CameraInformations> allCameraInformations = new ArrayList<>();
             JsonObject responseData = (JsonObject) (response.body().get(MESSAGE));
             JsonArray camerasArray = (JsonArray) responseData.get(CAMERAS);
 
