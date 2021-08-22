@@ -15,9 +15,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:background="@drawable/list_data_background"
             android:padding="10dp"
             android:text="@string/configuration_activity_main_title_text"
+            android:textColor="@color/colorPrimary"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -25,12 +25,13 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/cams_ips_dashboard_configuration_scroll_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:paddingStart="20dp"
-            android:paddingEnd="20dp"
             android:paddingTop="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingEnd="20dp"
+            app:layout_constraintBottom_toTopOf="@id/save_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/configurations_title_text_view">
@@ -41,5 +42,15 @@
                 android:layout_height="wrap_content" />
         </androidx.core.widget.NestedScrollView>
 
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="@string/save_text"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cams_ips_dashboard_configuration_scroll_view" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -5,8 +5,10 @@ import static com.example.watchflow.Constants.BASE_URL;
 import static com.example.watchflow.Constants.CAMERA_INFORMATIONS_ENDPOINT;
 import static com.example.watchflow.Constants.DELETE_CAMERA_ENDPOINT;
 import static com.example.watchflow.Constants.DELETE_USER_ENDPOINT;
+import static com.example.watchflow.Constants.MY_DASHBOARD_CAMS_ENDPOINT;
 import static com.example.watchflow.Constants.REGISTER_CAMERA_ENDPOINT;
 import static com.example.watchflow.Constants.REGISTER_USER_ENDPOINT;
+import static com.example.watchflow.Constants.SAVE_DASHBOARD_SELECTED_IPS_ENDPOINT;
 import static com.example.watchflow.Constants.UPDATE_PHONE_ENDPOINT;
 import static com.example.watchflow.Constants.USERS_POSITIONS_ENDPOINT;
 import static com.example.watchflow.Constants.USER_INFORMATIONS_ENDPOINT;
@@ -145,6 +147,13 @@ public class ServerRepository {
             case USER_INFORMATIONS_ENDPOINT:
                 call = watchFlowServerApiInterface.getUserInformations(headersJson);
                 break;
+            case MY_DASHBOARD_CAMS_ENDPOINT:
+                call = watchFlowServerApiInterface.getMyDashboardCameras(headersJson);
+                break;
+                case SAVE_DASHBOARD_SELECTED_IPS_ENDPOINT:
+                call = watchFlowServerApiInterface.saveDashboardSelectedIPs(headersJson, bodyJson);
+                break;
+
         }
 
         if (call != null) {

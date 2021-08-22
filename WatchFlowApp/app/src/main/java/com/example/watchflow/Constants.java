@@ -32,6 +32,8 @@ public class Constants {
     public static final String CAMERA_INFORMATIONS_ENDPOINT = "/cameraInformations";
     public static final String USER_INFORMATIONS_ENDPOINT = "/userInformations";
     public static final String UPDATE_PHONE_ENDPOINT = "/updatePhone";
+    public static final String MY_DASHBOARD_CAMS_ENDPOINT = "/myDashboardCameras";
+    public static final String SAVE_DASHBOARD_SELECTED_IPS_ENDPOINT = "/saveDashboardSelectedIPs";
 
     //REQUEST FIELDS
     public static final String USERNAME = "userName";
@@ -60,6 +62,8 @@ public class Constants {
     public static final String COUNTRY = "country";
     public static final String RECOGNITIONS = "recognitions";
     public static final String ONLY_IPS = "onlyIps";
+    public static final String IS_SELECTED = "isSelected";
+    public static final String SELECTED_CAMERAS = "selectedCameras";
 
     //RECOGNITIONS FIELDS
     public static final String TOTAL = "total";
@@ -75,7 +79,7 @@ public class Constants {
     public static final String SINGLE_UNIT_TRUCK = "single_unit_truck";
     public static final String WORK_VAN = "work_van";
 
-    public static final List<String> RECOGNITION_FIELDS = new ArrayList<String>() {{
+    public static final List<String> RECOGNITION_FIELDS = new ArrayList<>() {{
         add(TOTAL);
         add(ARTICULATED_TRUCK);
         add(BICYCLE);
@@ -91,35 +95,35 @@ public class Constants {
     }};
 
 
-    public static final List<String> COMMON_HEADER_FIELDS = new ArrayList<String>() {{
+    public static final List<String> COMMON_HEADER_FIELDS = new ArrayList<>() {{
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);
     }};
 
-    public static final List<String> LOGIN_USER_HEADER_FIELDS = new ArrayList<String>() {{
+    public static final List<String> LOGIN_USER_HEADER_FIELDS = new ArrayList<>() {{
         add(USERNAME);
         add(PASSWORD);
     }};
 
-    public static final List<String> LOGIN_USER_BODY_FIELDS = new ArrayList<String>() {{
+    public static final List<String> LOGIN_USER_BODY_FIELDS = new ArrayList<>() {{
         add(LATITUDE);
         add(LONGITUDE);
     }};
 
-    public static final List<String> REGISTER_USER_BODY_FIELDS = new ArrayList<String>() {{
+    public static final List<String> REGISTER_USER_BODY_FIELDS = new ArrayList<>() {{
         add(NEW_USERNAME);
         add(NEW_USER_PWD);
         add(NEW_TELEPHONE);
         add(TYPE);
     }};
 
-    public static final List<String> DELETE_USER_HEADER_FIELDS = new ArrayList<String>() {{
+    public static final List<String> DELETE_USER_HEADER_FIELDS = new ArrayList<>() {{
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);
         add(OLD_USERNAME);
     }};
 
-    public static final List<String> REGISTER_CAM_BODY_FIELDS = new ArrayList<String>() {{
+    public static final List<String> REGISTER_CAM_BODY_FIELDS = new ArrayList<>() {{
         add(CAMERA_IP);
         add(STREET);
         add(NUMBER);
@@ -128,19 +132,23 @@ public class Constants {
         add(COUNTRY);
     }};
 
-    public static final List<String> GET_INFO_OR_DELETE_CAM_HEADER_FIELDS = new ArrayList<String>() {{
+    public static final List<String> GET_INFO_OR_DELETE_CAM_HEADER_FIELDS = new ArrayList<>() {{
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);
         add(CAMERA_IP);
     }};
 
-    public static final List<String> UPDATE_PHONE_BODY_FIELDS = new ArrayList<String>() {{
+    public static final List<String> UPDATE_PHONE_BODY_FIELDS = new ArrayList<>() {{
         add(NEW_TELEPHONE);
     }};
 
-    public static final List<String> GET_USER_INFO_CAM_HEADER_FIELDS = new ArrayList<String>() {{
+    public static final List<String> GET_USER_INFO_CAM_HEADER_FIELDS = new ArrayList<>() {{
         add(REQUESTER_USER_ID);
         add(REQUESTER_PWD);
         add(USERNAME);
+    }};
+
+    public static final List<String> SAVE_DASHBOARD_SELECTED_CAMERAS_BODY_FIELD = new ArrayList<>() {{
+        add(SELECTED_CAMERAS);
     }};
 }

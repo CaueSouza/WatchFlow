@@ -34,6 +34,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     private void initBindings() {
 
+        //TODO CREATE CALL TO ENDPOINT THAT RETURN ALL MY SELECTED IPS FOR DASHBOARD IF RETURN NOTHING, CALL CONFIGURATION SCREEN INSTEAD
         //TODO REMOVE HARDCODED GRAPH
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
                 new DataPoint(0, 1),

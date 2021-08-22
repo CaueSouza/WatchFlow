@@ -78,6 +78,7 @@ def createDatabases():
                 type INTEGER NOT NULL,
                 latitude REAL,
                 longitude REAL,
+                dashboardCameras TEXT,
                 logged INTEGER NOT NULL
         );
         """)
@@ -138,8 +139,8 @@ def resetDatabase():
     users_file = open(FILES_PATH + 'users_tcc.csv')
     users_rows = csv.reader(users_file)
 
-    sql = """INSERT INTO users (userName, pwd, phone, type, latitude, longitude, logged)
-    VALUES (?, ?, ?, ?, ?, ?, 0)"""
+    sql = """INSERT INTO users (userName, pwd, phone, type, latitude, longitude, dashboardCameras, logged)
+    VALUES (?, ?, ?, ?, ?, ?, ?, 0)"""
 
     cursor.executemany(sql, users_rows)
 
@@ -181,6 +182,7 @@ def resetDatabase():
     conn.commit()
     cursor.close()
 
+
 def doesCamExist(IP):
     query = 'SELECT EXISTS(SELECT 1 FROM cameras WHERE ip=?)'
     data = (IP,)
@@ -189,6 +191,7 @@ def doesCamExist(IP):
     result = executeFetchallQuery(query, data)[0][0]
 
     return result == 1
+
 
 def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
     if validateUser(requesterUserId, requesterPwd):
@@ -215,6 +218,55 @@ def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
                     json_list.append(json_dict)
 
         return (True, {'message': json_output})
+    else:
+        return (False, {'message': 'Invalid credentials'})
+
+
+def getDashboardCams(requesterUserId, requesterPwd):
+    if validateUser(requesterUserId, requesterPwd):
+
+        json_list = []
+        json_output = {'cameras': json_list}
+
+        query = "SELECT dashboardCameras FROM users WHERE userId=?"
+        data = (requesterUserId,)
+        userDashboardCams = executeFetchallQuery(query, data)
+        dashboardCamerasSet = set(userDashboardCams[0][0].split("-"))
+
+        query = "SELECT * FROM cameras"
+
+        queryResult = executeFetchallQuery(query)
+
+        for row in queryResult:
+            json_dict = {'ip': row[1],
+                         'isSelected': 1 if row[1] in dashboardCamerasSet else 0}
+            json_list.append(json_dict)
+
+        return (True, {'message': json_output})
+    else:
+        return (False, {'message': 'Invalid credentials'})
+
+
+def saveDashboardSelectedCameras(requesterUserId, requesterPwd, selectedCameras):
+    if validateUser(requesterUserId, requesterPwd):
+
+        selectedCameras = selectedCameras.replace(' ', '').replace(
+            '[', '').replace(']', '').replace(',', '-')
+
+        query = """
+                UPDATE
+                    users
+                SET
+                    dashboardCameras = ?
+                WHERE
+                    userId=? AND pwd=?
+        """
+
+        data = (selectedCameras, requesterUserId, requesterPwd)
+
+        executeQuery(query, data)
+
+        return (True, {'message': 'Dashboard selected cameras updated'})
     else:
         return (False, {'message': 'Invalid credentials'})
 
@@ -612,6 +664,7 @@ def saveReconToCamerasDatabase(cameraIp, recognitions):
             cameraIp)
 
     executeQuery(query, data)
+
 
 def saveReconToHistoricDatabase(cameraIp, recognitions, timestamp):
     query = """

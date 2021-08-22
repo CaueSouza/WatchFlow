@@ -104,4 +104,8 @@
     <string name="configurations_txt">Configurações</string>
     <string name="dashboard_config_txt">Configurar painel de controle</string>
     <string name="configuration_activity_main_title_text">Selecione quais cameras deverão aparecer no painel de controle</string>
+    <string name="save_text">Salvar</string>
+
+    <string name="success_saving_text">Salvo com sucesso</string>
+    <string name="failure_saving_text">Não foi possível salvar</string>
 </resources>

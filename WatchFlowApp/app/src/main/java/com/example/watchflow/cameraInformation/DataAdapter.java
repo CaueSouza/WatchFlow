@@ -17,8 +17,8 @@ import java.util.ArrayList;
 
 public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataHolder> {
 
-    private Context context;
-    private ArrayList<Data> datas;
+    private final Context context;
+    private final ArrayList<Data> datas;
 
     public DataAdapter(Context context, ArrayList<Data> datas) {
         this.context = context;
@@ -45,8 +45,8 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataHolder> {
         return datas.size();
     }
 
-    class DataHolder extends RecyclerView.ViewHolder{
-        private TextView txtTitle, txtContent;
+    static class DataHolder extends RecyclerView.ViewHolder {
+        private final TextView txtTitle, txtContent;
 
         public DataHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -55,7 +55,7 @@ public class DataAdapter extends RecyclerView.Adapter<DataAdapter.DataHolder> {
             txtContent = itemView.findViewById(R.id.data_item_content);
         }
 
-        void setDetails(Data data){
+        void setDetails(Data data) {
             txtTitle.setText(data.getTitle());
             txtContent.setText(data.getContent());
         }
