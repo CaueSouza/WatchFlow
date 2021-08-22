@@ -59,6 +59,7 @@ public class Constants {
     public static final String CITY = "city";
     public static final String COUNTRY = "country";
     public static final String RECOGNITIONS = "recognitions";
+    public static final String ONLY_IPS = "onlyIps";
 
     //RECOGNITIONS FIELDS
     public static final String TOTAL = "total";

@@ -47,9 +47,22 @@
     </item>
 
     <item
-        android:id="@+id/update_phone_item"
-        android:title="@string/update_phone_txt"
-        app:showAsAction="never" />
+        android:id="@+id/configurations_item"
+        android:title="@string/configurations_txt"
+        app:showAsAction="never">
+
+        <menu>
+            <item
+                android:id="@+id/update_phone_item"
+                android:title="@string/update_phone_txt"
+                app:showAsAction="never"/>
+
+            <item
+                android:id="@+id/dashboard_config_item"
+                android:title="@string/dashboard_config_txt"
+                app:showAsAction="never" />
+        </menu>
+    </item>
 
     <item
         android:id="@+id/logout_item"

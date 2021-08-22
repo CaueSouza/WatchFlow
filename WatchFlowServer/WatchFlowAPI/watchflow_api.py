@@ -22,9 +22,14 @@ def allRunningCameras():
     neededKeys = {'requesterUserId', 'requesterPwd'}
 
     if neededKeys <= headers.keys():
+
+        shouldReturnIPs = headers['onlyIps'] if 'onlyIps' in headers else 0
+        shouldReturnIPs = True if shouldReturnIPs == 1 else False
+
         success, message = database.getCamerasDatabaseAsJSON(
-            requesterUserId=headers['requesterUserId'],
-            requesterPwd=headers['requesterPwd'])
+                requesterUserId=headers['requesterUserId'],
+                requesterPwd=headers['requesterPwd'],
+                onlyIps=shouldReturnIPs)
 
         return message, 200 if success else 400
     else:
