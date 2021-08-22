@@ -3,6 +3,7 @@
     <string name="title_activity_maps">Maps</string>
     <string name="title_activity_main">WatchFlow</string>
     <string name="title_activity_operations">Operações</string>
+    <string name="title_activity_dashboard">Painel de Controle</string>
     <string name="title_activity_cam_information">Informações da Câmera</string>
     <string name="title_activity_user_information">Informações do Usuário</string>
     <!-- Strings used for fragments for navigation -->
@@ -93,8 +94,10 @@
 
     <string name="camera_localization">Dados de Localização</string>
     <string name="camera_recognitions">Dados de Reconhecimento</string>
-    <string name="toggleTraffic">Exibir Tráfego</string>
+    <string name="showTraffic">Exibir Tráfego</string>
     <string name="user_information_username_title">Usuário:</string>
     <string name="user_information_user_phone_title">Telefone:</string>
     <string name="user_information_user_location_title">Localização:</string>
+    <string name="toggle_traffic_text">Alternar Tráfego</string>
+    <string name="dashboard_text">Painel de Controle</string>
 </resources>

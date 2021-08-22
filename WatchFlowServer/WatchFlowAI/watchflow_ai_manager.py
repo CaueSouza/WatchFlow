@@ -37,9 +37,10 @@ def evalCamera(name):
     logging.info("-Thread %s: finishing", IP)
 
 def saveDataToDatabase(IP, frame, recognitions):
-    database.saveReconToCamerasDatabase(IP, recognitions)
-    database.saveFrameToCameraDatabase(IP, frame)
-    database.saveReconToHistoricDatabase(IP, recognitions, calendar.timegm(time.gmtime()))
+    if database.doesCamExist(IP) :
+        database.saveReconToCamerasDatabase(IP, recognitions)
+        database.saveFrameToCameraDatabase(IP, frame)
+        database.saveReconToHistoricDatabase(IP, recognitions, calendar.timegm(time.gmtime()))
 
 def runThreads():
     threading.Timer(60.0, runThreads).start()

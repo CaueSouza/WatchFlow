@@ -54,6 +54,9 @@
         <activity
             android:name=".userInformation.UserInformationActivity"
             android:label="@string/title_activity_user_information" />
+        <activity
+            android:name=".dashboard.DashboardActivity"
+            android:label="@string/title_activity_dashboard" />
     </application>
 
 </manifest>

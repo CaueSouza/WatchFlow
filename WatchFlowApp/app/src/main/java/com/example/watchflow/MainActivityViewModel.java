@@ -1,5 +1,13 @@
 package com.example.watchflow;
 
+import static com.example.watchflow.Constants.ADM_TYPE;
+import static com.example.watchflow.Constants.LOGIN_USER_BODY_FIELDS;
+import static com.example.watchflow.Constants.LOGIN_USER_HEADER_FIELDS;
+import static com.example.watchflow.Constants.PASSWORD;
+import static com.example.watchflow.Constants.USER_ID;
+import static com.example.watchflow.Constants.USER_LOGIN_ENDPOINT;
+import static com.example.watchflow.Constants.USER_TYPE;
+
 import android.app.Application;
 import android.content.Intent;
 import android.util.Log;
@@ -22,14 +30,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.example.watchflow.Constants.ADM_TYPE;
-import static com.example.watchflow.Constants.LOGIN_USER_BODY_FIELDS;
-import static com.example.watchflow.Constants.LOGIN_USER_HEADER_FIELDS;
-import static com.example.watchflow.Constants.PASSWORD;
-import static com.example.watchflow.Constants.USER_ID;
-import static com.example.watchflow.Constants.USER_LOGIN_ENDPOINT;
-import static com.example.watchflow.Constants.USER_TYPE;
 
 public class MainActivityViewModel extends AndroidViewModel {
     public static final String TAG = MainActivityViewModel.class.getSimpleName();
@@ -67,7 +67,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         return password;
     }
 
-    Callback<JsonObject> loginUserCallback = new Callback<JsonObject>() {
+    Callback<JsonObject> loginUserCallback = new Callback<>() {
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {

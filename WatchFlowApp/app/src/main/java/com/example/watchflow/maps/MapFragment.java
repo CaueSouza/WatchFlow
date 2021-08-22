@@ -3,6 +3,7 @@ package com.example.watchflow.maps;
 import static com.example.watchflow.Constants.AUTO_REFRESH_SECONDS;
 import static com.example.watchflow.Constants.MARKER_TITLE;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,7 +14,6 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,6 +22,7 @@ import com.example.watchflow.CameraInformations;
 import com.example.watchflow.R;
 import com.example.watchflow.UserInformations;
 import com.example.watchflow.cameraInformation.CameraInformationActivity;
+import com.example.watchflow.dashboard.DashboardActivity;
 import com.example.watchflow.userInformation.UserInformationActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -111,9 +112,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         viewModel.getAllUsers().observe(this, this::updateMapsUsersMarkers);
 
         viewModel.getRefreshEvent().observe(this, v -> requestMapsInformation());
+
         viewModel.getOpenDashboardEvent().observe(this, v -> {
-            //TODO open the dashboard activity
-            Toast.makeText(getContext(), "Opening Dashboard", Toast.LENGTH_SHORT).show();
+            Context context = getContext();
+            Intent intent = new Intent(context, DashboardActivity.class);
+            context.startActivity(intent);
         });
     }
 

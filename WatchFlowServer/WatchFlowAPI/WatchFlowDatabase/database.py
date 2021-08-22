@@ -181,6 +181,14 @@ def resetDatabase():
     conn.commit()
     cursor.close()
 
+def doesCamExist(IP):
+    query = 'SELECT EXISTS(SELECT 1 FROM cameras WHERE ip=?)'
+    data = (IP,)
+
+    #returns [(0,)] or [(1,)]
+    result = executeFetchallQuery(query, data)[0][0]
+
+    return result == 1
 
 def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
     if validateUser(requesterUserId, requesterPwd):
@@ -381,11 +389,13 @@ def createCamera(requesterUserId, requesterPwd, cameraIp, latitude, longitude):
 
 def deleteCamera(requesterUserId, requesterPwd, cameraIp):
     if validateUser(requesterUserId, requesterPwd, shouldValidateAdmin=True):
-        query = "DELETE FROM cameras WHERE ip=?"
+        queryCameras = "DELETE FROM cameras WHERE ip=?"
+        queryHistoric = "DELETE FROM historic WHERE ip=?"
 
         data = (cameraIp,)
 
-        executeQuery(query, data)
+        executeQuery(queryCameras, data)
+        executeQuery(queryHistoric, data)
 
         return (True, {'message': 'Camera deleted'})
     else:
