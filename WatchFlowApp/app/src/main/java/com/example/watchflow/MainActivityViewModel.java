@@ -33,7 +33,7 @@ import retrofit2.Response;
 
 public class MainActivityViewModel extends AndroidViewModel {
     public static final String TAG = MainActivityViewModel.class.getSimpleName();
-    public GpsTracker gpsTracker;
+    public final GpsTracker gpsTracker;
     private final ServerRepository serverRepository = ServerRepository.getInstance();
     private final MutableLiveData<String> userName = new MutableLiveData<>();
     private final MutableLiveData<String> password = new MutableLiveData<>();
@@ -67,7 +67,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         return password;
     }
 
-    Callback<JsonObject> loginUserCallback = new Callback<>() {
+    final Callback<JsonObject> loginUserCallback = new Callback<>() {
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {

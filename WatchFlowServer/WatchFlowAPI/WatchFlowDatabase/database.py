@@ -222,7 +222,7 @@ def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
         return (False, {'message': 'Invalid credentials'})
 
 
-def getDashboardCams(requesterUserId, requesterPwd):
+def getDashboardCams(geocoder, requesterUserId, requesterPwd):
     if validateUser(requesterUserId, requesterPwd):
 
         json_list = []
@@ -238,8 +238,14 @@ def getDashboardCams(requesterUserId, requesterPwd):
         queryResult = executeFetchallQuery(query)
 
         for row in queryResult:
+            latitude = row[2]
+            longitude = row[3]
+            address = geocoder.get((latitude, longitude))[0]
+            
             json_dict = {'ip': row[1],
-                         'isSelected': 1 if row[1] in dashboardCamerasSet else 0}
+                        'address': str(address),
+                        'isSelected': 1 if row[1] in dashboardCamerasSet else 0}
+
             json_list.append(json_dict)
 
         return (True, {'message': json_output})

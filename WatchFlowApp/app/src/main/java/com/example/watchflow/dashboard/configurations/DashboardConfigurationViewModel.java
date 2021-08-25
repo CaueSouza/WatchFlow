@@ -1,5 +1,6 @@
 package com.example.watchflow.dashboard.configurations;
 
+import static com.example.watchflow.Constants.ADDRESS;
 import static com.example.watchflow.Constants.CAMERAS;
 import static com.example.watchflow.Constants.COMMON_HEADER_FIELDS;
 import static com.example.watchflow.Constants.IP;
@@ -76,7 +77,7 @@ public class DashboardConfigurationViewModel extends AndroidViewModel {
         return endActivityEvent;
     }
 
-    Callback<JsonObject> myDashboardCamerasCallback = new Callback<>() {
+    final Callback<JsonObject> myDashboardCamerasCallback = new Callback<>() {
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
@@ -93,8 +94,9 @@ public class DashboardConfigurationViewModel extends AndroidViewModel {
 
                 String cameraIP = object.get(IP).getAsString();
                 boolean isSelected = object.get(IS_SELECTED).getAsInt() == 1;
+                String address = object.get(ADDRESS).getAsString();
 
-                allCameraInformations.add(new DashboardConfigurationCamData(cameraIP, isSelected));
+                allCameraInformations.add(new DashboardConfigurationCamData(cameraIP, address, isSelected));
             }
 
             setAllCamerasIPs(allCameraInformations);
@@ -109,7 +111,7 @@ public class DashboardConfigurationViewModel extends AndroidViewModel {
         }
     };
 
-    Callback<JsonObject> updateDashboardSelectedCamerasCallback = new Callback<>() {
+    final Callback<JsonObject> updateDashboardSelectedCamerasCallback = new Callback<>() {
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {

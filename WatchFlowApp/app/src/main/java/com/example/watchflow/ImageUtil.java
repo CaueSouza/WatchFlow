@@ -79,10 +79,7 @@ public class ImageUtil {
         try {
             stream = new FileOutputStream(file);
             stream.write(imageBytes);
-        } catch (IOException e) {
-            throw e;
-        }
-        finally {
+        } finally {
             try {
                 if (stream != null){
                     stream.close();

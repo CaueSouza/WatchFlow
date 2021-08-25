@@ -18,8 +18,8 @@ import java.util.ArrayList;
 
 public class ConfigurationIPAdapter extends RecyclerView.Adapter<ConfigurationIPAdapter.DataHolder> {
 
-    private Context context;
-    private ArrayList<DashboardConfigurationCamData> camerasIPs;
+    private final Context context;
+    private final ArrayList<DashboardConfigurationCamData> camerasIPs;
 
     public ConfigurationIPAdapter(Context context, ArrayList<DashboardConfigurationCamData> camerasIPs) {
         this.context = context;
@@ -47,19 +47,21 @@ public class ConfigurationIPAdapter extends RecyclerView.Adapter<ConfigurationIP
     }
 
     static class DataHolder extends RecyclerView.ViewHolder {
-        private final TextView txtTitle;
+        private final TextView txtIP, txtAddress;
         private final CheckBox checkBox;
 
         public DataHolder(@NonNull @NotNull View itemView) {
             super(itemView);
 
-            txtTitle = itemView.findViewById(R.id.ip_item);
-            checkBox = itemView.findViewById(R.id.ip_item_checkbox);
+            checkBox = itemView.findViewById(R.id.item_checkbox);
+            txtIP = itemView.findViewById(R.id.ip_item_content);
+            txtAddress = itemView.findViewById(R.id.address_item_content);
         }
 
         void setDetails(DashboardConfigurationCamData cameraInformations) {
-            txtTitle.setText(cameraInformations.getIp());
             checkBox.setChecked(cameraInformations.isChecked());
+            txtIP.setText(cameraInformations.getIp());
+            txtAddress.setText(cameraInformations.getAddress());
         }
     }
 }

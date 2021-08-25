@@ -47,7 +47,7 @@ import retrofit2.Response;
 
 public class CameraInformationViewModel extends AndroidViewModel {
     public static final String TAG = CameraInformationViewModel.class.getSimpleName();
-    private MutableLiveData<String> image = new MutableLiveData<>();
+    private final MutableLiveData<String> image = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Data>> localizationData = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<Data>> recognitionData = new MutableLiveData<>();
     private final Application application;
@@ -73,7 +73,7 @@ public class CameraInformationViewModel extends AndroidViewModel {
                 GET_INFO_OR_DELETE_CAM_HEADER_FIELDS, headers_data, true);
     }
 
-    Callback<JsonObject> cameraInformationCallback = new Callback<>() {
+    final Callback<JsonObject> cameraInformationCallback = new Callback<>() {
 
         @Override
         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {

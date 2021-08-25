@@ -43,7 +43,7 @@ import retrofit2.Response;
 public class MapsViewModel extends AndroidViewModel {
 
     private static final String TAG = MapsViewModel.class.getSimpleName();
-    private GpsTracker gpsTracker;
+    private final GpsTracker gpsTracker;
     private final ServerRepository serverRepository = ServerRepository.getInstance();
     private final MutableLiveData<ArrayList<CameraInformations>> allCameras = new MutableLiveData<>();
     private final MutableLiveData<List<UserInformations>> allUsers = new MutableLiveData<>();
@@ -110,7 +110,7 @@ public class MapsViewModel extends AndroidViewModel {
         return gpsTracker;
     }
 
-    Callback<JsonObject> allRunningCamerasCallback = new Callback<>() {
+    final Callback<JsonObject> allRunningCamerasCallback = new Callback<>() {
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
             if (!response.isSuccessful()) {
@@ -143,7 +143,7 @@ public class MapsViewModel extends AndroidViewModel {
         }
     };
 
-    Callback<JsonObject> allLoggedUsersCallback = new Callback<>() {
+    final Callback<JsonObject> allLoggedUsersCallback = new Callback<>() {
 
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
@@ -177,7 +177,7 @@ public class MapsViewModel extends AndroidViewModel {
         }
     };
 
-    Callback<JsonObject> logoutUserCallback = new Callback<>() {
+    final Callback<JsonObject> logoutUserCallback = new Callback<>() {
 
         @Override
         public void onResponse(@NotNull Call<JsonObject> call, Response<JsonObject> response) {
