@@ -54,10 +54,10 @@ public class DashboardConfigurationActivity extends AppCompatActivity {
 
             for (int i = 0; i < recyclerView.getAdapter().getItemCount(); i++) {
                 RecyclerView.ViewHolder actualViewHolder = recyclerView.findViewHolderForAdapterPosition(i);
-                CheckBox actualCheckBox = actualViewHolder.itemView.findViewById(R.id.ip_item_checkbox);
+                CheckBox actualCheckBox = actualViewHolder.itemView.findViewById(R.id.item_checkbox);
 
                 if (actualCheckBox.isChecked()) {
-                    TextView textView = actualViewHolder.itemView.findViewById(R.id.ip_item);
+                    TextView textView = actualViewHolder.itemView.findViewById(R.id.ip_item_content);
                     selectedIPs.add(textView.getText().toString());
                 }
             }

@@ -7,12 +7,8 @@
     <string name="title_activity_dashboard_configurations">Configurar Painel de Controle</string>
     <string name="title_activity_cam_information">Informações da Câmera</string>
     <string name="title_activity_user_information">Informações do Usuário</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Próximo</string>
-    <string name="previous">Anterior</string>
 
+    <string name="ip_string">IP</string>
     <string name="register">Registrar</string>
     <string name="remove">Remover</string>
     <string name="login_username_hint">Usuário</string>
@@ -56,7 +52,6 @@
     <string name="delete_user_fail_message">Erro ao remover usuário</string>
 
     <!--    REGISTER CAM-->
-    <string name="register_cam_ip">IP</string>
     <string name="register_cam_street">Rua</string>
     <string name="register_cam_num">Número</string>
     <string name="register_cam_neighborhood">Bairro</string>
@@ -79,6 +74,7 @@
 
     <!--    RECOGNITIONS-->
     <string name="address_title">Endereço:</string>
+    <string name="ip_title">IP:</string>
     <string name="recognitions_total">Total:</string>
     <string name="recognitions_articulated_truck">Caminhões Articulados:</string>
     <string name="recognitions_bicycle">Bicicletas:</string>

@@ -47,6 +47,7 @@ def myDashboardCameras():
 
     if neededKeys <= headers.keys():
         success, message = database.getDashboardCams(
+            geocoder,
             requesterUserId=headers['requesterUserId'],
             requesterPwd=headers['requesterPwd'])
 

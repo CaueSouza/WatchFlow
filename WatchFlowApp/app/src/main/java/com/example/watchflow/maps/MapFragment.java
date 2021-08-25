@@ -40,7 +40,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
     private static final String TAG = MapFragment.class.getSimpleName();
     MapsViewModel viewModel;
-    private int mInterval = AUTO_REFRESH_SECONDS * 1000; // Seconds * 1000
+    private final int mInterval = AUTO_REFRESH_SECONDS * 1000; // Seconds * 1000
     private Handler mHandler;
     private GoogleMap mMap;
 
@@ -167,7 +167,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         return bitmap;
     }
 
-    Runnable mRequestRepeater = new Runnable() {
+    final Runnable mRequestRepeater = new Runnable() {
         @Override
         public void run() {
             try {

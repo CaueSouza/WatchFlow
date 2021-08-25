@@ -6,13 +6,17 @@ import com.google.gson.annotations.SerializedName;
 public class DashboardConfigurationCamData {
     @SerializedName("ip")
     @Expose
-    private String ip;
+    private final String ip;
     @SerializedName("checked")
     @Expose
-    private boolean isChecked;
+    private final boolean isChecked;
+    @SerializedName("address")
+    @Expose
+    private final String address;
 
-    public DashboardConfigurationCamData(String ip, boolean isSelected) {
+    public DashboardConfigurationCamData(String ip, String address, boolean isSelected) {
         this.ip = ip;
+        this.address = address;
         this.isChecked = isSelected;
     }
 
@@ -20,15 +24,12 @@ public class DashboardConfigurationCamData {
         return ip;
     }
 
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
     public boolean isChecked() {
         return isChecked;
     }
 
-    public void setChecked(boolean checked) {
-        this.isChecked = checked;
+    public String getAddress() {
+        return address;
     }
+
 }
