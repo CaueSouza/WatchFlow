@@ -104,4 +104,8 @@
 
     <string name="success_saving_text">Salvo com sucesso</string>
     <string name="failure_saving_text">Não foi possível salvar</string>
+    <string name="dashboardErrorDialogTitle">Dashboard não configurada</string>
+    <string name="dashboardErrorDialogMessage">Gostaria de ir a tela de configurações?</string>
+    <string name="OK">OK</string>
+    <string name="Cancel">Cancelar</string>
 </resources>

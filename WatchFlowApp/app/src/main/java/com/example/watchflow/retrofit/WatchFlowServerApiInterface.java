@@ -52,6 +52,9 @@ public interface WatchFlowServerApiInterface {
     @GET(Constants.USER_INFORMATIONS_ENDPOINT)
     Call<JsonObject> getUserInformations(@Header(AUTHORIZATION) JsonObject headers);
 
+    @GET(Constants.DASHBOARD_INFORMATION_ENDPOINT)
+    Call<JsonObject> getDashboardInformation(@Header(AUTHORIZATION) JsonObject headers);
+
     @GET(Constants.MY_DASHBOARD_CAMS_ENDPOINT)
     Call<JsonObject> getMyDashboardCameras(@Header(AUTHORIZATION) JsonObject headers);
 

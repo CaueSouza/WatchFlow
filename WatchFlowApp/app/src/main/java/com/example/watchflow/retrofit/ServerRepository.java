@@ -3,6 +3,7 @@ package com.example.watchflow.retrofit;
 import static com.example.watchflow.Constants.ALL_RUNNING_CAMERAS_ENDPOINT;
 import static com.example.watchflow.Constants.BASE_URL;
 import static com.example.watchflow.Constants.CAMERA_INFORMATIONS_ENDPOINT;
+import static com.example.watchflow.Constants.DASHBOARD_INFORMATION_ENDPOINT;
 import static com.example.watchflow.Constants.DELETE_CAMERA_ENDPOINT;
 import static com.example.watchflow.Constants.DELETE_USER_ENDPOINT;
 import static com.example.watchflow.Constants.MY_DASHBOARD_CAMS_ENDPOINT;
@@ -150,9 +151,11 @@ public class ServerRepository {
             case MY_DASHBOARD_CAMS_ENDPOINT:
                 call = watchFlowServerApiInterface.getMyDashboardCameras(headersJson);
                 break;
-                case SAVE_DASHBOARD_SELECTED_IPS_ENDPOINT:
+            case SAVE_DASHBOARD_SELECTED_IPS_ENDPOINT:
                 call = watchFlowServerApiInterface.saveDashboardSelectedIPs(headersJson, bodyJson);
                 break;
+            case DASHBOARD_INFORMATION_ENDPOINT:
+                call = watchFlowServerApiInterface.getDashboardInformation(headersJson);
 
         }
 

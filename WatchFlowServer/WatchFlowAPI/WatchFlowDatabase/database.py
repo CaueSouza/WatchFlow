@@ -221,6 +221,35 @@ def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
     else:
         return (False, {'message': 'Invalid credentials'})
 
+def getDashboardInformation(requesterUserId, requesterPwd):
+    if validateUser(requesterUserId, requesterPwd):
+
+        json_list = []
+        json_output = {'cameras': json_list}
+
+        query = "SELECT dashboardCameras FROM users WHERE userId=?"
+        data = (requesterUserId,)
+        userDashboardCams = executeFetchallQuery(query, data)
+        dashboardCamerasList = list(userDashboardCams[0][0].split("-"))
+
+        if len(dashboardCamerasList) == 1 and len(dashboardCamerasList[0]) == 0:
+            return (False, {'message': 'without dashboard cams registered'})
+
+        else:                 
+            for cameraIP in dashboardCamerasList:
+
+                query = "SELECT * FROM historic WHERE ip=?"
+                data = (cameraIP, )
+
+                cameraHistoric = executeFetchallQuery(query, data)
+
+                json_dict = {'ip': cameraIP}
+
+                json_list.append(json_dict)
+
+            return (True, json_output)
+    else:
+        return (False, {'message': 'Invalid credentials'})
 
 def getDashboardCams(geocoder, requesterUserId, requesterPwd):
     if validateUser(requesterUserId, requesterPwd):
@@ -231,7 +260,7 @@ def getDashboardCams(geocoder, requesterUserId, requesterPwd):
         query = "SELECT dashboardCameras FROM users WHERE userId=?"
         data = (requesterUserId,)
         userDashboardCams = executeFetchallQuery(query, data)
-        dashboardCamerasSet = set(userDashboardCams[0][0].split("-"))
+        dashboardCamerasList = list(userDashboardCams[0][0].split("-"))
 
         query = "SELECT * FROM cameras"
 
@@ -244,7 +273,7 @@ def getDashboardCams(geocoder, requesterUserId, requesterPwd):
             
             json_dict = {'ip': row[1],
                         'address': str(address),
-                        'isSelected': 1 if row[1] in dashboardCamerasSet else 0}
+                        'isSelected': 1 if row[1] in dashboardCamerasList else 0}
 
             json_list.append(json_dict)
 
