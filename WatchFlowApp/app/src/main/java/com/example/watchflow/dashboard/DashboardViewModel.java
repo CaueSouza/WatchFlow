@@ -55,7 +55,7 @@ public class DashboardViewModel extends AndroidViewModel {
             }
 
             //TODO TRATAR DADOS RECEBIDOS DA API
-
+            //response.body.getAsJsonObject().get("cameras").getAsJsonArray().get(0).getAsJsonObject().get("127.0.0.1").getAsJsonArray().get(0).getAsJsonObject().get("bus")
             Log.d(TAG, "onResponse: " + response);
         }
 

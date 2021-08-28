@@ -238,14 +238,49 @@ def getDashboardInformation(requesterUserId, requesterPwd):
         else:                 
             for cameraIP in dashboardCamerasList:
 
-                query = "SELECT * FROM historic WHERE ip=?"
-                data = (cameraIP, )
+                query = """
+                        SELECT
+                            timestamp,
+                            total,
+                            articulated_truck,
+                            bicycle,
+                            bus,
+                            car,
+                            motorcycle,
+                            motorized_vehicle,
+                            non_motorized_vehicle,
+                            pedestrian,
+                            pickup_truck,
+                            single_unit_truck,
+                            work_van
+                        FROM historic 
+                        WHERE ip=?
+                """
+                
+                data = (cameraIP, 5)
 
                 cameraHistoric = executeFetchallQuery(query, data)
+                historicJson = []
+                camerahistoricJson = {cameraIP: historicJson}
 
-                json_dict = {'ip': cameraIP}
+                for historicUnit in cameraHistoric:
+                    historic = {'timestamp': historicUnit[0],
+                                'total': historicUnit[1],
+                                'articulated_truck': historicUnit[2],
+                                'bicycle': historicUnit[3],
+                                'bus': historicUnit[4],
+                                'car': historicUnit[5],
+                                'motorcycle': historicUnit[6],
+                                'motorized_vehicle': historicUnit[7],
+                                'non_motorized_vehicle': historicUnit[8],
+                                'pedestrian': historicUnit[9],
+                                'pickup_truck': historicUnit[10],
+                                'single_unit_truck': historicUnit[11],
+                                'work_van': historicUnit[12]}
+                
+                    historicJson.append(historic)
 
-                json_list.append(json_dict)
+                json_list.append(camerahistoricJson)
 
             return (True, json_output)
     else:
