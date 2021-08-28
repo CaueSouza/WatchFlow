@@ -35,6 +35,7 @@ def allRunningCameras():
     else:
         return 'Missing data', 400
 
+
 @app.route('/dashboardInformation', methods=['GET'])
 def dashboardInformation():
     if AUTHORIZATION not in request.headers:
@@ -52,6 +53,7 @@ def dashboardInformation():
         return message, 200 if ok else 400
     else:
         return 'Missing data', 400
+
 
 @app.route('/myDashboardCameras', methods=['GET'])
 def myDashboardCameras():

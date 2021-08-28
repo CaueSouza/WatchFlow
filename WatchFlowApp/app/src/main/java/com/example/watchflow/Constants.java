@@ -66,6 +66,9 @@ public class Constants {
     public static final String IS_SELECTED = "isSelected";
     public static final String SELECTED_CAMERAS = "selectedCameras";
     public static final String ADDRESS = "address";
+    public static final String HISTORIC = "historic";
+
+    public static final String TIMESTAMP = "timestamp";
 
     //RECOGNITIONS FIELDS
     public static final String TOTAL = "total";
