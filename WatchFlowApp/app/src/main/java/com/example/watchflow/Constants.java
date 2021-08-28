@@ -34,6 +34,7 @@ public class Constants {
     public static final String UPDATE_PHONE_ENDPOINT = "/updatePhone";
     public static final String MY_DASHBOARD_CAMS_ENDPOINT = "/myDashboardCameras";
     public static final String SAVE_DASHBOARD_SELECTED_IPS_ENDPOINT = "/saveDashboardSelectedIPs";
+    public static final String DASHBOARD_INFORMATION_ENDPOINT = "/dashboardInformation";
 
     //REQUEST FIELDS
     public static final String USERNAME = "userName";
@@ -65,6 +66,9 @@ public class Constants {
     public static final String IS_SELECTED = "isSelected";
     public static final String SELECTED_CAMERAS = "selectedCameras";
     public static final String ADDRESS = "address";
+    public static final String HISTORIC = "historic";
+
+    public static final String TIMESTAMP = "timestamp";
 
     //RECOGNITIONS FIELDS
     public static final String TOTAL = "total";

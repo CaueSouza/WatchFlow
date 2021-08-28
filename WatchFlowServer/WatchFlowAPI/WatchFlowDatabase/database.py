@@ -222,6 +222,75 @@ def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
         return (False, {'message': 'Invalid credentials'})
 
 
+def getDashboardInformation(requesterUserId, requesterPwd):
+    if validateUser(requesterUserId, requesterPwd):
+
+        json_list = []
+        json_output = {'cameras': json_list}
+
+        query = "SELECT dashboardCameras FROM users WHERE userId=?"
+        data = (requesterUserId,)
+        userDashboardCams = executeFetchallQuery(query, data)
+        dashboardCamerasList = list(userDashboardCams[0][0].split("-"))
+
+        if len(dashboardCamerasList) == 1 and len(dashboardCamerasList[0]) == 0:
+            return (False, {'message': 'without dashboard cams registered'})
+
+        else:
+            for cameraIP in dashboardCamerasList:
+
+                query = """
+                        SELECT
+                            timestamp,
+                            total,
+                            articulated_truck,
+                            bicycle,
+                            bus,
+                            car,
+                            motorcycle,
+                            motorized_vehicle,
+                            non_motorized_vehicle,
+                            pedestrian,
+                            pickup_truck,
+                            single_unit_truck,
+                            work_van
+                        FROM historic
+                        WHERE ip=?
+                        ORDER BY timestamp DESC
+                        LIMIT ?
+                """
+
+                data = (cameraIP, 5)
+
+                cameraHistoric = executeFetchallQuery(query, data)
+                historicJson = []
+                camerahistoricJson = {'ip': cameraIP,
+                                      'historic': historicJson}
+
+                for historicUnit in cameraHistoric:
+                    historic = {'timestamp': historicUnit[0],
+                                'total': historicUnit[1],
+                                'articulated_truck': historicUnit[2],
+                                'bicycle': historicUnit[3],
+                                'bus': historicUnit[4],
+                                'car': historicUnit[5],
+                                'motorcycle': historicUnit[6],
+                                'motorized_vehicle': historicUnit[7],
+                                'non_motorized_vehicle': historicUnit[8],
+                                'pedestrian': historicUnit[9],
+                                'pickup_truck': historicUnit[10],
+                                'single_unit_truck': historicUnit[11],
+                                'work_van': historicUnit[12]}
+
+                    historicJson.append(historic)
+
+                json_list.append(camerahistoricJson)
+
+            return (True, json_output)
+    else:
+        return (False, {'message': 'Invalid credentials'})
+
+
 def getDashboardCams(geocoder, requesterUserId, requesterPwd):
     if validateUser(requesterUserId, requesterPwd):
 
@@ -231,7 +300,7 @@ def getDashboardCams(geocoder, requesterUserId, requesterPwd):
         query = "SELECT dashboardCameras FROM users WHERE userId=?"
         data = (requesterUserId,)
         userDashboardCams = executeFetchallQuery(query, data)
-        dashboardCamerasSet = set(userDashboardCams[0][0].split("-"))
+        dashboardCamerasList = list(userDashboardCams[0][0].split("-"))
 
         query = "SELECT * FROM cameras"
 
@@ -241,10 +310,10 @@ def getDashboardCams(geocoder, requesterUserId, requesterPwd):
             latitude = row[2]
             longitude = row[3]
             address = geocoder.get((latitude, longitude))[0]
-            
+
             json_dict = {'ip': row[1],
-                        'address': str(address),
-                        'isSelected': 1 if row[1] in dashboardCamerasSet else 0}
+                         'address': str(address),
+                         'isSelected': 1 if row[1] in dashboardCamerasList else 0}
 
             json_list.append(json_dict)
 

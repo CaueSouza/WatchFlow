@@ -36,6 +36,25 @@ def allRunningCameras():
         return 'Missing data', 400
 
 
+@app.route('/dashboardInformation', methods=['GET'])
+def dashboardInformation():
+    if AUTHORIZATION not in request.headers:
+        return 'Missing headers', 400
+
+    headers = eval(request.headers.get(AUTHORIZATION))
+
+    neededHeadersKeys = {'requesterUserId', 'requesterPwd'}
+
+    if neededHeadersKeys <= headers.keys():
+        ok, message = database.getDashboardInformation(
+            requesterUserId=headers['requesterUserId'],
+            requesterPwd=headers['requesterPwd'])
+
+        return message, 200 if ok else 400
+    else:
+        return 'Missing data', 400
+
+
 @app.route('/myDashboardCameras', methods=['GET'])
 def myDashboardCameras():
     if AUTHORIZATION not in request.headers:
