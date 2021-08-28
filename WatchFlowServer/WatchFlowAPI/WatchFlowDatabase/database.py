@@ -260,7 +260,7 @@ def getDashboardInformation(requesterUserId, requesterPwd):
                         LIMIT ?
                 """
 
-                data = (cameraIP, 2)
+                data = (cameraIP, 5)
 
                 cameraHistoric = executeFetchallQuery(query, data)
                 historicJson = []
