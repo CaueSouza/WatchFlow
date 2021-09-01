@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.example.watchflow.R;
 import com.example.watchflow.SingleLiveEvent;
@@ -34,6 +36,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -45,7 +48,7 @@ public class DashboardViewModel extends AndroidViewModel {
     private final Application application;
     private final ServerRepository serverRepository = ServerRepository.getInstance();
     private final SingleLiveEvent<Void> dashboardDataError = new SingleLiveEvent<>();
-    private final SingleLiveEvent<Void> updateGraphs = new SingleLiveEvent<>();
+    private final MutableLiveData<ArrayList<CameraHistoric>> allCamerasHistoricMutableLiveData = new MutableLiveData<>();
 
     public DashboardViewModel(@NonNull Application application) {
         super(application);
@@ -56,8 +59,8 @@ public class DashboardViewModel extends AndroidViewModel {
         return dashboardDataError;
     }
 
-    public SingleLiveEvent<Void> getUpdateGraphs() {
-        return updateGraphs;
+    public LiveData<ArrayList<CameraHistoric>> getAllCamerasHistoricMutableLiveData() {
+        return allCamerasHistoricMutableLiveData;
     }
 
     public void getDashboardInformation() {
@@ -78,34 +81,40 @@ public class DashboardViewModel extends AndroidViewModel {
             }
 
             JsonArray camerasArray = response.body().get(CAMERAS).getAsJsonArray();
+            ArrayList<CameraHistoric> allCameraHistoric = new ArrayList<>();
 
             for (JsonElement cameraElement : camerasArray) {
                 JsonObject camera = cameraElement.getAsJsonObject();
                 JsonArray fullCameraHistoric = camera.get(HISTORIC).getAsJsonArray();
                 String cameraIp = camera.get(IP).getAsString();
+                ArrayList<ReconForTimestamp> reconForTimestamps = new ArrayList<>();
 
-                for (JsonElement uniqueHistoricRecordElement: fullCameraHistoric) {
-                    JsonObject uniqueHistoricRecord = uniqueHistoricRecordElement.getAsJsonObject();
-                    int timestamp = uniqueHistoricRecord.get(TIMESTAMP).getAsInt();
-                    int total = uniqueHistoricRecord.get(TOTAL).getAsInt();
-                    int articulated_truck = uniqueHistoricRecord.get(ARTICULATED_TRUCK).getAsInt();
-                    int bicycle = uniqueHistoricRecord.get(BICYCLE).getAsInt();
-                    int bus = uniqueHistoricRecord.get(BUS).getAsInt();
-                    int car = uniqueHistoricRecord.get(CAR).getAsInt();
-                    int motorcycle = uniqueHistoricRecord.get(MOTORCYCLE).getAsInt();
-                    int motorized_vehicle = uniqueHistoricRecord.get(MOTORIZED_VEHICLE).getAsInt();
-                    int non_motorized_vehicle = uniqueHistoricRecord.get(NON_MOTORIZED_VEHICLE).getAsInt();
-                    int pedestrian = uniqueHistoricRecord.get(PEDESTRIAN).getAsInt();
-                    int pickup_truck = uniqueHistoricRecord.get(PICKUP_TRUCK).getAsInt();
-                    int single_unit_truck = uniqueHistoricRecord.get(SINGLE_UNIT_TRUCK).getAsInt();
-                    int work_van = uniqueHistoricRecord.get(WORK_VAN).getAsInt();
+                for (JsonElement historicAtomElement : fullCameraHistoric) {
+                    JsonObject historicAtom = historicAtomElement.getAsJsonObject();
 
-                    /*CREATE AN CUSTOM OBJECT THAT STORES THE TIMESTAMP AND RECON
-                      THEN CREATE A LIST WITH ALL OF THIS DATA, THEN LOAD AT THE GRAPH */
+                    ReconForTimestamp reconForTimestamp = new ReconForTimestamp(
+                            historicAtom.get(TIMESTAMP).getAsInt(),
+                            historicAtom.get(TOTAL).getAsInt(),
+                            historicAtom.get(ARTICULATED_TRUCK).getAsInt(),
+                            historicAtom.get(BICYCLE).getAsInt(),
+                            historicAtom.get(BUS).getAsInt(),
+                            historicAtom.get(CAR).getAsInt(),
+                            historicAtom.get(MOTORCYCLE).getAsInt(),
+                            historicAtom.get(MOTORIZED_VEHICLE).getAsInt(),
+                            historicAtom.get(NON_MOTORIZED_VEHICLE).getAsInt(),
+                            historicAtom.get(PEDESTRIAN).getAsInt(),
+                            historicAtom.get(PICKUP_TRUCK).getAsInt(),
+                            historicAtom.get(SINGLE_UNIT_TRUCK).getAsInt(),
+                            historicAtom.get(WORK_VAN).getAsInt()
+                    );
+
+                    reconForTimestamps.add(reconForTimestamp);
                 }
+
+                allCameraHistoric.add(new CameraHistoric(cameraIp, reconForTimestamps));
             }
 
-            updateGraphs.call();
+            allCamerasHistoricMutableLiveData.setValue(allCameraHistoric);
 
             Log.d(TAG, "onResponse: " + response);
         }

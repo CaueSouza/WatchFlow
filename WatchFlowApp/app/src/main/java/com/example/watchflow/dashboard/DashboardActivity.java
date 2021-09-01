@@ -36,29 +36,6 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void initBindings() {
-        viewModel.getDashboardDataError().observe(this, v -> createRedirectionDialog());
-
-        viewModel.getDashboardInformation();
-
-        //TODO REMOVE HARDCODED GRAPH
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6),
-                new DataPoint(5, 1),
-                new DataPoint(6, 5),
-                new DataPoint(7, 3),
-                new DataPoint(8, 2),
-                new DataPoint(9, 6),
-                new DataPoint(10, 10),
-                new DataPoint(11, 11),
-                new DataPoint(12, 12),
-                new DataPoint(13, 13),
-                new DataPoint(14, 14)
-        });
-
         binding.graphView.getViewport().setYAxisBoundsManual(true);
         binding.graphView.getViewport().setMinY(-150);
         binding.graphView.getViewport().setMaxY(150);
@@ -69,7 +46,34 @@ public class DashboardActivity extends AppCompatActivity {
 
         binding.graphView.getViewport().setScalable(true);
         binding.graphView.getViewport().setScalableY(true);
-        binding.graphView.addSeries(series);
+
+        viewModel.getAllCamerasHistoricMutableLiveData().observe(this, allCamerasHistoric -> {
+
+            //TODO REMOVE HARDCODED GRAPH
+            LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
+                    new DataPoint(0, 1),
+                    new DataPoint(1, 5),
+                    new DataPoint(2, 3),
+                    new DataPoint(3, 2),
+                    new DataPoint(4, 6),
+                    new DataPoint(5, 1),
+                    new DataPoint(6, 5),
+                    new DataPoint(7, 3),
+                    new DataPoint(8, 2),
+                    new DataPoint(9, 6),
+                    new DataPoint(10, 10),
+                    new DataPoint(11, 11),
+                    new DataPoint(12, 12),
+                    new DataPoint(13, 13),
+                    new DataPoint(14, 14)
+            });
+
+
+            binding.graphView.addSeries(series);
+        });
+
+        viewModel.getDashboardDataError().observe(this, v -> createRedirectionDialog());
+        viewModel.getDashboardInformation();
     }
 
     private void createRedirectionDialog() {
