@@ -267,6 +267,8 @@ def getDashboardInformation(requesterUserId, requesterPwd):
                 camerahistoricJson = {'ip': cameraIP,
                                       'historic': historicJson}
 
+                cameraHistoric = cameraHistoric[::-1]
+                
                 for historicUnit in cameraHistoric:
                     historic = {'timestamp': historicUnit[0],
                                 'total': historicUnit[1],
