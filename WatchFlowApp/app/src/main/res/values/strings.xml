@@ -110,5 +110,5 @@
     <string name="OK">OK</string>
     <string name="Cancel">Cancelar</string>
     <string name="permission_needed_txt">Permissão Necessária</string>
-    <string name="permission_needed_message_txt">Permissão necessária para fazer a ligação...</string>
+    <string name="permission_needed_message_txt">Permissão necessária para a aplicação funcionar corretamente...</string>
 </resources>
