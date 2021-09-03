@@ -101,6 +101,7 @@
     <string name="dashboard_config_txt">Configurar painel de controle</string>
     <string name="configuration_activity_main_title_text">Selecione quais cameras deverão aparecer no painel de controle</string>
     <string name="save_text">Salvar</string>
+    <string name="call_text">Ligar</string>
 
     <string name="success_saving_text">Salvo com sucesso</string>
     <string name="failure_saving_text">Não foi possível salvar</string>
@@ -108,4 +109,6 @@
     <string name="dashboardErrorDialogMessage">Gostaria de ir a tela de configurações?</string>
     <string name="OK">OK</string>
     <string name="Cancel">Cancelar</string>
+    <string name="permission_needed_txt">Permissão Necessária</string>
+    <string name="permission_needed_message_txt">Permissão necessária para fazer a ligação...</string>
 </resources>
