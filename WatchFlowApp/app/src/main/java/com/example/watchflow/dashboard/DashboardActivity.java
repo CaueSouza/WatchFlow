@@ -1,7 +1,12 @@
 package com.example.watchflow.dashboard;
 
+import static com.example.watchflow.Constants.RETRIEVE_HIGHEST_TIMESTAMP;
+import static com.example.watchflow.Constants.RETRIEVE_HIGHEST_TOTAL;
+import static com.example.watchflow.Constants.RETRIEVE_MINOR_TIMESTAMP;
+
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -12,12 +17,18 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.watchflow.R;
 import com.example.watchflow.dashboard.configurations.DashboardConfigurationActivity;
 import com.example.watchflow.databinding.ActivityDashboardBinding;
+import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class DashboardActivity extends AppCompatActivity {
     ActivityDashboardBinding binding;
     DashboardViewModel viewModel;
+    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,44 +47,117 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void initBindings() {
-        binding.graphView.getViewport().setYAxisBoundsManual(true);
-        binding.graphView.getViewport().setMinY(-150);
-        binding.graphView.getViewport().setMaxY(150);
 
-        binding.graphView.getViewport().setXAxisBoundsManual(true);
-        binding.graphView.getViewport().setMinX(4);
-        binding.graphView.getViewport().setMaxX(80);
-
-        binding.graphView.getViewport().setScalable(true);
-        binding.graphView.getViewport().setScalableY(true);
 
         viewModel.getAllCamerasHistoricMutableLiveData().observe(this, allCamerasHistoric -> {
-
-            //TODO REMOVE HARDCODED GRAPH
-            LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[]{
-                    new DataPoint(0, 1),
-                    new DataPoint(1, 5),
-                    new DataPoint(2, 3),
-                    new DataPoint(3, 2),
-                    new DataPoint(4, 6),
-                    new DataPoint(5, 1),
-                    new DataPoint(6, 5),
-                    new DataPoint(7, 3),
-                    new DataPoint(8, 2),
-                    new DataPoint(9, 6),
-                    new DataPoint(10, 10),
-                    new DataPoint(11, 11),
-                    new DataPoint(12, 12),
-                    new DataPoint(13, 13),
-                    new DataPoint(14, 14)
+            binding.graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
+                @Override
+                public String formatLabel(double value, boolean isValueX) {
+                    return isValueX ? sdf.format(new Date((long) value * 1000)) : super.formatLabel(value, false);
+                }
             });
 
+            binding.graphView.getViewport().setYAxisBoundsManual(true);
+            binding.graphView.getViewport().setMinY(0);
+            binding.graphView.getViewport().setMaxY(getSpecificRecordAtHistoric(RETRIEVE_HIGHEST_TOTAL, allCamerasHistoric));
 
-            binding.graphView.addSeries(series);
+            binding.graphView.getViewport().setXAxisBoundsManual(true);
+            binding.graphView.getViewport().setMinX(getSpecificRecordAtHistoric(RETRIEVE_MINOR_TIMESTAMP, allCamerasHistoric));
+            binding.graphView.getViewport().setMaxX(getSpecificRecordAtHistoric(RETRIEVE_HIGHEST_TIMESTAMP, allCamerasHistoric));
+
+            binding.graphView.getViewport().setScalable(true);
+            binding.graphView.getViewport().setScalableY(true);
+
+            binding.graphView.getGridLabelRenderer().setHorizontalLabelsAngle(20);
+
+            int count = 0;
+            for (DataPoint[] dataPoints : getTotalData(allCamerasHistoric)) {
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
+                series.setColor(getLineColor(count));
+                count++;
+                binding.graphView.addSeries(series);
+            }
+
+
         });
 
         viewModel.getDashboardDataError().observe(this, v -> createRedirectionDialog());
         viewModel.getDashboardInformation();
+    }
+
+    private int getLineColor(int count) {
+        switch (count) {
+            case 0:
+                return Color.BLUE;
+            case 1:
+                return Color.RED;
+            case 2:
+                return Color.GREEN;
+            case 3:
+                return Color.YELLOW;
+            case 4:
+                return Color.GRAY;
+            default:
+                return Color.CYAN;
+        }
+    }
+
+    private ArrayList<DataPoint[]> getTotalData(ArrayList<CameraHistoric> allCamerasHistoric) {
+        ArrayList<DataPoint[]> allCamerassTotalData = new ArrayList<>();
+
+        for (CameraHistoric cameraHistoric : allCamerasHistoric) {
+            ArrayList<Integer> x_axis = new ArrayList<>();
+            ArrayList<Integer> y_axis = new ArrayList<>();
+
+            for (ReconForTimestamp reconForTimestamp : cameraHistoric.getHistoricAtomUnits()) {
+                x_axis.add(reconForTimestamp.getTimestamp());
+                y_axis.add(reconForTimestamp.getTotal());
+            }
+
+            int n = x_axis.size();
+            DataPoint[] values = new DataPoint[n];
+            for (int i = 0; i < n; i++) {
+                DataPoint v = new DataPoint(x_axis.get(i), y_axis.get(i));
+                values[i] = v;
+            }
+
+            allCamerassTotalData.add(values);
+        }
+
+        return allCamerassTotalData;
+    }
+
+    private int getSpecificRecordAtHistoric(int type, ArrayList<CameraHistoric> allCamerasHistoric) {
+        int value;
+
+        if (type == RETRIEVE_MINOR_TIMESTAMP) value = (int) (new Date().getTime() / 1000);
+        else value = 0;
+
+        switch (type) {
+            case RETRIEVE_HIGHEST_TOTAL:
+                for (CameraHistoric cameraHistoric : allCamerasHistoric) {
+                    for (ReconForTimestamp reconForTimestamp : cameraHistoric.getHistoricAtomUnits()) {
+                        value = Math.max(reconForTimestamp.getTotal(), value);
+                    }
+                }
+                break;
+            case RETRIEVE_HIGHEST_TIMESTAMP:
+                for (CameraHistoric cameraHistoric : allCamerasHistoric) {
+                    for (ReconForTimestamp reconForTimestamp : cameraHistoric.getHistoricAtomUnits()) {
+                        value = Math.max(reconForTimestamp.getTimestamp(), value);
+                    }
+                }
+                break;
+            case RETRIEVE_MINOR_TIMESTAMP:
+                for (CameraHistoric cameraHistoric : allCamerasHistoric) {
+                    for (ReconForTimestamp reconForTimestamp : cameraHistoric.getHistoricAtomUnits()) {
+                        value = Math.min(reconForTimestamp.getTimestamp(), value);
+                    }
+                }
+                break;
+        }
+
+        return value;
     }
 
     private void createRedirectionDialog() {

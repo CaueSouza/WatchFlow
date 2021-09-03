@@ -20,7 +20,7 @@ public class Constants {
     public static final int UPDATE_PHONE_OPERATION = 5;
 
     //ENDPOINTS
-    public static final String BASE_URL = "http://192.168.0.15:5000";
+    public static final String BASE_URL = "http://192.168.0.14:5000";
     public static final String ALL_RUNNING_CAMERAS_ENDPOINT = "/allRunningCameras";
     public static final String USER_LOGIN_ENDPOINT = "/userLogin";
     public static final String USER_LOGOUT_ENDPOINT = "/userLogout";
@@ -156,4 +156,9 @@ public class Constants {
     public static final List<String> SAVE_DASHBOARD_SELECTED_CAMERAS_BODY_FIELD = new ArrayList<>() {{
         add(SELECTED_CAMERAS);
     }};
+
+    //RETRIEVE SPECIFIC VALUE FROM HISTORIC CONSTANTS
+    public static final int RETRIEVE_HIGHEST_TOTAL = 1;
+    public static final int RETRIEVE_HIGHEST_TIMESTAMP = 2;
+    public static final int RETRIEVE_MINOR_TIMESTAMP = 3;
 }
