@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.watchflow.R;
 import com.example.watchflow.dashboard.configurations.DashboardConfigurationActivity;
@@ -29,6 +31,8 @@ public class DashboardActivity extends AppCompatActivity {
     ActivityDashboardBinding binding;
     DashboardViewModel viewModel;
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    private GraphCameraDataSubtitleAdapter camerasAdapter;
+    private ArrayList<GraphCameraData> cameraDataArrayList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +51,11 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void initBindings() {
-
+        binding.camsDataDashboardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        cameraDataArrayList = new ArrayList<>();
+        camerasAdapter = new GraphCameraDataSubtitleAdapter(this, cameraDataArrayList);
+        binding.camsDataDashboardRecyclerView.setAdapter(camerasAdapter);
+        binding.camsDataDashboardRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
         viewModel.getAllCamerasHistoricMutableLiveData().observe(this, allCamerasHistoric -> {
             binding.graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
