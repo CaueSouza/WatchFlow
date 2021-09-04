@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/list_data_background"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:layout_margin="10dp">
+
+    <ImageView
+        android:id="@+id/dashboard_item_color"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dashboard_ip_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/ip_title"
+        app:layout_constraintStart_toEndOf="@id/dashboard_item_color"
+        app:layout_constraintEnd_toStartOf="@id/dashboard_ip_item_content"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/dashboard_ip_item_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/dashboard_ip_item_title"
+        app:layout_constraintStart_toEndOf="@id/dashboard_ip_item_title"
+        app:layout_constraintTop_toTopOf="@id/dashboard_ip_item_title" />
+
+    <TextView
+        android:id="@+id/dashboard_address_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:text="@string/address_title"
+        app:layout_constraintEnd_toStartOf="@id/dashboard_address_item_content"
+        app:layout_constraintStart_toEndOf="@id/dashboard_item_color"
+        app:layout_constraintTop_toBottomOf="@id/dashboard_ip_item_content" />
+
+    <TextView
+        android:id="@+id/dashboard_address_item_content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="@id/dashboard_address_item_title"
+        app:layout_constraintStart_toEndOf="@id/dashboard_address_item_title"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

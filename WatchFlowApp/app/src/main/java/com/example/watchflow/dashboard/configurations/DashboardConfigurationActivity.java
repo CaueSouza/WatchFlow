@@ -1,5 +1,7 @@
 package com.example.watchflow.dashboard.configurations;
 
+import static com.example.watchflow.Constants.DASHBOARD_CONFIGURATION_CAM_LIMIT;
+
 import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -49,6 +51,7 @@ public class DashboardConfigurationActivity extends AppCompatActivity {
         });
 
         binding.saveButton.setOnClickListener(view -> {
+
             RecyclerView recyclerView = binding.camsIpsDashboardConfigurationRecyclerView;
             ArrayList<String> selectedIPs = new ArrayList<>();
 
@@ -62,7 +65,12 @@ public class DashboardConfigurationActivity extends AppCompatActivity {
                 }
             }
 
-            viewModel.saveAllChanges(selectedIPs);
+            if (selectedIPs.size() <= DASHBOARD_CONFIGURATION_CAM_LIMIT) {
+                viewModel.saveAllChanges(selectedIPs);
+            }
+            else {
+                Toast.makeText(this, "Selecione no máximo 5 câmeras", Toast.LENGTH_SHORT).show();
+            }
         });
 
         binding.camsIpsDashboardConfigurationRecyclerView.setLayoutManager(new LinearLayoutManager(this));

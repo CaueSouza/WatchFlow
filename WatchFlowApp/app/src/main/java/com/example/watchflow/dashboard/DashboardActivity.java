@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.watchflow.R;
 import com.example.watchflow.dashboard.configurations.DashboardConfigurationActivity;
@@ -29,6 +31,8 @@ public class DashboardActivity extends AppCompatActivity {
     ActivityDashboardBinding binding;
     DashboardViewModel viewModel;
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    private GraphCameraDataSubtitleAdapter camerasAdapter;
+    private ArrayList<GraphCameraData> cameraDataArrayList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +51,11 @@ public class DashboardActivity extends AppCompatActivity {
     }
 
     private void initBindings() {
-
+        binding.camsDataDashboardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        cameraDataArrayList = new ArrayList<>();
+        camerasAdapter = new GraphCameraDataSubtitleAdapter(this, cameraDataArrayList);
+        binding.camsDataDashboardRecyclerView.setAdapter(camerasAdapter);
+        binding.camsDataDashboardRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
         viewModel.getAllCamerasHistoricMutableLiveData().observe(this, allCamerasHistoric -> {
             binding.graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
@@ -68,17 +76,20 @@ public class DashboardActivity extends AppCompatActivity {
             binding.graphView.getViewport().setScalable(true);
             binding.graphView.getViewport().setScalableY(true);
 
-            binding.graphView.getGridLabelRenderer().setHorizontalLabelsAngle(20);
+            binding.graphView.getGridLabelRenderer().setHorizontalLabelsAngle(10);
 
-            int count = 0;
-            for (DataPoint[] dataPoints : getTotalData(allCamerasHistoric)) {
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
-                series.setColor(getLineColor(count));
-                count++;
+            for (int i = 0; i < allCamerasHistoric.size(); i++) {
+                CameraHistoric cameraHistoric = allCamerasHistoric.get(i);
+                int color = getLineColor(i);
+
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(getTotalData(cameraHistoric));
+                series.setColor(color);
                 binding.graphView.addSeries(series);
+
+                cameraDataArrayList.add(new GraphCameraData(cameraHistoric.getIp(), "endereço", cameraHistoric, color));
             }
 
-
+            camerasAdapter.notifyDataSetChanged();
         });
 
         viewModel.getDashboardDataError().observe(this, v -> createRedirectionDialog());
@@ -96,35 +107,29 @@ public class DashboardActivity extends AppCompatActivity {
             case 3:
                 return Color.YELLOW;
             case 4:
-                return Color.GRAY;
+                return Color.MAGENTA;
             default:
                 return Color.CYAN;
         }
     }
 
-    private ArrayList<DataPoint[]> getTotalData(ArrayList<CameraHistoric> allCamerasHistoric) {
-        ArrayList<DataPoint[]> allCamerassTotalData = new ArrayList<>();
+    private DataPoint[] getTotalData(CameraHistoric cameraHistoric) {
+        ArrayList<Integer> x_axis = new ArrayList<>();
+        ArrayList<Integer> y_axis = new ArrayList<>();
 
-        for (CameraHistoric cameraHistoric : allCamerasHistoric) {
-            ArrayList<Integer> x_axis = new ArrayList<>();
-            ArrayList<Integer> y_axis = new ArrayList<>();
-
-            for (ReconForTimestamp reconForTimestamp : cameraHistoric.getHistoricAtomUnits()) {
-                x_axis.add(reconForTimestamp.getTimestamp());
-                y_axis.add(reconForTimestamp.getTotal());
-            }
-
-            int n = x_axis.size();
-            DataPoint[] values = new DataPoint[n];
-            for (int i = 0; i < n; i++) {
-                DataPoint v = new DataPoint(x_axis.get(i), y_axis.get(i));
-                values[i] = v;
-            }
-
-            allCamerassTotalData.add(values);
+        for (ReconForTimestamp reconForTimestamp : cameraHistoric.getHistoricAtomUnits()) {
+            x_axis.add(reconForTimestamp.getTimestamp());
+            y_axis.add(reconForTimestamp.getTotal());
         }
 
-        return allCamerassTotalData;
+        int n = x_axis.size();
+        DataPoint[] values = new DataPoint[n];
+        for (int i = 0; i < n; i++) {
+            DataPoint v = new DataPoint(x_axis.get(i), y_axis.get(i));
+            values[i] = v;
+        }
+
+        return values;
     }
 
     private int getSpecificRecordAtHistoric(int type, ArrayList<CameraHistoric> allCamerasHistoric) {
