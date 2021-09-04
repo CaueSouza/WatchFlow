@@ -18,6 +18,7 @@ public class Constants {
     public static final int CREATE_CAM_OPERATION = 3;
     public static final int DELETE_CAM_OPERATION = 4;
     public static final int UPDATE_PHONE_OPERATION = 5;
+    public static final int DASHBOARD_CONFIGURATION_CAM_LIMIT = 5;
 
     //ENDPOINTS
     public static final String BASE_URL = "http://192.168.0.14:5000";

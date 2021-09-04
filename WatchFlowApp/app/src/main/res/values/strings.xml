@@ -99,7 +99,8 @@
     <string name="dashboard_text">Painel de Controle</string>
     <string name="configurations_txt">Configurações</string>
     <string name="dashboard_config_txt">Configurar painel de controle</string>
-    <string name="configuration_activity_main_title_text">Selecione quais cameras deverão aparecer no painel de controle</string>
+    <string name="configuration_activity_main_title_text">Selecione quais câmeras deverão aparecer no painel de controle (Limite de 5)</string>
+    <string name="configuration_activity_main_subtitle_text">*Limite de 5</string>
     <string name="save_text">Salvar</string>
     <string name="call_text">Ligar</string>
 
@@ -111,4 +112,6 @@
     <string name="Cancel">Cancelar</string>
     <string name="permission_needed_txt">Permissão Necessária</string>
     <string name="permission_needed_message_txt">Permissão necessária para a aplicação funcionar corretamente...</string>
+    <string name="total_graph_title">Gráfico consolidado de todas as câmeras</string>
+    <string name="total_graph_subtitle">Dados exibidos no formato: Total de reconhecimento x Tempo</string>
 </resources>

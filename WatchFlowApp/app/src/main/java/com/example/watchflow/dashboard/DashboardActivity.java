@@ -76,17 +76,20 @@ public class DashboardActivity extends AppCompatActivity {
             binding.graphView.getViewport().setScalable(true);
             binding.graphView.getViewport().setScalableY(true);
 
-            binding.graphView.getGridLabelRenderer().setHorizontalLabelsAngle(20);
+            binding.graphView.getGridLabelRenderer().setHorizontalLabelsAngle(10);
 
-            int count = 0;
-            for (DataPoint[] dataPoints : getTotalData(allCamerasHistoric)) {
-                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(dataPoints);
-                series.setColor(getLineColor(count));
-                count++;
+            for (int i = 0; i < allCamerasHistoric.size(); i++) {
+                CameraHistoric cameraHistoric = allCamerasHistoric.get(i);
+                int color = getLineColor(i);
+
+                LineGraphSeries<DataPoint> series = new LineGraphSeries<>(getTotalData(cameraHistoric));
+                series.setColor(color);
                 binding.graphView.addSeries(series);
+
+                cameraDataArrayList.add(new GraphCameraData(cameraHistoric.getIp(), "endereço", cameraHistoric, color));
             }
 
-
+            camerasAdapter.notifyDataSetChanged();
         });
 
         viewModel.getDashboardDataError().observe(this, v -> createRedirectionDialog());
@@ -110,29 +113,23 @@ public class DashboardActivity extends AppCompatActivity {
         }
     }
 
-    private ArrayList<DataPoint[]> getTotalData(ArrayList<CameraHistoric> allCamerasHistoric) {
-        ArrayList<DataPoint[]> allCamerassTotalData = new ArrayList<>();
+    private DataPoint[] getTotalData(CameraHistoric cameraHistoric) {
+        ArrayList<Integer> x_axis = new ArrayList<>();
+        ArrayList<Integer> y_axis = new ArrayList<>();
 
-        for (CameraHistoric cameraHistoric : allCamerasHistoric) {
-            ArrayList<Integer> x_axis = new ArrayList<>();
-            ArrayList<Integer> y_axis = new ArrayList<>();
-
-            for (ReconForTimestamp reconForTimestamp : cameraHistoric.getHistoricAtomUnits()) {
-                x_axis.add(reconForTimestamp.getTimestamp());
-                y_axis.add(reconForTimestamp.getTotal());
-            }
-
-            int n = x_axis.size();
-            DataPoint[] values = new DataPoint[n];
-            for (int i = 0; i < n; i++) {
-                DataPoint v = new DataPoint(x_axis.get(i), y_axis.get(i));
-                values[i] = v;
-            }
-
-            allCamerassTotalData.add(values);
+        for (ReconForTimestamp reconForTimestamp : cameraHistoric.getHistoricAtomUnits()) {
+            x_axis.add(reconForTimestamp.getTimestamp());
+            y_axis.add(reconForTimestamp.getTotal());
         }
 
-        return allCamerassTotalData;
+        int n = x_axis.size();
+        DataPoint[] values = new DataPoint[n];
+        for (int i = 0; i < n; i++) {
+            DataPoint v = new DataPoint(x_axis.get(i), y_axis.get(i));
+            values[i] = v;
+        }
+
+        return values;
     }
 
     private int getSpecificRecordAtHistoric(int type, ArrayList<CameraHistoric> allCamerasHistoric) {
