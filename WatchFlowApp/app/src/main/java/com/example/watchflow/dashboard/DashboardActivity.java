@@ -107,7 +107,7 @@ public class DashboardActivity extends AppCompatActivity {
             case 3:
                 return Color.YELLOW;
             case 4:
-                return Color.GRAY;
+                return Color.MAGENTA;
             default:
                 return Color.CYAN;
         }
