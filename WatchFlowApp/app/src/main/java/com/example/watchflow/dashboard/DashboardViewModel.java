@@ -1,5 +1,6 @@
 package com.example.watchflow.dashboard;
 
+import static com.example.watchflow.Constants.ADDRESS;
 import static com.example.watchflow.Constants.ARTICULATED_TRUCK;
 import static com.example.watchflow.Constants.BICYCLE;
 import static com.example.watchflow.Constants.BUS;
@@ -87,6 +88,7 @@ public class DashboardViewModel extends AndroidViewModel {
                 JsonObject camera = cameraElement.getAsJsonObject();
                 JsonArray fullCameraHistoric = camera.get(HISTORIC).getAsJsonArray();
                 String cameraIp = camera.get(IP).getAsString();
+                String address = camera.get(ADDRESS).getAsString();
                 ArrayList<ReconForTimestamp> reconForTimestamps = new ArrayList<>();
 
                 for (JsonElement historicAtomElement : fullCameraHistoric) {
@@ -111,7 +113,7 @@ public class DashboardViewModel extends AndroidViewModel {
                     reconForTimestamps.add(reconForTimestamp);
                 }
 
-                allCameraHistoric.add(new CameraHistoric(cameraIp, reconForTimestamps));
+                allCameraHistoric.add(new CameraHistoric(cameraIp, address, reconForTimestamps));
             }
 
             allCamerasHistoricMutableLiveData.setValue(allCameraHistoric);

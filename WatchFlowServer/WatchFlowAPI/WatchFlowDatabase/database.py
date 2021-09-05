@@ -222,7 +222,7 @@ def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
         return (False, {'message': 'Invalid credentials'})
 
 
-def getDashboardInformation(requesterUserId, requesterPwd):
+def getDashboardInformation(geocoder, requesterUserId, requesterPwd):
     if validateUser(requesterUserId, requesterPwd):
 
         json_list = []
@@ -261,14 +261,23 @@ def getDashboardInformation(requesterUserId, requesterPwd):
                 """
 
                 data = (cameraIP, 5)
-
                 cameraHistoric = executeFetchallQuery(query, data)
+
+                query = "SELECT * FROM cameras WHERE ip=?"
+                data = (cameraIP,)
+                queryResult = executeFetchallQuery(query, data)
+
+                latitude = (queryResult[0])[2]
+                longitude = (queryResult[0])[3]
+                address = geocoder.get((latitude, longitude))[0]
+
                 historicJson = []
                 camerahistoricJson = {'ip': cameraIP,
+                                      'address': str(address),
                                       'historic': historicJson}
 
                 cameraHistoric = cameraHistoric[::-1]
-                
+
                 for historicUnit in cameraHistoric:
                     historic = {'timestamp': historicUnit[0],
                                 'total': historicUnit[1],

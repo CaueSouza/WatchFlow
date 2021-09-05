@@ -9,12 +9,16 @@ public class CameraHistoric {
     @SerializedName("ip")
     @Expose
     private String ip;
+    @SerializedName("address")
+    @Expose
+    private String address;
     @SerializedName("reconForTimestamps")
     @Expose
     private ArrayList<ReconForTimestamp> reconForTimestamps;
 
-    public CameraHistoric(String ip, ArrayList<ReconForTimestamp> reconForTimestamps) {
+    public CameraHistoric(String ip, String address, ArrayList<ReconForTimestamp> reconForTimestamps) {
         this.ip = ip;
+        this.address = address;
         this.reconForTimestamps = reconForTimestamps;
     }
 
@@ -30,7 +34,11 @@ public class CameraHistoric {
         return reconForTimestamps;
     }
 
-    public void setHistoricAtomUnits(ArrayList<ReconForTimestamp> reconForTimestamps) {
-        this.reconForTimestamps = reconForTimestamps;
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
