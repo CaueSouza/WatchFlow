@@ -86,7 +86,7 @@ public class DashboardActivity extends AppCompatActivity {
                 series.setColor(color);
                 binding.graphView.addSeries(series);
 
-                cameraDataArrayList.add(new GraphCameraData(cameraHistoric.getIp(), "endereço", cameraHistoric, color));
+                cameraDataArrayList.add(new GraphCameraData(cameraHistoric.getIp(), cameraHistoric.getAddress(), cameraHistoric, color));
             }
 
             camerasAdapter.notifyDataSetChanged();

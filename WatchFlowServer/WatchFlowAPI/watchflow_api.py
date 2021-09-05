@@ -47,6 +47,7 @@ def dashboardInformation():
 
     if neededHeadersKeys <= headers.keys():
         ok, message = database.getDashboardInformation(
+            geocoder,
             requesterUserId=headers['requesterUserId'],
             requesterPwd=headers['requesterPwd'])
 
