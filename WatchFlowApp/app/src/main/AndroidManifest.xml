@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.watchflow">
-
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
@@ -62,6 +61,10 @@
         <activity
             android:name=".dashboard.configurations.DashboardConfigurationActivity"
             android:label="@string/title_activity_dashboard_configurations" />
+
+        <activity
+            android:name=".dashboard.cameraDashboard.CameraDashboardActivity"
+            android:label="@string/title_activity_camera_dashboard" />
     </application>
 
 </manifest>

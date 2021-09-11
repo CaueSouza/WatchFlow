@@ -5,6 +5,7 @@
     <string name="title_activity_operations">Operações</string>
     <string name="title_activity_dashboard">Painel de Controle</string>
     <string name="title_activity_dashboard_configurations">Configurar Painel de Controle</string>
+    <string name="title_activity_camera_dashboard">Painel da Câmera</string>
     <string name="title_activity_cam_information">Informações da Câmera</string>
     <string name="title_activity_user_information">Informações do Usuário</string>
 
@@ -114,4 +115,6 @@
     <string name="permission_needed_message_txt">Permissão necessária para a aplicação funcionar corretamente...</string>
     <string name="total_graph_title">Gráfico consolidado de todas as câmeras</string>
     <string name="total_graph_subtitle">Dados exibidos no formato: Total de reconhecimento x Tempo</string>
+    <string name="title_camera_dashboard">Painel da Câmera</string>
+    <string name="historic_tag_for_intent">Historic</string>
 </resources>

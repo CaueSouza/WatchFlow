@@ -3,7 +3,9 @@ package com.example.watchflow.dashboard;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ReconForTimestamp {
+import java.io.Serializable;
+
+public class ReconForTimestamp implements Serializable {
     @SerializedName("timestamp")
     @Expose
     private int timestamp;
