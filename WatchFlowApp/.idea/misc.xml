@@ -5,14 +5,15 @@
       <map>
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/drawable/ic_traffic_icon.xml" value="0.3828125" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/drawable/list_data_background.xml" value="0.26666666666666666" />
-        <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_camera_dashboard.xml" value="0.2520833333333333" />
+        <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_camera_dashboard.xml" value="0.33" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_camera_information.xml" value="0.25052083333333336" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_dashboard.xml" value="0.36666666666666664" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_dashboard_configuration.xml" value="0.36666666666666664" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_maps.xml" value="0.36666666666666664" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_operation.xml" value="0.36666666666666664" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_user_information.xml" value="0.17831813576494426" />
-        <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/configuration_dashboard_layout_item.xml" value="0.9" />
+        <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/camera_dashboard_graphic_layout_item.xml" value="0.35507246376811596" />
+        <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/configuration_dashboard_layout_item.xml" value="0.4913294797687861" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/dashboard_cam_data_layout_item.xml" value="0.5" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/dashboard_cam_subtitle_layout_item.xml" value="0.1" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/data_layout_item.xml" value="0.25052083333333336" />

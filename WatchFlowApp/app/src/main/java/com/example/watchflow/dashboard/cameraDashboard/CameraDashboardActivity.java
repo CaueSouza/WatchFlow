@@ -29,6 +29,8 @@ public class CameraDashboardActivity extends AppCompatActivity {
         getSupportActionBar().show();
 
         viewModel.setGraphCameraData((GraphCameraData) getIntent().getSerializableExtra(String.valueOf(R.string.historic_tag_for_intent)));
+        binding.setIp(viewModel.getGraphCameraData().getHistoric().getIp());
+        binding.setAddress(viewModel.getGraphCameraData().getHistoric().getAddress());
     }
 
     @Override

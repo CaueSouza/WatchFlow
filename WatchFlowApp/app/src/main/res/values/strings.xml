@@ -117,4 +117,5 @@
     <string name="total_graph_subtitle">Dados exibidos no formato: Total de reconhecimento x Tempo</string>
     <string name="title_camera_dashboard">Painel da Câmera</string>
     <string name="historic_tag_for_intent">Historic</string>
+    <string name="graphs_title">Gráficos</string>
 </resources>
