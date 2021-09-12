@@ -5,13 +5,15 @@
       <map>
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/drawable/ic_traffic_icon.xml" value="0.3828125" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/drawable/list_data_background.xml" value="0.26666666666666666" />
+        <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_camera_dashboard.xml" value="0.33" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_camera_information.xml" value="0.25052083333333336" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_dashboard.xml" value="0.36666666666666664" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_dashboard_configuration.xml" value="0.36666666666666664" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_maps.xml" value="0.36666666666666664" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_operation.xml" value="0.36666666666666664" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/activity_user_information.xml" value="0.17831813576494426" />
-        <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/configuration_dashboard_layout_item.xml" value="0.9" />
+        <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/camera_dashboard_graphic_layout_item.xml" value="0.25" />
+        <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/configuration_dashboard_layout_item.xml" value="0.4913294797687861" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/dashboard_cam_data_layout_item.xml" value="0.5" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/dashboard_cam_subtitle_layout_item.xml" value="0.1" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/data_layout_item.xml" value="0.25052083333333336" />
@@ -19,6 +21,7 @@
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/fragment_maps.xml" value="0.36666666666666664" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/fragment_register_cam.xml" value="0.36666666666666664" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/fragments_fabs.xml" value="0.33" />
+        <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/layout/main_fragment.xml" value="0.2635416666666667" />
         <entry key="..\:/Projetos/GitHub/WatchFlow/WatchFlowApp/app/src/main/res/menu/settings_menu.xml" value="0.36666666666666664" />
         <entry key="..\:/Projetos/TCC/WatchFlow/WatchFlowApp/app/src/main/res/drawable/ic_gear_option.xml" value="0.3828125" />
         <entry key="..\:/Projetos/TCC/WatchFlow/WatchFlowApp/app/src/main/res/drawable/ic_login_bk.xml" value="0.3828125" />

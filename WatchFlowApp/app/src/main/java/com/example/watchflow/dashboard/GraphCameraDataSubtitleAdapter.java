@@ -1,17 +1,19 @@
 package com.example.watchflow.dashboard;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.watchflow.R;
+import com.example.watchflow.dashboard.cameraDashboard.CameraDashboardActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -51,6 +53,7 @@ public class GraphCameraDataSubtitleAdapter extends RecyclerView.Adapter<GraphCa
         private final TextView txtIP, txtAddress;
         private final ImageView colorBox;
         private final Context context;
+        private GraphCameraData cameraData;
 
         public DataHolder(@NonNull @NotNull View itemView, Context context) {
             super(itemView);
@@ -59,17 +62,20 @@ public class GraphCameraDataSubtitleAdapter extends RecyclerView.Adapter<GraphCa
             colorBox = itemView.findViewById(R.id.dashboard_item_color);
             txtIP = itemView.findViewById(R.id.dashboard_ip_item_content);
             txtAddress = itemView.findViewById(R.id.dashboard_address_item_content);
+
             itemView.setOnClickListener(view -> {
-                //TODO CALL INTENT FOR ACTIVITY THAT SHOWS THE SPECIFIC DATA FOR THE CAMERA
-                //TODO STORAGE THE HISTORIC
-                Toast.makeText(context, "Call Activity", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, CameraDashboardActivity.class);
+                intent.putExtra(String.valueOf(R.string.historic_tag_for_intent), cameraData);
+                ((Activity) context).startActivity(intent);
             });
         }
 
         void setDetails(GraphCameraData cameraInformations) {
-            colorBox.setBackgroundColor(cameraInformations.getColor());
-            txtIP.setText(cameraInformations.getIp());
-            txtAddress.setText(cameraInformations.getAddress());
+            cameraData = cameraInformations;
+
+            colorBox.setBackgroundColor(cameraData.getColor());
+            txtIP.setText(cameraData.getHistoric().getIp());
+            txtAddress.setText(cameraData.getHistoric().getAddress());
         }
     }
 }
