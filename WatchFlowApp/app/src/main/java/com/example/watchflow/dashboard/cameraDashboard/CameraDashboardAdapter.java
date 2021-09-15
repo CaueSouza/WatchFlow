@@ -80,7 +80,7 @@ public class CameraDashboardAdapter extends RecyclerView.Adapter<CameraDashboard
 
             graphView.getViewport().setYAxisBoundsManual(true);
             graphView.getViewport().setMinY(0);
-            graphView.getViewport().setMaxY(getSpecificRecordAtHistoric(RETRIEVE_HIGHEST_TOTAL, graphicsData.getReconForTimestamps()));
+            graphView.getViewport().setMaxY(graphicsData.getTotal());
 
             graphView.getViewport().setXAxisBoundsManual(true);
             graphView.getViewport().setMinX(getSpecificRecordAtHistoric(RETRIEVE_MINOR_TIMESTAMP, graphicsData.getReconForTimestamps()));

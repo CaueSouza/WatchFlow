@@ -62,11 +62,20 @@ public class CameraDashboardActivity extends AppCompatActivity {
         cameraReconArrayList = new ArrayList<>();
         ArrayList<ReconForTimestamp> allRecons = viewModel.getGraphCameraData().getHistoric().getHistoricAtomUnits();
 
-        for (String field : RECOGNITION_FIELDS) {
-            ArrayList<SpecificReconForTimestamp> specificRecon = getReconsForSpecificField(field, allRecons);
+        ArrayList<SpecificReconForTimestamp> totalRecon = getReconsForSpecificField(TOTAL, allRecons);
+        int total = getFieldHighestValue(totalRecon);
 
-            if (!isReconEmpty(specificRecon)) {
-                cameraReconArrayList.add(new CameraDashboardGraphicsData(getFieldTitle(field), specificRecon));
+        if (!isReconEmpty(totalRecon)) {
+            cameraReconArrayList.add(new CameraDashboardGraphicsData(getFieldTitle(TOTAL), total, totalRecon));
+        }
+
+        for (String field : RECOGNITION_FIELDS) {
+            if (!field.equals(TOTAL)) {
+                ArrayList<SpecificReconForTimestamp> specificRecon = getReconsForSpecificField(field, allRecons);
+
+                if (!isReconEmpty(specificRecon)) {
+                    cameraReconArrayList.add(new CameraDashboardGraphicsData(getFieldTitle(field), total, specificRecon));
+                }
             }
         }
 
@@ -135,6 +144,16 @@ public class CameraDashboardActivity extends AppCompatActivity {
             default:
                 return "";
         }
+    }
+
+    private int getFieldHighestValue(ArrayList<SpecificReconForTimestamp> allRecons) {
+        int highest = 0;
+
+        for (SpecificReconForTimestamp recon : allRecons) {
+            if (recon.getData() > highest) highest = recon.getData();
+        }
+
+        return highest;
     }
 
     private ArrayList<SpecificReconForTimestamp> getReconsForSpecificField(String field, ArrayList<ReconForTimestamp> allRecons) {
