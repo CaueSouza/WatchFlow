@@ -17,7 +17,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorSecondary"
         android:padding="10dp">
 
         <TextView
@@ -40,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{ip}"
-            android:textColor="@color/whiteTextColor"
+            android:textColor="@color/colorSecondary"
             app:layout_constraintBottom_toBottomOf="@id/cam_dash_ip_item_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/cam_dash_ip_item_title"
@@ -67,7 +66,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{address}"
-            android:textColor="@color/whiteTextColor"
+            android:textColor="@color/colorSecondary"
             app:layout_constraintBottom_toBottomOf="@id/cam_dash_address_item_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/cam_dash_address_item_title"
