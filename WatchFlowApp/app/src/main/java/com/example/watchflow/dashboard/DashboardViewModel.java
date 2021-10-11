@@ -50,6 +50,8 @@ public class DashboardViewModel extends AndroidViewModel {
     private final ServerRepository serverRepository = ServerRepository.getInstance();
     private final SingleLiveEvent<Void> dashboardDataError = new SingleLiveEvent<>();
     private final MutableLiveData<ArrayList<CameraHistoric>> allCamerasHistoricMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Long> startDateTimeFilterTimestamp = new MutableLiveData<>();
+    private final MutableLiveData<Long> finalDateTimeFilterTimestamp = new MutableLiveData<>();
 
     public DashboardViewModel(@NonNull Application application) {
         super(application);
@@ -127,4 +129,12 @@ public class DashboardViewModel extends AndroidViewModel {
             Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
         }
     };
+
+    public MutableLiveData<Long> getStartDateTimeFilterTimestamp() {
+        return startDateTimeFilterTimestamp;
+    }
+
+    public MutableLiveData<Long> getFinalDateTimeFilterTimestamp() {
+        return finalDateTimeFilterTimestamp;
+    }
 }

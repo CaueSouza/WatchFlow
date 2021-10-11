@@ -57,6 +57,11 @@ public class DashboardActivity extends AppCompatActivity {
         binding.camsDataDashboardRecyclerView.setAdapter(camerasAdapter);
         binding.camsDataDashboardRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
+        binding.filterButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, FilterActivity.class);
+            startActivity(intent);
+        });
+
         viewModel.getAllCamerasHistoricMutableLiveData().observe(this, allCamerasHistoric -> {
             binding.graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
                 @Override
@@ -94,6 +99,7 @@ public class DashboardActivity extends AppCompatActivity {
 
         viewModel.getDashboardDataError().observe(this, v -> createRedirectionDialog());
         viewModel.getDashboardInformation();
+
     }
 
     private int getLineColor(int count) {

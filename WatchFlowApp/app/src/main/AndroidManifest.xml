@@ -65,6 +65,10 @@
         <activity
             android:name=".dashboard.cameraDashboard.CameraDashboardActivity"
             android:label="@string/title_activity_camera_dashboard" />
+
+        <activity
+            android:name=".dashboard.FilterActivity"
+            android:label="@string/title_activity_filter"/>
     </application>
 
 </manifest>
