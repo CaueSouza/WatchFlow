@@ -1,14 +1,22 @@
 package com.example.watchflow.dashboard;
 
+import static com.example.watchflow.Constants.FINAL_TIMESTAMP;
+import static com.example.watchflow.Constants.FIVE_MINUTES_IN_MILLIS;
+import static com.example.watchflow.Constants.INITIAL_TIMESTAMP;
 import static com.example.watchflow.Constants.RETRIEVE_HIGHEST_TIMESTAMP;
 import static com.example.watchflow.Constants.RETRIEVE_HIGHEST_TOTAL;
 import static com.example.watchflow.Constants.RETRIEVE_MINOR_TIMESTAMP;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -25,6 +33,7 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class DashboardActivity extends AppCompatActivity {
@@ -33,6 +42,8 @@ public class DashboardActivity extends AppCompatActivity {
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
     private GraphCameraDataSubtitleAdapter camerasAdapter;
     private ArrayList<GraphCameraData> cameraDataArrayList;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,7 +58,25 @@ public class DashboardActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().show();
 
+        sharedPreferences = getBaseContext().getSharedPreferences(getString(R.string.shared_pref_dashboard_key), Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
         initBindings();
+    }
+
+    ActivityResultLauncher<Intent> filterActivityResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    updateDashboardInformation();
+                }
+            });
+
+    private boolean hasSharedPref() {
+        long initialTimestamp = sharedPreferences.getLong(INITIAL_TIMESTAMP, 0);
+        long finalTimestamp = sharedPreferences.getLong(FINAL_TIMESTAMP, 0);
+
+        return initialTimestamp != 0 && finalTimestamp != 0;
     }
 
     private void initBindings() {
@@ -57,12 +86,19 @@ public class DashboardActivity extends AppCompatActivity {
         binding.camsDataDashboardRecyclerView.setAdapter(camerasAdapter);
         binding.camsDataDashboardRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-        binding.filterButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, FilterActivity.class);
-            startActivity(intent);
-        });
+        binding.filterButton.setOnClickListener(v -> filterActivityResultLauncher.launch(new Intent(this, FilterActivity.class)));
+
+        if (!hasSharedPref()) {
+            Calendar calendar = Calendar.getInstance();
+            editor.putLong(INITIAL_TIMESTAMP, (calendar.getTimeInMillis() - FIVE_MINUTES_IN_MILLIS) / 1000);
+            editor.putLong(FINAL_TIMESTAMP, calendar.getTimeInMillis() / 1000);
+            editor.commit();
+            editor.apply();
+        }
 
         viewModel.getAllCamerasHistoricMutableLiveData().observe(this, allCamerasHistoric -> {
+            binding.graphView.removeAllSeries();
+
             binding.graphView.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
                 @Override
                 public String formatLabel(double value, boolean isValueX) {
@@ -83,23 +119,37 @@ public class DashboardActivity extends AppCompatActivity {
 
             binding.graphView.getGridLabelRenderer().setHorizontalLabelsAngle(10);
 
+            cameraDataArrayList.clear();
+
             for (int i = 0; i < allCamerasHistoric.size(); i++) {
                 CameraHistoric cameraHistoric = allCamerasHistoric.get(i);
                 int color = getLineColor(i);
 
                 LineGraphSeries<DataPoint> series = new LineGraphSeries<>(getTotalData(cameraHistoric));
                 series.setColor(color);
+                series.resetData(getTotalData(cameraHistoric));
+
                 binding.graphView.addSeries(series);
 
                 cameraDataArrayList.add(new GraphCameraData(cameraHistoric, color));
             }
 
+            binding.graphView.onDataChanged(false, false);
             camerasAdapter.notifyDataSetChanged();
         });
 
         viewModel.getDashboardDataError().observe(this, v -> createRedirectionDialog());
-        viewModel.getDashboardInformation();
+        updateDashboardInformation();
 
+    }
+
+    private void updateDashboardInformation() {
+        long initialTimestamp = sharedPreferences.getLong(INITIAL_TIMESTAMP, 0);
+        long finalTimestamp = sharedPreferences.getLong(FINAL_TIMESTAMP, 0);
+
+        if (initialTimestamp != 0 && finalTimestamp != 0) {
+            viewModel.getDashboardInformation(initialTimestamp, finalTimestamp);
+        }
     }
 
     private int getLineColor(int count) {

@@ -10,6 +10,8 @@
     <string name="title_activity_user_information">Informações do Usuário</string>
     <string name="title_activity_filter">Filtro</string>
 
+    <string name="shared_pref_dashboard_key">com.example.watchflow.PREFERENCE_FILE_KEY</string>
+
     <string name="ip_string">IP</string>
     <string name="register">Registrar</string>
     <string name="remove">Remover</string>

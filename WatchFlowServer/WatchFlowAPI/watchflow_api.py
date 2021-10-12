@@ -43,13 +43,15 @@ def dashboardInformation():
 
     headers = eval(request.headers.get(AUTHORIZATION))
 
-    neededHeadersKeys = {'requesterUserId', 'requesterPwd'}
+    neededHeadersKeys = {'requesterUserId', 'requesterPwd', 'initialTimestamp', 'finalTimestamp'}
 
     if neededHeadersKeys <= headers.keys():
         ok, message = database.getDashboardInformation(
             geocoder,
             requesterUserId=headers['requesterUserId'],
-            requesterPwd=headers['requesterPwd'])
+            requesterPwd=headers['requesterPwd'],
+            initialTimestamp=headers['initialTimestamp'],
+            finalTimestamp=headers['finalTimestamp'])
 
         return message, 200 if ok else 400
     else:

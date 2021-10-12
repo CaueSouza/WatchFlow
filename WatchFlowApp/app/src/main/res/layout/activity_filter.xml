@@ -28,8 +28,11 @@
                 android:id="@+id/start_date_time_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:hint="Selecione a data e horário inicial" />
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:hint="Selecione a data e horário inicial"
+                android:textAlignment="center" />
 
             <Button
                 android:id="@+id/start_date_time_button"
@@ -57,8 +60,11 @@
                 android:id="@+id/final_date_time_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:hint="Selecione a data e horário final" />
+                android:clickable="false"
+                android:cursorVisible="false"
+                android:focusable="false"
+                android:hint="Selecione a data e horário final"
+                android:textAlignment="center" />
 
             <Button
                 android:id="@+id/final_date_time_button"
@@ -70,13 +76,13 @@
 
         <Button
             android:id="@+id/finish_button"
+            style="@style/buttonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/final_date_time_linear_layout"
             android:text="@string/finish_text"
-            style="@style/buttonStyle"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/final_date_time_linear_layout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

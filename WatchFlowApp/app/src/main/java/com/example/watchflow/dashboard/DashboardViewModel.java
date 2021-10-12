@@ -6,8 +6,8 @@ import static com.example.watchflow.Constants.BICYCLE;
 import static com.example.watchflow.Constants.BUS;
 import static com.example.watchflow.Constants.CAMERAS;
 import static com.example.watchflow.Constants.CAR;
-import static com.example.watchflow.Constants.COMMON_HEADER_FIELDS;
 import static com.example.watchflow.Constants.DASHBOARD_INFORMATION_ENDPOINT;
+import static com.example.watchflow.Constants.DASHBOARD_INFORMATION_HEADER_FIELDS;
 import static com.example.watchflow.Constants.HISTORIC;
 import static com.example.watchflow.Constants.IP;
 import static com.example.watchflow.Constants.MOTORCYCLE;
@@ -50,8 +50,7 @@ public class DashboardViewModel extends AndroidViewModel {
     private final ServerRepository serverRepository = ServerRepository.getInstance();
     private final SingleLiveEvent<Void> dashboardDataError = new SingleLiveEvent<>();
     private final MutableLiveData<ArrayList<CameraHistoric>> allCamerasHistoricMutableLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Long> startDateTimeFilterTimestamp = new MutableLiveData<>();
-    private final MutableLiveData<Long> finalDateTimeFilterTimestamp = new MutableLiveData<>();
+
 
     public DashboardViewModel(@NonNull Application application) {
         super(application);
@@ -66,12 +65,14 @@ public class DashboardViewModel extends AndroidViewModel {
         return allCamerasHistoricMutableLiveData;
     }
 
-    public void getDashboardInformation() {
+    public void getDashboardInformation(long startTimestamp, long finalTimestamp) {
         List<Object> headers_data;
         headers_data = UserIdPwd.getInstance().getUserIdPwdList();
+        headers_data.add(startTimestamp);
+        headers_data.add(finalTimestamp);
 
         serverRepository.createRequest(dashboardInformationCallback, DASHBOARD_INFORMATION_ENDPOINT,
-                COMMON_HEADER_FIELDS, headers_data, true);
+                DASHBOARD_INFORMATION_HEADER_FIELDS, headers_data, true);
     }
 
     final Callback<JsonObject> dashboardInformationCallback = new Callback<>() {
@@ -129,12 +130,4 @@ public class DashboardViewModel extends AndroidViewModel {
             Toast.makeText(application.getApplicationContext(), R.string.server_error_message, Toast.LENGTH_SHORT).show();
         }
     };
-
-    public MutableLiveData<Long> getStartDateTimeFilterTimestamp() {
-        return startDateTimeFilterTimestamp;
-    }
-
-    public MutableLiveData<Long> getFinalDateTimeFilterTimestamp() {
-        return finalDateTimeFilterTimestamp;
-    }
 }
