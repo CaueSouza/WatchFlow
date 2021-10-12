@@ -66,7 +66,7 @@ public class GraphCameraDataSubtitleAdapter extends RecyclerView.Adapter<GraphCa
             itemView.setOnClickListener(view -> {
                 Intent intent = new Intent(context, CameraDashboardActivity.class);
                 intent.putExtra(String.valueOf(R.string.historic_tag_for_intent), cameraData);
-                ((Activity) context).startActivity(intent);
+                context.startActivity(intent);
             });
         }
 
