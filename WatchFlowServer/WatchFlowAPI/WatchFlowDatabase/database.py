@@ -222,7 +222,7 @@ def getCamerasDatabaseAsJSON(requesterUserId, requesterPwd, onlyIps=False):
         return (False, {'message': 'Invalid credentials'})
 
 
-def getDashboardInformation(geocoder, requesterUserId, requesterPwd):
+def getDashboardInformation(geocoder, requesterUserId, requesterPwd, initialTimestamp, finalTimestamp):
     if validateUser(requesterUserId, requesterPwd):
 
         json_list = []
@@ -255,12 +255,11 @@ def getDashboardInformation(geocoder, requesterUserId, requesterPwd):
                             single_unit_truck,
                             work_van
                         FROM historic
-                        WHERE ip=?
+                        WHERE ip=? AND timestamp BETWEEN ? AND ?
                         ORDER BY timestamp DESC
-                        LIMIT ?
                 """
 
-                data = (cameraIP, 5)
+                data = (cameraIP, initialTimestamp, finalTimestamp)
                 cameraHistoric = executeFetchallQuery(query, data)
 
                 query = "SELECT * FROM cameras WHERE ip=?"

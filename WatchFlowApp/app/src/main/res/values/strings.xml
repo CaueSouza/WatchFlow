@@ -8,6 +8,9 @@
     <string name="title_activity_camera_dashboard">Painel da Câmera</string>
     <string name="title_activity_cam_information">Informações da Câmera</string>
     <string name="title_activity_user_information">Informações do Usuário</string>
+    <string name="title_activity_filter">Filtro</string>
+
+    <string name="shared_pref_dashboard_key">com.example.watchflow.PREFERENCE_FILE_KEY</string>
 
     <string name="ip_string">IP</string>
     <string name="register">Registrar</string>
@@ -118,4 +121,7 @@
     <string name="title_camera_dashboard">Painel da Câmera</string>
     <string name="historic_tag_for_intent">Historic</string>
     <string name="graphs_title">Gráficos</string>
+    <string name="filter_text">Filtro</string>
+    <string name="change_text">Alterar</string>
+    <string name="finish_text">Concluir</string>
 </resources>

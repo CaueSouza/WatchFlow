@@ -19,9 +19,10 @@ public class Constants {
     public static final int DELETE_CAM_OPERATION = 4;
     public static final int UPDATE_PHONE_OPERATION = 5;
     public static final int DASHBOARD_CONFIGURATION_CAM_LIMIT = 5;
+    public static final int FIVE_MINUTES_IN_MILLIS = 300000;
 
     //ENDPOINTS
-    public static final String BASE_URL = "http://192.168.0.14:5000";
+    public static final String BASE_URL = "http://192.168.0.12:5000";
     public static final String ALL_RUNNING_CAMERAS_ENDPOINT = "/allRunningCameras";
     public static final String USER_LOGIN_ENDPOINT = "/userLogin";
     public static final String USER_LOGOUT_ENDPOINT = "/userLogout";
@@ -50,7 +51,6 @@ public class Constants {
     public static final String NEW_USER_PWD = "newUserPwd";
     public static final String OLD_USERNAME = "oldUserName";
     public static final String NEW_TELEPHONE = "newUserPhone";
-    public static final String OLD_TELEPHONE = "oldUserPhone";
     public static final String PHONE = "phone";
     public static final String USER_ID = "userId";
     public static final String CAMERAS = "cameras";
@@ -70,6 +70,8 @@ public class Constants {
     public static final String HISTORIC = "historic";
 
     public static final String TIMESTAMP = "timestamp";
+    public static final String INITIAL_TIMESTAMP = "initialTimestamp";
+    public static final String FINAL_TIMESTAMP = "finalTimestamp";
 
     //RECOGNITIONS FIELDS
     public static final String TOTAL = "total";
@@ -156,6 +158,13 @@ public class Constants {
 
     public static final List<String> SAVE_DASHBOARD_SELECTED_CAMERAS_BODY_FIELD = new ArrayList<>() {{
         add(SELECTED_CAMERAS);
+    }};
+
+    public static final List<String> DASHBOARD_INFORMATION_HEADER_FIELDS = new ArrayList<>() {{
+        add(REQUESTER_USER_ID);
+        add(REQUESTER_PWD);
+        add(INITIAL_TIMESTAMP);
+        add(FINAL_TIMESTAMP);
     }};
 
     //RETRIEVE SPECIFIC VALUE FROM HISTORIC CONSTANTS
