@@ -59,7 +59,7 @@ public class CameraDashboardAdapter extends RecyclerView.Adapter<CameraDashboard
     static class DataHolder extends RecyclerView.ViewHolder {
         private final TextView title;
         private final GraphView graphView;
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM HH:mm");
 
         public DataHolder(@NonNull View itemView) {
             super(itemView);

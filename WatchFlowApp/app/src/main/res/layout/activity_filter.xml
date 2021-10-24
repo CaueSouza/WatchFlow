@@ -24,6 +24,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/headerTextPrimary"
+                android:text="@string/start_date_txt"/>
+
             <EditText
                 android:id="@+id/start_date_time_edit_text"
                 android:layout_width="match_parent"
@@ -55,6 +61,12 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/start_date_time_linear_layout">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/headerTextPrimary"
+                android:text="@string/final_date_txt"/>
 
             <EditText
                 android:id="@+id/final_date_time_edit_text"

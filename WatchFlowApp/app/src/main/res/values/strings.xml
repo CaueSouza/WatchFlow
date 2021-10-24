@@ -124,4 +124,6 @@
     <string name="filter_text">Filtro</string>
     <string name="change_text">Alterar</string>
     <string name="finish_text">Concluir</string>
+    <string name="start_date_txt">Data Inicial:</string>
+    <string name="final_date_txt">Data Final:</string>
 </resources>

@@ -39,7 +39,7 @@ import java.util.Date;
 public class DashboardActivity extends AppCompatActivity {
     ActivityDashboardBinding binding;
     DashboardViewModel viewModel;
-    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM HH:mm");
     private GraphCameraDataSubtitleAdapter camerasAdapter;
     private ArrayList<GraphCameraData> cameraDataArrayList;
     SharedPreferences sharedPreferences;

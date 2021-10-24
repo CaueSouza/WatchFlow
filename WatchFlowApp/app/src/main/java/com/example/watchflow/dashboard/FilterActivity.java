@@ -26,7 +26,7 @@ import java.util.Calendar;
 public class FilterActivity extends AppCompatActivity {
     ActivityFilterBinding binding;
     FilterViewModel viewModel;
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yy HH:mm");
+    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM HH:mm");
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 

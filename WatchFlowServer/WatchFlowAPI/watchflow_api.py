@@ -332,5 +332,5 @@ def updatePhone():
 
 
 def run():
-    database.resetDatabase()
+    #database.resetDatabase()
     app.run(host=socket.gethostbyname(socket.gethostname()), port=5000)
