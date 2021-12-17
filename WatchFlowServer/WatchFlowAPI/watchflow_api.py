@@ -7,7 +7,7 @@ import socket
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
-geocoder = GoogleGeocoder("AIzaSyCZEkcLehkTBSS0y3Mgx7_6aj8HHgtCK9s")
+geocoder = GoogleGeocoder("")#TODO INSERT GOOGLE GEOCODING API KEY
 
 AUTHORIZATION = "Authorization"
 

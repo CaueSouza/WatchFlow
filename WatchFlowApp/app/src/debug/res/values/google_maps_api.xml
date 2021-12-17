@@ -6,5 +6,5 @@
     SHA-1 certificate fingerprint:
     A5:BF:2E:8A:42:F7:94:86:43:0E:5B:71:27:43:B8:3E:93:42:35:83
     -->
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCHEHsj_KIs6Ak3ugSl-xDLpwZO-bjGmiI</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false"></string><!-- //TODO INSERT GOOGLE MAPS GCP API KEY-->
 </resources>
